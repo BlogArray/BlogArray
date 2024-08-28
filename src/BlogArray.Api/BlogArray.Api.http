@@ -1,0 +1,6 @@
+@BlogArray.Api_HostAddress = https://localhost:7181
+
+GET {{BlogArray.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
