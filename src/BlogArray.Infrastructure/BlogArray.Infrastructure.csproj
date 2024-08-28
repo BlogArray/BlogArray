@@ -11,4 +11,8 @@
     <ProjectReference Include="..\BlogArray.Shared\BlogArray.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
