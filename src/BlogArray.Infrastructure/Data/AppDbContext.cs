@@ -15,9 +15,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<Statistic> Statistics { get; set; }
 
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Term> Terms { get; set; }
 
-    public DbSet<PostCategory> PostCategories { get; set; }
+    public DbSet<PostTerm> PostTerms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -50,26 +50,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
             e.Property(e => e.ShowHeading).HasDefaultValue(true);
         });
 
-        builder.Entity<Category>(e =>
+        builder.Entity<Term>(e =>
         {
             e.HasIndex(b => b.Slug).IsUnique();
         });
 
-        builder.Entity<PostCategory>(e =>
+        builder.Entity<PostTerm>(e =>
         {
             e.Property(e => e.Order).HasDefaultValue(0);
 
-            e.HasKey(t => new { t.PostId, t.CategoryId });
+            e.HasKey(t => new { t.PostId, t.TermId });
 
-            e.HasIndex(t => new { t.PostId, t.CategoryId }).IsUnique();
+            e.HasIndex(t => new { t.PostId, t.TermId }).IsUnique();
 
             e.HasOne(pc => pc.Post)
-            .WithMany(p => p.Categories)
+            .WithMany(p => p.Terms)
             .HasForeignKey(pc => pc.PostId);
 
-            e.HasOne(pc => pc.Category)
-            .WithMany(c => c.PostCategories)
-            .HasForeignKey(pc => pc.CategoryId);
+            e.HasOne(pc => pc.Term)
+            .WithMany(c => c.PostTerms)
+            .HasForeignKey(pc => pc.TermId);
         });
 
         builder.Seed();

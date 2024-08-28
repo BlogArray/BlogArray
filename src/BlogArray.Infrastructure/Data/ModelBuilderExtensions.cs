@@ -260,7 +260,7 @@ public static class ModelBuilderExtensions
               AutoLoad = true
           });
 
-        builder.Entity<Category>().HasData(new Category
+        builder.Entity<Term>().HasData(new Term
         {
             Id = 1,
             Name = "Uncategorized",

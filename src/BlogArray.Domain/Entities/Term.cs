@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlogArray.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogArray.Domain.Entities;
 
-public class Category : KeyBase
+public class Term : KeyBase
 {
     [StringLength(180)]
     public string Name { get; set; } = default!;
@@ -13,6 +14,7 @@ public class Category : KeyBase
     [StringLength(255)]
     public string? Description { get; set; } = default!;
 
-    public List<PostCategory>? PostCategories { get; set; }
-}
+    public TermType TermType { get; set; }
 
+    public List<PostTerm>? PostTerms { get; set; }
+}

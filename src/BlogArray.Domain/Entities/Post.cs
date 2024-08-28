@@ -50,5 +50,5 @@ public class Post : EntityBase
 
     public bool PendingReview { get; set; }
 
-    public virtual List<PostCategory>? Categories { get; set; }
+    public virtual List<PostTerm>? Terms { get; set; }
 }
