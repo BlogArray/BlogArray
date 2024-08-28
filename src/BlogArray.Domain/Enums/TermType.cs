@@ -3,5 +3,5 @@
 public enum TermType
 {
     Category = 0,
-    Term = 1,
+    Tag = 1,
 }
