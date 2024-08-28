@@ -32,14 +32,18 @@ Welcome to BlogArray! 🌟 Your open-source Headless CMS platform built with ASP
 
 To get started with BlogArray, follow these simple steps:
 
-1. **Clone the Repository:**
+1. **Prerequisites**: 
+   - Ensure you have .NET 8.0 SDK or later installed
+   - Install Node.js (version 14 or later) and npm
+
+2. **Clone the Repository:**
 
     ```bash
     git clone https://github.com/BlogArray/BlogArray.git
     cd BlogArray/src
     ```
 
-2. **Install Dependencies:**
+3. **Install Dependencies:**
 
     For the backend (ASP.NET Core):
 
@@ -55,7 +59,7 @@ To get started with BlogArray, follow these simple steps:
     npm install
     ```
 
-3. **Run the Application:**
+4. **Run the Application:**
 
     Start the backend server:
 
@@ -71,7 +75,7 @@ To get started with BlogArray, follow these simple steps:
     ng serve
     ```
 
-4. **Open your browser and navigate to:**
+5. **Open your browser and navigate to:**
 
     - Backend: `http://localhost:5000`
     - Frontend: `http://localhost:4200`
