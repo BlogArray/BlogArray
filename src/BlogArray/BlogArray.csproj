@@ -18,6 +18,9 @@
     <ProjectReference Include="..\BlogArray.Admin\BlogArray.Admin.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\BlogArray.Domain\BlogArray.Domain.csproj" />
+    <ProjectReference Include="..\BlogArray.Infrastructure\BlogArray.Infrastructure.csproj" />
+    <ProjectReference Include="..\BlogArray.Shared\BlogArray.Shared.csproj" />
   </ItemGroup>
 
 </Project>
