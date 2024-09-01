@@ -7,7 +7,8 @@ import { Component, ElementRef, HostListener, Input, TemplateRef } from '@angula
 })
 export class DropdownComponent {
   @Input() triggerTemplate: TemplateRef<any> | null;
-  isOpen: boolean = false;
+  @Input() dropdownContent: TemplateRef<any> | null;
+  @Input() isOpen: boolean = false;
 
   constructor(private elementRef: ElementRef) { }
 
