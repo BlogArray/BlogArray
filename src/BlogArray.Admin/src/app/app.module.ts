@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ClarityModule } from "@clr/angular";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PortalLayoutModule } from './layout/portal-layout/portal-layout.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -12,8 +12,8 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ClarityModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    PortalLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
