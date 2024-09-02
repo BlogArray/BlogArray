@@ -7,13 +7,14 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: '',
+        path: 'dashboard',
         loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'posts',
         loadChildren: () => import('./features/posts/posts.module').then(m => m.PostsModule),
       },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
     component: PortalLayoutComponent
   },

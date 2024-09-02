@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DropdownComponent } from '../../shared/ui/dropdown/dropdown.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portal-layout',
@@ -11,7 +12,7 @@ export class PortalLayoutComponent implements OnInit {
   menuItems = [
     {
       name: 'Dashboard',
-      link: '',
+      link: '/dashboard',
       icon: 'chart-pie',
       items: []
     },
@@ -20,11 +21,11 @@ export class PortalLayoutComponent implements OnInit {
       icon: 'pencil',
       items: [{
         name: 'All posts',
-        link: 'posts',
+        link: '/posts',
       },
       {
         name: 'Add new post',
-        link: 'post/new',
+        link: '/post/new',
       }]
     },
     {
@@ -32,11 +33,11 @@ export class PortalLayoutComponent implements OnInit {
       icon: 'document-duplicate',
       items: [{
         name: 'All pages',
-        link: 'pages',
+        link: '/pages',
       },
       {
         name: 'Add new page',
-        link: 'page/new',
+        link: '/page/new',
       }]
     },
     {
@@ -44,11 +45,11 @@ export class PortalLayoutComponent implements OnInit {
       icon: 'squares-plus',
       items: [{
         name: 'All categories',
-        link: 'categories',
+        link: '/categories',
       },
       {
         name: 'Add new category',
-        link: 'categories/new',
+        link: '/categories/new',
       }]
     },
     {
@@ -56,11 +57,23 @@ export class PortalLayoutComponent implements OnInit {
       icon: 'photo',
       items: [{
         name: 'Library',
-        link: 'media',
+        link: '/media',
       },
       {
         name: 'Add new media',
-        link: 'media/new',
+        link: '/media/new',
+      }]
+    },
+    {
+      name: 'Users',
+      icon: 'users',
+      items: [{
+        name: 'All users',
+        link: '/users',
+      },
+      {
+        name: 'Add new user',
+        link: '/user/new',
       }]
     },
     {
@@ -68,30 +81,44 @@ export class PortalLayoutComponent implements OnInit {
       icon: 'cog-6-tooth',
       items: [{
         name: 'General',
-        link: 'pages',
+        link: '/settings/general',
       },
       {
         name: 'Email',
-        link: 'page/new',
+        link: '/settings/email',
       },
       {
         name: 'Menus',
-        link: 'page/new',
+        link: '/settings/menus',
       },
       {
         name: 'Pages',
-        link: 'page/new',
+        link: '/settings/pages',
       },
       {
         name: 'Media',
-        link: 'page/new',
-      }]
+        link: '/settings/media',
+      },
+      {
+        name: 'Comments',
+        link: '/settings/comments',
+      }
+      ]
     },
   ];
+
+  constructor(private router: Router) {
+
+  }
 
   ngOnInit(): void {
 
   }
+
+  isSidemavOpened(path: any[]): boolean {
+    return path.some(p => p.link == this.router.url);
+  }
+
   mobileMenuOpen = false;
 
   toggleMobileMenu() {

@@ -4,12 +4,12 @@
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
                 <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
-                    aria-controls="drawer-navigation"
+                    aria-controls="drawer-navigation" (click)="toggleMobileMenu()"
                     class="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <icon name="bars-3" />
+                    <icon name="bars-3-bottom-left" />
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                <a href="https://BlogArray.com" class="flex items-center justify-between mr-4">
+                <a [routerLink]="['/']" class="flex items-center justify-between mr-4">
                     <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="BlogArray Logo" />
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">BlogArray</span>
                 </a>
@@ -56,11 +56,8 @@
             </div>
         </div>
     </nav>
-
-    <!-- Sidebar -->
-
-    <aside
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    <aside [ngClass]="{'-translate-x-full': !mobileMenuOpen}"
+        class="fixed top-0 left-0 z-40 w-full md:w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidenav" id="drawer-navigation">
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
             <ul class="space-y-2">
@@ -73,7 +70,7 @@
                         </a>
                     </div>
                     <ng-template #nestedTemp>
-                        <tw-collapse>
+                        <tw-collapse [isOpen]="isSidemavOpened(item.items)">
                             <button type="button" collapsibleTrigger
                                 class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600"
                                 aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
