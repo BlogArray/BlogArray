@@ -4,6 +4,7 @@
 </div>
 
 <!-- Dropdown Menu -->
-<div *ngIf="isOpen" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+<div *ngIf="isOpen" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+    (click)="handleDropdownClick($event)">
     <ng-container *ngTemplateOutlet="dropdownContent"></ng-container>
 </div>
