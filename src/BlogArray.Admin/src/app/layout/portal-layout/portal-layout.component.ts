@@ -11,7 +11,7 @@ export class PortalLayoutComponent implements OnInit {
   menuItems = [
     {
       name: 'Dashboard',
-      link: 'dashboard',
+      link: '',
       icon: 'chart-pie',
       items: []
     },
@@ -29,7 +29,7 @@ export class PortalLayoutComponent implements OnInit {
     },
     {
       name: 'Pages',
-      icon: 'pencil',
+      icon: 'document-duplicate',
       items: [{
         name: 'All pages',
         link: 'pages',
@@ -75,15 +75,15 @@ export class PortalLayoutComponent implements OnInit {
         link: 'page/new',
       },
       {
-        name: 'Email',
+        name: 'Menus',
         link: 'page/new',
       },
       {
-        name: 'Email',
+        name: 'Pages',
         link: 'page/new',
       },
       {
-        name: 'Email',
+        name: 'Media',
         link: 'page/new',
       }]
     },
