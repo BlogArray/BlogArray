@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, TemplateRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tw-collapse',
@@ -6,15 +6,23 @@ import { Component, ElementRef, HostListener, Input, TemplateRef } from '@angula
   styleUrl: './collapse.component.css'
 })
 export class CollapseComponent {
-  @Input() triggerTemplate: TemplateRef<any> | null;
-  @Input() contentTemplate: TemplateRef<any> | null;
   @Input() isOpen: boolean = false;
 
-  constructor(private elementRef: ElementRef) { }
+  constructor() { }
 
   // Toggles the dropdown
-  toggleDropdown() {
+  toggleCollapse() {
     this.isOpen = !this.isOpen;
+  }
+
+  // Explicitly open the dropdown
+  open() {
+    this.isOpen = true;
+  }
+
+  // Explicitly close the dropdown
+  close() {
+    this.isOpen = false;
   }
 
 }

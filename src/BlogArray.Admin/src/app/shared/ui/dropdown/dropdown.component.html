@@ -1,10 +1,10 @@
 <!-- Trigger Button -->
 <div (click)="toggleDropdown()" aria-expanded="true" aria-haspopup="true">
-    <ng-container *ngTemplateOutlet="triggerTemplate"></ng-container>
+    <ng-content select="[dropdownTrigger]"></ng-content>
 </div>
 
 <!-- Dropdown Menu -->
 <div *ngIf="isOpen" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
     (click)="handleDropdownClick($event)">
-    <ng-container *ngTemplateOutlet="dropdownContent"></ng-container>
+    <ng-content select="[dropdownContent]"></ng-content>
 </div>

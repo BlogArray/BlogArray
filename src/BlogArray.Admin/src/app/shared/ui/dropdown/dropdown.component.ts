@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, TemplateRef } from '@angular/core';
+import { Component, ElementRef, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'tw-dropdown',
@@ -6,8 +6,6 @@ import { Component, ElementRef, HostListener, Input, TemplateRef } from '@angula
   styleUrls: ['./dropdown.component.css']
 })
 export class DropdownComponent {
-  @Input() triggerTemplate: TemplateRef<any> | null;
-  @Input() dropdownContent: TemplateRef<any> | null;
   @Input() isOpen: boolean = false;
   @Input() autoClose: boolean | "inside" | "outside" = true;
 
