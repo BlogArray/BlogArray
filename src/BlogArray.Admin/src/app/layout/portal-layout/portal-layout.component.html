@@ -117,7 +117,7 @@
                 <li *ngFor="let item of menuItems">
                     <div *ngIf="item.items.length==0; else nestedTemp">
                         <a [routerLink]="[item.link]" routerLinkActive="bg-gray-100 dark:bg-gray-700"
-                            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 group">
+                            class="flex items-center p-2 text-base text-gray-900 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 group">
                             <icon [name]="item.icon" />
                             <span class="ml-3">{{item.name}}</span>
                         </a>
@@ -125,7 +125,7 @@
                     <ng-template #nestedTemp>
                         <tw-collapse [isOpen]="isSidemavOpened(item.items)">
                             <button type="button" collapsibleTrigger
-                                class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600"
+                                class="flex items-center p-2 w-full text-base text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600"
                                 aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
                                 <icon [name]="item.icon" />
                                 <span class="flex-1 ml-3 text-left whitespace-nowrap">{{item.name}}</span>
@@ -139,7 +139,7 @@
                             <ul collapsibleContent id="dropdown-pages" class="py-2 space-y-2">
                                 <li *ngFor="let subitem of item.items">
                                     <a [routerLink]="[subitem.link]" routerLinkActive="bg-gray-100 dark:bg-gray-700"
-                                        class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
+                                        class="flex items-center p-2 pl-11 w-full text-base text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-200 dark:text-white dark:hover:bg-gray-600">
                                         {{subitem.name}}
                                     </a>
                                 </li>
