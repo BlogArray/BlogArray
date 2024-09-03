@@ -2,16 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
-import { AuthComponent } from './auth.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
-  {
-    path: '', children: [
-      { path: '', component: LoginComponent },
-      { path: 'logout', component: LogoutComponent }
-    ],
-    component: AuthComponent
-  }
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
+  { path: 'forgot', component: ForgotPasswordComponent },
 ];
 
 @NgModule({

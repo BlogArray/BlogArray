@@ -79,7 +79,7 @@ export class PortalLayoutComponent implements OnInit {
       },
       {
         name: 'Add new user',
-        link: '/user/new',
+        link: '/users/new',
       }]
     },
     {

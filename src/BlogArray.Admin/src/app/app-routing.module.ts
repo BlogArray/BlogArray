@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PortalLayoutComponent } from './layout/portal-layout/portal-layout.component';
+import { LoginLayoutComponent } from './layout/login-layout/login-layout.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
+    component: LoginLayoutComponent
   },
 ];
 
