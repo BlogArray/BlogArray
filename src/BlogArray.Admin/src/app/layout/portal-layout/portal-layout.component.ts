@@ -53,6 +53,12 @@ export class PortalLayoutComponent implements OnInit {
       }]
     },
     {
+      name: 'Comments',
+      icon: 'chat-bubble-left-right',
+      link: '/comments',
+      items: []
+    },
+    {
       name: 'Media',
       icon: 'photo',
       items: [{
@@ -107,6 +113,8 @@ export class PortalLayoutComponent implements OnInit {
     },
   ];
 
+  mobileMenuOpen = false;
+
   constructor(private router: Router) {
 
   }
@@ -118,8 +126,6 @@ export class PortalLayoutComponent implements OnInit {
   isSidemavOpened(path: any[]): boolean {
     return path.some(p => p.link == this.router.url);
   }
-
-  mobileMenuOpen = false;
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
