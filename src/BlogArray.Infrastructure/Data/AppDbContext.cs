@@ -1,4 +1,5 @@
 ﻿using BlogArray.Domain.Entities;
+using BlogArray.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,35 +42,79 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        builder.Entity<Post>(e =>
+        builder.Entity<Post>(entity =>
         {
-            e.HasIndex(b => b.Slug).IsUnique();
-            e.Property(e => e.AllowComments).HasDefaultValue(true);
-            e.Property(e => e.ShowCover).HasDefaultValue(true);
-            e.Property(e => e.ShowSharingIcon).HasDefaultValue(true);
-            e.Property(e => e.ShowHeading).HasDefaultValue(true);
+            entity.HasIndex(b => b.Slug).IsUnique();
+            entity.Property(b => b.PostStatus).HasDefaultValue(PostStatus.Published);
+            entity.Property(e => e.AllowComments).HasDefaultValue(true);
+            entity.Property(e => e.ShowCover).HasDefaultValue(true);
+            entity.Property(e => e.ShowSharingIcon).HasDefaultValue(true);
+            entity.Property(e => e.ShowHeading).HasDefaultValue(true);
+            entity.Property(e => e.ShowContactPage).HasDefaultValue(false);
+            entity.Property(e => e.IsWidePage).HasDefaultValue(false);
+
+            entity.HasOne(e => e.Parent)
+                .WithMany()
+                .HasForeignKey(e => e.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(u => u.CreatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.CreatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(u => u.UpdatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.UpdatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
-        builder.Entity<Term>(e =>
+        builder.Entity<Term>(entity =>
         {
-            e.HasIndex(b => b.Slug).IsUnique();
+            entity.HasIndex(b => b.Slug).IsUnique();
         });
 
-        builder.Entity<PostTerm>(e =>
+        builder.Entity<Storage>(entity =>
         {
-            e.Property(e => e.Order).HasDefaultValue(0);
+            entity.HasIndex(b => b.Slug).IsUnique();
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
 
-            e.HasKey(t => new { t.PostId, t.TermId });
+            entity.HasOne(u => u.CreatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.CreatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
-            e.HasIndex(t => new { t.PostId, t.TermId }).IsUnique();
+        builder.Entity<PostTerm>(entity =>
+        {
+            entity.Property(e => e.Order).HasDefaultValue(0);
 
-            e.HasOne(pc => pc.Post)
+            entity.HasKey(t => new { t.PostId, t.TermId });
+
+            entity.HasIndex(t => new { t.PostId, t.TermId }).IsUnique();
+
+            entity.HasOne(pc => pc.Post)
             .WithMany(p => p.Terms)
             .HasForeignKey(pc => pc.PostId);
 
-            e.HasOne(pc => pc.Term)
+            entity.HasOne(pc => pc.Term)
             .WithMany(c => c.PostTerms)
             .HasForeignKey(pc => pc.TermId);
+        });
+
+        builder.Entity<Comment>(entity =>
+        {
+            entity.Property(e => e.Status).HasDefaultValue(CommentStatus.Published);
+
+            entity.HasOne(u => u.CreatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.CreatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(u => u.UpdatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.UpdatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         builder.Seed();

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogArray.Domain.Entities;
 
-public class Storage : EntityBase
+public class Storage : AuthorEntityBase
 {
     public bool IsDeleted { get; set; }
 

@@ -28,15 +28,17 @@ public class Post : EntityBase
 
     public PostType PostType { get; set; }
 
-    public bool IsPublished { get; set; }
+    public PostStatus PostStatus { get; set; }
 
     public DateTime? PublishedOn { get; set; }
 
+    public int? ParentId { get; set; }
+
     public bool IsFeatured { get; set; }
 
-    //public bool IsWidePage { get; set; }
+    public bool IsWidePage { get; set; }
 
-    //public bool ShowContactPage { get; set; }
+    public bool ShowContactPage { get; set; }
 
     public bool ShowHeading { get; set; }
 
@@ -48,7 +50,11 @@ public class Post : EntityBase
 
     public bool ShowCover { get; set; }
 
-    public bool PendingReview { get; set; }
+    public int CommentsCount { get; set; }
 
     public virtual List<PostTerm>? Terms { get; set; }
+
+    public virtual List<Comment>? Comments { get; set; }
+
+    public virtual Post Parent { get; set; } = default!;
 }
