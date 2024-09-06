@@ -36,7 +36,7 @@ export class ButtonDirective {
 
   private setButtonClasses() {
     // Base Tailwind CSS classes
-    let baseClasses = 'inline-flex items-center border justify-center font-medium focus:ring transition-colors duration-300 ';
+    let baseClasses = 'inline-flex items-center border justify-center font-medium focus:outline-none focus:ring transition-colors duration-300 ';
 
     // Size classes
     let sizeClasses = this.size === 'xs' ? 'px-3 py-2 text-xs font-medium' : this.size === 'sm' ? 'px-3 py-2 text-sm font-medium ' : this.size === 'lg' ? 'px-5 py-3 text-base font-medium ' : this.size === 'xl' ? 'px-6 py-3.5 text-base font-medium ' : 'px-5 py-2.5 text-sm ';
