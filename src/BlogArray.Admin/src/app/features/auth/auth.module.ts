@@ -5,6 +5,8 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ButtonModule } from '../../shared/ui/button/button.module';
+import { IconsModule } from "../../shared/ui/icons/icons.module";
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    ButtonModule,
+    IconsModule
   ]
 })
 export class AuthModule { }
