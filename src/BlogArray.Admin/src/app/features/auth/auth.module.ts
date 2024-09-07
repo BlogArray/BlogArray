@@ -7,6 +7,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ButtonModule } from '../../shared/ui/button/button.module';
 import { IconsModule } from "../../shared/ui/icons/icons.module";
+import { InputModule } from '../../shared/ui/input/input.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { IconsModule } from "../../shared/ui/icons/icons.module";
     CommonModule,
     AuthRoutingModule,
     ButtonModule,
+    InputModule,
     IconsModule
   ]
 })

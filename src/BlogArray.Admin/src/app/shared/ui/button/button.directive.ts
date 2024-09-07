@@ -4,15 +4,50 @@ import { Directive, ElementRef, HostBinding, Input, SimpleChanges } from '@angul
   selector: '[tw-button]'
 })
 export class ButtonDirective {
-  // Existing inputs
+  /**
+   * The variant of the button. Possible values are:
+   * 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', and 'dark'.
+   * Default is 'primary'.
+   */
   @Input() variant: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' = 'primary';
+
+  /**
+   * The size of the button. Possible values are:
+   * 'xs' for extra small, 'sm' for small, 'md' for medium, 'lg' for large, and 'xl' for extra large.
+   * Default is 'md'.
+   */
   @Input() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md';
+
+  /**
+  * If true, the button will be displayed as a block element (full-width).
+  * Default is false.
+  */
   @Input() block: boolean = false;
+
+  /**
+  * Whether the button is disabled. When true, the button is not clickable.
+  * Default is false.
+  */
   @Input() disabled: boolean = false;
+
+  /**
+   * If true, the button will have an outlined style.
+   * Default is false.
+   */
   @Input() outlined: boolean = false;
+
+  /**
+   * If true, the button will have fully rounded corners.
+   * Default is false.
+   */
   @Input() rounded: boolean = false;
 
   @HostBinding('class') buttonClasses: string = '';
+
+  /**
+   * Applies the 'disabled' attribute to the button element when either the 'disabled' or 'loading' input is true.
+   * This makes the button inaccessible when it is disabled or loading.
+   */
   @HostBinding('attr.disabled') get isDisabled() {
     return this.disabled ? true : null;
   }
@@ -54,7 +89,7 @@ export class ButtonDirective {
         dark: 'text-gray-900 hover:text-white border-gray-800 hover:bg-gray-900 focus:ring-gray-300 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800'
       }
       : {
-        primary: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
+        primary: 'text-white bg-blue-700 border-blue-600 hover:bg-blue-800 focus:ring-blue-300 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
         secondary: 'text-gray-900 bg-white border-gray-200 hover:bg-gray-100 me-2 mb-2 hover:text-blue-700 focus:z-10 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700',
         success: 'text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800',
         danger: 'text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900',
