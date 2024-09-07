@@ -8,6 +8,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ButtonModule } from '../../shared/ui/button/button.module';
 import { IconsModule } from "../../shared/ui/icons/icons.module";
 import { InputModule } from '../../shared/ui/input/input.module';
+import { TwFormModule } from '../../shared/ui/form/form.module';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { InputModule } from '../../shared/ui/input/input.module';
     AuthRoutingModule,
     ButtonModule,
     InputModule,
-    IconsModule
+    IconsModule,
+    TwFormModule
   ]
 })
 export class AuthModule { }

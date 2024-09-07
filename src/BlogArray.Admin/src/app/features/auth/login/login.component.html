@@ -2,15 +2,15 @@
     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
         Sign in to your account
     </h1>
-    <form class="space-y-4 md:space-y-6" action="#">
+    <form tw-form>
         <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label for="email" tw-form-label>
                 Your email
             </label>
             <input type="email" name="email" id="email" tw-input placeholder=" name@company.com" required="">
         </div>
         <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+            <label for="password" tw-form-label>Password</label>
             <input tw-input type="password" name="password" id="password" placeholder="••••••••" required="">
         </div>
         <div class="flex items-center justify-between">
