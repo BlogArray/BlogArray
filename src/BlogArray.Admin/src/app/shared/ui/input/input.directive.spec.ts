@@ -1,8 +1,8 @@
-import { InputDirective } from './input.directive';
+import { TwInputDirective } from './input.directive';
 
-describe('InputDirective', () => {
+describe('TwInputDirective', () => {
   it('should create an instance', () => {
-    const directive = new InputDirective();
+    const directive = new TwInputDirective();
     expect(directive).toBeTruthy();
   });
 });

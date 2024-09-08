@@ -1,8 +1,8 @@
-import { ButtonDirective } from './button.directive';
+import { TwButtonDirective } from './button.directive';
 
-describe('ButtonDirective', () => {
+describe('TwButtonDirective', () => {
   it('should create an instance', () => {
-    const directive = new ButtonDirective();
+    const directive = new TwButtonDirective();
     expect(directive).toBeTruthy();
   });
 });

@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './collapse.component.html',
   styleUrl: './collapse.component.css'
 })
-export class CollapseComponent {
+export class TwCollapseComponent {
   @Input() isOpen: boolean = false;
 
   constructor() { }

@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { InputDirective } from './input.directive';
+import { TwInputDirective } from './input.directive';
 
 
 
 @NgModule({
   declarations: [
-    InputDirective
-  ],
-  imports: [
-    CommonModule
-  ], exports: [InputDirective]
+    TwInputDirective
+  ], exports: [TwInputDirective]
 })
-export class InputModule { }
+export class TwInputModule { }

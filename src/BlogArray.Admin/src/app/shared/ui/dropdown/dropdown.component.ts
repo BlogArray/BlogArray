@@ -5,7 +5,7 @@ import { Component, ElementRef, HostListener, Input } from '@angular/core';
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css']
 })
-export class DropdownComponent {
+export class TwDropdownComponent {
   @Input() isOpen: boolean = false;
   @Input() autoClose: boolean | "inside" | "outside" = true;
 

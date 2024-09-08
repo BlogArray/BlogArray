@@ -3,7 +3,7 @@ import { Directive, HostBinding } from '@angular/core';
 @Directive({
   selector: '[tw-form-label]'
 })
-export class FormLabelDirective {
+export class TwFormLabelDirective {
 
   @HostBinding('class') buttonClasses: string = '';
 

@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ButtonDirective } from './button.directive';
+import { TwButtonDirective } from './button.directive';
 
 
 
 @NgModule({
   declarations: [
-    ButtonDirective
-  ],
-  imports: [
-    CommonModule
+    TwButtonDirective
   ], exports: [
-    ButtonDirective
+    TwButtonDirective
   ]
 })
-export class ButtonModule { }
+export class TwButtonModule { }

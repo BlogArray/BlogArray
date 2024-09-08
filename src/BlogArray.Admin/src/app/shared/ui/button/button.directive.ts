@@ -3,7 +3,7 @@ import { Directive, ElementRef, HostBinding, Input, SimpleChanges } from '@angul
 @Directive({
   selector: '[tw-button]'
 })
-export class ButtonDirective {
+export class TwButtonDirective {
   /**
    * The variant of the button. Possible values are:
    * 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', and 'dark'.

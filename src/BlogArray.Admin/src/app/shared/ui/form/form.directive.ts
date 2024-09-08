@@ -3,7 +3,7 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
 @Directive({
   selector: '[tw-form]'
 })
-export class FormDirective {
+export class TwFormDirective {
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 

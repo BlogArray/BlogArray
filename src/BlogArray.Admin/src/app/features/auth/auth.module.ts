@@ -5,9 +5,9 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ButtonModule } from '../../shared/ui/button/button.module';
+import { TwButtonModule } from '../../shared/ui/button/button.module';
 import { IconsModule } from "../../shared/ui/icons/icons.module";
-import { InputModule } from '../../shared/ui/input/input.module';
+import { TwInputModule } from '../../shared/ui/input/input.module';
 import { TwFormModule } from '../../shared/ui/form/form.module';
 
 
@@ -20,8 +20,8 @@ import { TwFormModule } from '../../shared/ui/form/form.module';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ButtonModule,
-    InputModule,
+    TwButtonModule,
+    TwInputModule,
     IconsModule,
     TwFormModule
   ]

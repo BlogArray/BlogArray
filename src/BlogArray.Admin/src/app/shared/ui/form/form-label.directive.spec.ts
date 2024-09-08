@@ -1,8 +1,8 @@
-import { FormLabelDirective } from './form-label.directive';
+import { TwFormLabelDirective } from './form-label.directive';
 
-describe('FormLabelDirective', () => {
+describe('TwFormLabelDirective', () => {
   it('should create an instance', () => {
-    const directive = new FormLabelDirective();
+    const directive = new TwFormLabelDirective();
     expect(directive).toBeTruthy();
   });
 });

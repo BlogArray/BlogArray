@@ -1,19 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormDirective } from './form.directive';
-import { FormLabelDirective } from './form-label.directive';
+import { TwFormDirective } from './form.directive';
+import { TwFormLabelDirective } from './form-label.directive';
 
 
 @NgModule({
   declarations: [
-    FormDirective,
-    FormLabelDirective,
-  ],
-  imports: [
-    CommonModule
+    TwFormDirective,
+    TwFormLabelDirective,
   ], exports: [
-    FormDirective,
-    FormLabelDirective,
+    TwFormDirective,
+    TwFormLabelDirective,
   ]
 })
 export class TwFormModule { }

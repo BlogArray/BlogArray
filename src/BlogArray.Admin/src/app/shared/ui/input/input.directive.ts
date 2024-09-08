@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostBinding, Input, Renderer2, SimpleChanges } f
 /**
  * Directive selector to be used as an attribute on input elements
  */
-export class InputDirective {
+export class TwInputDirective {
   /**
      * @Input() size: 'sm' | 'md' | 'lg'
      * Defines the size of the input. The default size is 'md' (medium). 

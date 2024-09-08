@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortalLayoutComponent } from './portal-layout.component';
-import { DropdownModule } from '../../shared/ui/dropdown/dropdown.module';
-import { CollapseModule } from '../../shared/ui/collapse/collapse.module';
+import { TwDropdownModule } from '../../shared/ui/dropdown/dropdown.module';
+import { TwCollapseModule } from '../../shared/ui/collapse/collapse.module';
 import { IconsModule } from '../../shared/ui/icons/icons.module';
 import { RouterModule } from '@angular/router';
 
@@ -13,8 +13,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
-    DropdownModule,
-    CollapseModule,
+    TwDropdownModule,
+    TwCollapseModule,
     IconsModule
   ]
 })
