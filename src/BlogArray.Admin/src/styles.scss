@@ -1,0 +1,20 @@
+// Import required Bootstrap's SCSS files before overriding
+
+// Override Bootstrap default color variables
+$primary: #1a56db; // Replace with your custom primary color
+$secondary: #6c757d; // Replace with your custom secondary color
+$success: #046c4e; // Replace with your custom success color
+$danger: #c81e1e; // Replace with your custom error/danger color
+$warning: #e3a008; // Replace with your custom warning color
+$info: #17a2b8; // Replace with your custom info color
+$light: #f8f9fa; // Customize if needed
+$dark: #343a40; // Customize if needed
+
+$border-radius: 0.5rem;
+
+// You can also change background colors
+$body-bg: #ffffff; // Background for the whole body
+$background-color: #f0f0f0; // Some general background color
+
+// Import rest of Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
