@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-portal-layout',
   templateUrl: './portal-layout.component.html',
-  styleUrl: './portal-layout.component.css'
+  styleUrl: './portal-layout.component.scss'
 })
 export class PortalLayoutComponent implements OnInit {
 

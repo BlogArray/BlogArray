@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'tw-collapse',
   templateUrl: './collapse.component.html',
-  styleUrl: './collapse.component.css'
+  styleUrl: './collapse.component.scss'
 })
 export class TwCollapseComponent {
   @Input() isOpen: boolean = false;

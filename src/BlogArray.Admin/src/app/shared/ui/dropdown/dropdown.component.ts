@@ -3,7 +3,7 @@ import { Component, ElementRef, HostListener, Input } from '@angular/core';
 @Component({
   selector: 'tw-dropdown',
   templateUrl: './dropdown.component.html',
-  styleUrls: ['./dropdown.component.css']
+  styleUrls: ['./dropdown.component.scss']
 })
 export class TwDropdownComponent {
   @Input() isOpen: boolean = false;
