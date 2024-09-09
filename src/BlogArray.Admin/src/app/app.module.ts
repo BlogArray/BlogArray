@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PortalLayoutModule } from './layout/portal-layout/portal-layout.module';
 import { LoginLayoutModule } from './layout/login-layout/login-layout.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,8 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     BrowserAnimationsModule,
     PortalLayoutModule,
-    LoginLayoutModule,
-    NgbModule,
+    LoginLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
