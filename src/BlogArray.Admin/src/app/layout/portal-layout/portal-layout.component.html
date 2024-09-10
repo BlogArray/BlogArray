@@ -1,6 +1,6 @@
 <div class="antialiased bg-gray-50 dark:bg-gray-900">
     <nav
-        class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+        class="bg-white border-b border-gray-200 px-1 md:px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
         <div class="flex flex-wrap justify-between items-center">
             <div class="flex justify-start items-center">
                 <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
@@ -12,7 +12,8 @@
                 </button>
                 <a [routerLink]="['/']" class="flex items-center justify-between mr-4">
                     <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="BlogArray Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">BlogArray</span>
+                    <span
+                        class="self-center text-2xl hidden md:block font-semibold whitespace-nowrap dark:text-white">BlogArray</span>
                 </a>
             </div>
             <div class="flex items-center lg:order-2">
