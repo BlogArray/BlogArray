@@ -3,18 +3,15 @@ import { Directive, ElementRef, HostBinding, Input, Renderer2, SimpleChanges } f
 @Directive({
   selector: '[tw-input]'
 })
-/**
- * Directive selector to be used as an attribute on input elements
- */
 export class TwInputDirective {
   /**
-     * @Input() size: 'sm' | 'md' | 'lg'
-     * Defines the size of the input. The default size is 'md' (medium). 
-     * Available options:
-     * - 'sm' : Small input
-     * - 'md' : Medium input (default)
-     * - 'lg' : Large input
-     */
+   * @Input() size: 'sm' | 'md' | 'lg'
+   * Defines the size of the input. The default size is 'md' (medium). 
+   * Available options:
+   * - 'sm' : Small input
+   * - 'md' : Medium input (default)
+   * - 'lg' : Large input
+   */
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   /**
@@ -30,10 +27,17 @@ export class TwInputDirective {
   @Input() readonly: boolean = false;
 
   /**
-   * @HostBinding('class') inputClass: string
-   * Dynamically binds a string of classes to the input element based on the size, disabled, and readonly properties.
-   * This allows Tailwind CSS classes to be applied to the input element.
+   * @Input() valid: boolean
+   * Indicates whether the input is valid. If true, applies valid styles.
    */
+  @Input() valid: boolean = false;
+
+  /**
+   * @Input() error: boolean
+   * Indicates whether there is an error with the input. If true, applies error styles.
+   */
+  @Input() error: boolean = false;
+
   @HostBinding('class') inputClass = '';
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
@@ -53,31 +57,36 @@ export class TwInputDirective {
     this.setInputClasses();
   }
 
-  /**
-   * setInputClasses
-   * A private method that constructs the necessary Tailwind CSS classes based on the size, disabled, and readonly inputs.
-   * The resulting classes are assigned to the `inputClass` variable, which is then applied to the host element.
-   */
   private setInputClasses() {
-    // Reset the class attribute before adding new ones
-    let baseClasses = 'block w-full text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-300 focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-300';
+    // Base Tailwind classes for the input
+    let baseClasses = 'block w-full text-sm rounded-lg p-2.5 focus:outline-none';
 
-    // Apply size classes
+    // Size-based classes
     const sizeClasses = {
       sm: 'px-2 py-1 text-sm',
       md: 'px-3 py-2 text-base',
       lg: 'px-4 py-3 text-lg'
     };
 
-    // Apply disabled and readonly styles
+    // State-based classes
     const stateClasses = this.disabled
       ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
       : this.readonly
         ? 'bg-gray-100 text-gray-700 cursor-not-allowed'
         : 'bg-white text-gray-900';
 
-    // Combine all classes
-    this.inputClass = `${baseClasses} ${sizeClasses[this.size]} ${stateClasses}`;
+    // Default focus and border styles
+    let borderClasses = 'border border-gray-300 focus:ring focus:ring-blue-300 focus:border-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-300 dark:focus:border-blue-300';
+
+    // Apply valid or error styles if applicable
+    if (this.valid) {
+      borderClasses = 'bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 focus:ring focus:ring-green-300 focus:border-green-300 dark:bg-gray-700 dark:border-green-300';
+    } else if (this.error) {
+      borderClasses = 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring focus:ring-red-300 focus:border-red-300 dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500 dark:border-red-300';
+    }
+
+    // Combine all the classes
+    this.inputClass = `${baseClasses} ${sizeClasses[this.size]} ${stateClasses} ${borderClasses}`;
 
     // Set the disabled/readonly attributes as well
     this.setAttributes();
@@ -89,14 +98,12 @@ export class TwInputDirective {
    * It ensures that the input behaves as expected based on the values of the disabled and readonly inputs.
    */
   private setAttributes() {
-    // Set disabled attribute if applicable
     if (this.disabled) {
       this.renderer.setAttribute(this.el.nativeElement, 'disabled', 'true');
     } else {
       this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
     }
 
-    // Set readonly attribute if applicable
     if (this.readonly) {
       this.renderer.setAttribute(this.el.nativeElement, 'readonly', 'true');
     } else {

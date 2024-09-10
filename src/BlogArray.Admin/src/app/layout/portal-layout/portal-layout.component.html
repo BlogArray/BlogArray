@@ -16,6 +16,14 @@
                 </a>
             </div>
             <div class="flex items-center lg:order-2">
+                <!-- Theme Toggle Button -->
+                <button (click)="toggleTheme()"
+                    [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+                    [attr.aria-pressed]="isDarkMode"
+                    [title]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+                    class="flex items-center justify-center dark:text-white focus:ring focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 focus:outline-none dark:focus:ring-blue-800">
+                    <icon [name]="isDarkMode ? 'sun' : 'moon'"></icon>
+                </button>
                 <div class="relative">
                     <tw-dropdown>
                         <button type="button" dropdownTrigger

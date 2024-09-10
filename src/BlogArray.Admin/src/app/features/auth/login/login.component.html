@@ -2,16 +2,18 @@
     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
         Sign in to your account
     </h1>
-    <form tw-form>
+    <form tw-form action="#">
         <div>
-            <label for="email" tw-form-label>
+            <label for="email" tw-form-label [required]="true">
                 Your email
             </label>
-            <input type="email" name="email" id="email" tw-input placeholder=" name@company.com" required="">
+            <input tw-input type="email" name="email" id="email" placeholder=" name@company.com" required>
         </div>
         <div>
-            <label for="password" tw-form-label>Password</label>
-            <input tw-input type="password" name="password" id="password" placeholder="••••••••" required="">
+            <label for="password" tw-form-label [required]="true">
+                Password
+            </label>
+            <input tw-input type="password" name="password" id="password" placeholder="Password" required>
         </div>
         <div class="flex items-center justify-between">
             <a [routerLink]="['/auth', 'forgot']"

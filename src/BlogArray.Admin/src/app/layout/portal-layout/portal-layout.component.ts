@@ -113,13 +113,19 @@ export class PortalLayoutComponent implements OnInit {
   ];
 
   mobileMenuOpen = false;
-
-  constructor(private router: Router) {
-
-  }
+  isDarkMode = false;
 
   ngOnInit(): void {
 
+  }
+
+  constructor(private router: Router) {
+    // On initial load, check if the user has a theme preference in localStorage
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      this.isDarkMode = true;
+      this.setDarkTheme(true);
+    }
   }
 
   isSidemavOpened(path: any[]): boolean {
@@ -128,5 +134,26 @@ export class PortalLayoutComponent implements OnInit {
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.setDarkTheme(this.isDarkMode);
+    // Save the user's theme preference
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  setDarkTheme(isDark: boolean) {
+    const htmlTag = document.documentElement;
+
+    if (isDark) {
+      htmlTag.classList.add('dark');
+    } else {
+      htmlTag.classList.remove('dark');
+    }
+  }
+
+  isDarkTheme() {
+    return this.isDarkMode;
   }
 }
