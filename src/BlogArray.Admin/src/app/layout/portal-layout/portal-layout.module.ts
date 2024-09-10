@@ -5,6 +5,7 @@ import { TwDropdownModule } from '../../shared/ui/dropdown/dropdown.module';
 import { TwCollapseModule } from '../../shared/ui/collapse/collapse.module';
 import { IconsModule } from '../../shared/ui/icons/icons.module';
 import { RouterModule } from '@angular/router';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     TwDropdownModule,
     TwCollapseModule,
-    IconsModule
+    IconsModule,
+    NgbDropdownModule
   ]
 })
 export class PortalLayoutModule { }

@@ -20,3 +20,7 @@ $background-color: #f0f0f0; // Some general background color
 @import "../node_modules/bootstrap/scss/bootstrap";
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+.dropdown-toggle.no-toggle::after {
+    display: none !important;
+}
