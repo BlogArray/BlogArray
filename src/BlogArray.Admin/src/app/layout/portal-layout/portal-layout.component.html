@@ -1,119 +1,12 @@
-<div class="bg-body-tertiary">
-    <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" [routerLink]="['/']">
-                <img src="https://flowbite.s3.amazonaws.com/logo.svg" alt="Logo" width="30" height="24"
-                    class="d-inline-block align-text-top">
-                BlogArray
-            </a>
-            <div class="text-end d-flex">
-                <div class="dropdown me-2" ngbDropdown display="dynamic" placement="bottom-end">
-                    <button class="btn btn-primary no-toggle" ngbDropdownToggle>
-                        <div class="d-flex">
-                            <i class="bi bi-plus"></i>
-                            <span class="d-none d-md-block">Add new</span>
-                        </div>
-                    </button>
-                    <ul ngbDropdownMenu class="dropdown-menu shadow">
-                        <a ngbDropdownItem href="#"><i class="bi bi-pencil me-2"></i> Post</a>
-                        <a ngbDropdownItem href="#"><i class="bi bi-files me-2"></i> Page</a>
-                        <a ngbDropdownItem href="#"><i class="bi bi-collection me-2"></i> Category</a>
-                        <a ngbDropdownItem href="#"><i class="bi bi-image me-2"></i> Media</a>
-                        <a ngbDropdownItem href="#"><i class="bi bi-person me-2"></i> User</a>
-                    </ul>
-                </div>
-                <div class="dropdown" ngbDropdown display="dynamic" placement="bottom-end">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none no-toggle" ngbDropdownToggle>
-                        <img src="https://github.com/mdo.png" alt="mdo" width="36" height="36" class="rounded-circle">
-                    </a>
-                    <ul ngbDropdownMenu class="dropdown-menu shadow">
-                        <a ngbDropdownItem href="#">Profile</a>
-                        <div class="dropdown-divider"></div>
-                        <a ngbDropdownItem href="#">Sign out</a>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+<div class="bg-body-tertiary app-layout">
+    <portal-header></portal-header>
 
-    <aside class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#home"></use>
-                    </svg>
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2"></use>
-                    </svg>
-                    Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#table"></use>
-                    </svg>
-                    Orders
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#grid"></use>
-                    </svg>
-                    Products
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle"></use>
-                    </svg>
-                    Customers
-                </a>
-            </li>
-        </ul>
-    </aside>
-
-    <main class="p-4 md:ml-64 h-auto pt-20">
+    <main class="app-main d-flex flex-nowrap">
+        <portal-sidenav></portal-sidenav>
         <div class="flex flex-col min-h-screen">
-            <!-- Main content -->
-            <div class="flex-grow">
-                <!-- Your page content here -->
-                <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-        </div>
-        <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-        </div>
-        <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-        <div class="grid grid-cols-2 gap-4">
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-        </div> -->
-
+            <div class="app-body container-fluid mt-2">
                 <router-outlet></router-outlet>
             </div>
-
-            <!-- Footer -->
             <footer class="p-2">
                 <div class="container mx-auto text-center text-gray-500 dark:text-gray-400">
                     Thanks for using <a href="https://github.com/BlogArray/BlogArray" target="_blank"

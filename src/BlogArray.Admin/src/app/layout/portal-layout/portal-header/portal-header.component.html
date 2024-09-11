@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg fixed-top bg-body app-navbar">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" [routerLink]="['/']">
+            <img src="https://flowbite.s3.amazonaws.com/logo.svg" alt="Logo" width="30" height="24"
+                class="d-inline-block align-text-top">
+            BlogArray
+        </a>
+        <div class="text-end d-flex">
+            <div class="dropdown me-2" ngbDropdown display="dynamic" placement="bottom-end">
+                <button class="btn btn-primary no-toggle" ngbDropdownToggle>
+                    <div class="d-flex">
+                        <i class="bi bi-plus"></i>
+                        <span class="d-none d-md-block">Add new</span>
+                    </div>
+                </button>
+                <ul ngbDropdownMenu class="dropdown-menu shadow">
+                    <a ngbDropdownItem href="#"><i class="bi bi-pencil me-2"></i> Post</a>
+                    <a ngbDropdownItem href="#"><i class="bi bi-files me-2"></i> Page</a>
+                    <a ngbDropdownItem href="#"><i class="bi bi-collection me-2"></i> Category</a>
+                    <a ngbDropdownItem href="#"><i class="bi bi-image me-2"></i> Media</a>
+                    <a ngbDropdownItem href="#"><i class="bi bi-person me-2"></i> User</a>
+                </ul>
+            </div>
+            <div class="dropdown" ngbDropdown display="dynamic" placement="bottom-end">
+                <a href="#" class="d-block link-body-emphasis text-decoration-none no-toggle" ngbDropdownToggle>
+                    <img src="https://github.com/mdo.png" alt="mdo" width="36" height="36" class="rounded-circle">
+                </a>
+                <ul ngbDropdownMenu class="dropdown-menu shadow">
+                    <a ngbDropdownItem href="#">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a ngbDropdownItem href="#">Sign out</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
