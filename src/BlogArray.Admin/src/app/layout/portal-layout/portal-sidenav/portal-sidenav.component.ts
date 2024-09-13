@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'portal-sidenav',
@@ -11,7 +12,7 @@ export class PortalSidenavComponent {
     {
       name: 'Dashboard',
       link: '/dashboard',
-      icon: 'chart-pie',
+      icon: 'speedometer2',
       items: []
     },
     {
@@ -28,7 +29,7 @@ export class PortalSidenavComponent {
     },
     {
       name: 'Pages',
-      icon: 'document-duplicate',
+      icon: 'files',
       items: [{
         name: 'All pages',
         link: '/pages',
@@ -40,7 +41,7 @@ export class PortalSidenavComponent {
     },
     {
       name: 'Categories',
-      icon: 'squares-plus',
+      icon: 'grid',
       items: [{
         name: 'All categories',
         link: '/categories',
@@ -52,13 +53,13 @@ export class PortalSidenavComponent {
     },
     {
       name: 'Comments',
-      icon: 'chat-bubble-left-right',
+      icon: 'chat-left-text',
       link: '/comments',
       items: []
     },
     {
       name: 'Media',
-      icon: 'photo',
+      icon: 'image',
       items: [{
         name: 'Library',
         link: '/media',
@@ -70,7 +71,7 @@ export class PortalSidenavComponent {
     },
     {
       name: 'Users',
-      icon: 'users',
+      icon: 'people',
       items: [{
         name: 'All users',
         link: '/users',
@@ -82,7 +83,7 @@ export class PortalSidenavComponent {
     },
     {
       name: 'Settings',
-      icon: 'cog-6-tooth',
+      icon: 'gear',
       items: [{
         name: 'General',
         link: '/settings/general',
@@ -111,4 +112,11 @@ export class PortalSidenavComponent {
     },
   ];
 
+  constructor(private router: Router) {
+
+  }
+
+  isSidemavOpened(path: any[]): boolean {
+    return path.some(p => p.link == this.router.url);
+  }
 }

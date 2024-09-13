@@ -38,10 +38,12 @@ $background-color: #f0f0f0; // Some general background color
 
         .app-sidenav {
             width: 0px;
+            display: none !important;
         }
 
         .app-sidenav.open {
             width: 280px;
+            display: block !important;
         }
 
         .app-body {

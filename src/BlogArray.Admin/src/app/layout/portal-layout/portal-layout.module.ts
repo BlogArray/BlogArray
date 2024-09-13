@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { PortalHeaderComponent } from './portal-header/portal-header.component';
 import { PortalSidenavComponent } from './portal-sidenav/portal-sidenav.component';
+import { TwCollapseModule } from '../../shared/ui/collapse/collapse.module';
 
 
 
@@ -13,7 +14,8 @@ import { PortalSidenavComponent } from './portal-sidenav/portal-sidenav.componen
   imports: [
     CommonModule,
     RouterModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    TwCollapseModule
   ]
 })
 export class PortalLayoutModule { }

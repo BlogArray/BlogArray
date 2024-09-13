@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portal-layout',
@@ -15,7 +14,7 @@ export class PortalLayoutComponent implements OnInit {
 
   }
 
-  constructor(private router: Router) {
+  constructor() {
     // On initial load, check if the user has a theme preference in localStorage
     const theme = localStorage.getItem('theme');
     if (theme === 'dark') {
@@ -24,9 +23,6 @@ export class PortalLayoutComponent implements OnInit {
     }
   }
 
-  isSidemavOpened(path: any[]): boolean {
-    return path.some(p => p.link == this.router.url);
-  }
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
