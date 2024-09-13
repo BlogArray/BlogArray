@@ -36,14 +36,18 @@ $background-color: #f0f0f0; // Some general background color
 
         .app-sidenav {
             height: 100%;
-            width: 0px;
+            height: 0;
             display: none;
             position: fixed;
             overflow: auto;
+            transition: all;
+            transition-duration: .25s;
+            padding-bottom: 5rem !important;
         }
 
         &.open {
             .app-sidenav {
+                height: 100%;
                 width: 100%;
                 opacity: 100 !important;
                 display: block !important;
@@ -64,6 +68,7 @@ $background-color: #f0f0f0; // Some general background color
     .app-sidenav {
         width: 280px !important;
         display: block !important;
+        height: 100% !important;
     }
 
     .app-container {
@@ -75,6 +80,7 @@ $background-color: #f0f0f0; // Some general background color
     .app-layout {
         .app-sidenav {
             opacity: 0 !important;
+            width: 100%;
         }
     }
 }
