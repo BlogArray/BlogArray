@@ -16,8 +16,6 @@ $border-radius: 0.5rem;
 $body-bg: #ffffff; // Background for the whole body
 $background-color: #f0f0f0; // Some general background color
 
-// Import rest of Bootstrap
-@import "../node_modules/bootstrap/scss/bootstrap";
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
@@ -37,21 +35,62 @@ $background-color: #f0f0f0; // Some general background color
         margin-top: 56px;
 
         .app-sidenav {
+            height: 100%;
             width: 0px;
-            display: none !important;
+            display: none;
+            position: fixed;
+            overflow: auto;
         }
 
-        .app-sidenav.open {
-            width: 280px;
-            display: block !important;
+        &.open {
+            .app-sidenav {
+                width: 100%;
+                opacity: 100 !important;
+                display: block !important;
+            }
         }
 
-        .app-body {
-            width: 100%;
+        .app-container {
+            margin-left: 0;
         }
     }
 }
 
-.height-50 {
+.h-full {
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .app-sidenav {
+        width: 280px !important;
+        display: block !important;
+    }
+
+    .app-container {
+        margin-left: 280px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .app-layout {
+        .app-sidenav {
+            opacity: 0 !important;
+        }
+    }
+}
+
+.height-50p {
     height: 50px;
+}
+
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+.pl-11 {
+    padding-left: 2.75rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

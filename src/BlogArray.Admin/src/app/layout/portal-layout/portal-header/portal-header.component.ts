@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'portal-header',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './portal-header.component.scss'
 })
 export class PortalHeaderComponent {
+  mobileMenuOpen = false;
+  @Output() togleSidebar = new EventEmitter<boolean>();
 
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    this.togleSidebar.emit(this.mobileMenuOpen);
+  }
 }

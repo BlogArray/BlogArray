@@ -1,14 +1,13 @@
-<div class="bg-body-tertiary app-layout">
-    <portal-header></portal-header>
-
-    <main class="app-main d-flex flex-nowrap">
+<div class="bg-body-secondary app-layout">
+    <portal-header (togleSidebar)="toggleMobileMenu($event)"></portal-header>
+    <main class="app-main" [class.open]="mobileMenuOpen">
         <portal-sidenav></portal-sidenav>
-        <div class="flex flex-col min-h-screen">
-            <div class="app-body container-fluid mt-2">
+        <div class="d-flex flex-column app-container">
+            <div class="app-body container-fluid mt-2 h-full">
                 <router-outlet></router-outlet>
             </div>
             <footer class="p-2">
-                <div class="container mx-auto text-center text-gray-500 dark:text-gray-400">
+                <div class="mx-auto text-center">
                     Thanks for using <a href="https://github.com/BlogArray/BlogArray" target="_blank"
                         class="text-blue-600 dark:text-blue-500 hover:underline">BlogArray</a>
                 </div>

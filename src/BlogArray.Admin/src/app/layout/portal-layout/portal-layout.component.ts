@@ -23,9 +23,8 @@ export class PortalLayoutComponent implements OnInit {
     }
   }
 
-
-  toggleMobileMenu() {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
+  toggleMobileMenu(e: boolean) {
+    this.mobileMenuOpen = e;
   }
 
   toggleTheme() {

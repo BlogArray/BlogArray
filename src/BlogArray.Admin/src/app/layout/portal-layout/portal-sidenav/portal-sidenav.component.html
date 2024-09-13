@@ -1,22 +1,23 @@
-<aside class="d-flex flex-column flex-shrink-0 p-3 bg-body app-sidenav open">
+<aside class="d-flex flex-column flex-shrink-0 p-3 bg-body app-sidenav border-end">
     <ul class="nav nav-pills flex-column mb-auto">
-        <li *ngFor="let item of menuItems" class="nav-item">
-            <a [routerLink]="[item.link]" routerLinkActive="active" class="nav-link"
+        <li *ngFor="let item of menuItems" class="nav-item py-1">
+            <a [routerLink]="[item.link]" routerLinkActive="bg-body-secondary" class="nav-link text-body-emphasis"
                 *ngIf="item.items.length==0; else nestedTemp">
                 <i class="bi bi-{{item.icon}} me-2"></i>
                 <span class="ml-3">{{item.name}}</span>
             </a>
             <ng-template #nestedTemp>
                 <tw-collapse [isOpen]="isSidemavOpened(item.items)">
-                    <button type="button" collapsibleTrigger class="flex items-center nav-link"
+                    <button type="button" collapsibleTrigger class="d-flex nav-link w-100 text-body-emphasis"
                         aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
                         <i class="bi bi-{{item.icon}} me-2"></i>
-                        <span class="flex-1 ml-3 text-left whitespace-nowrap">{{item.name}}</span>
+                        <span class="flex-1 ml-3 text-start">{{item.name}}</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
-                    <ul collapsibleContent id="dropdown-pages" class="py-2 space-y-2 nav nav-pills flex-column mb-auto">
-                        <li *ngFor="let subitem of item.items">
-                            <a [routerLink]="[subitem.link]" routerLinkActive="active" class="nav-link">
+                    <ul collapsibleContent id="dropdown-pages" class="py-2 nav nav-pills flex-column mb-auto">
+                        <li *ngFor="let subitem of item.items" class="nav-item py-1">
+                            <a [routerLink]="[subitem.link]" routerLinkActive="bg-body-secondary"
+                                class="nav-link pl-11 text-body-emphasis">
                                 {{subitem.name}}
                             </a>
                         </li>
