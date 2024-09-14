@@ -1,5 +1,5 @@
 <aside class="d-flex flex-column flex-shrink-0 p-3 bg-body app-sidenav border-end z-1">
-    <ul class="nav nav-pills flex-column mb-auto">
+    <ul class="nav nav-pills flex-column mb-auto hoverable-bg">
         <li *ngFor="let item of menuItems" class="nav-item py-1">
             <a [routerLink]="[item.link]" routerLinkActive="bg-body-secondary" class="nav-link text-body-emphasis"
                 *ngIf="item.items.length==0; else nestedTemp">

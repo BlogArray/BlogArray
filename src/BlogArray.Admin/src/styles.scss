@@ -100,3 +100,10 @@ $background-color: #f0f0f0; // Some general background color
 .cursor-pointer {
     cursor: pointer;
 }
+
+.hoverable-bg {
+    .nav-item .nav-link:hover {
+        --bs-bg-opacity: 1;
+        background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
+    }
+}
