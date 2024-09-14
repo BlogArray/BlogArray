@@ -9,7 +9,7 @@
                 class="d-inline-block align-text-top">
             BlogArray
         </a>
-        <div class="text-end d-flex">
+        <div class="text-end d-flex align-items-center">
             <div class="dropdown me-2" ngbDropdown display="dynamic" placement="bottom-end">
                 <button class="btn btn-primary no-toggle" ngbDropdownToggle>
                     <div class="d-flex">
@@ -30,8 +30,15 @@
                     <img src="https://github.com/mdo.png" alt="mdo" width="36" height="36" class="rounded-circle">
                 </a>
                 <ul ngbDropdownMenu class="dropdown-menu shadow">
-                    <a ngbDropdownItem href="#">Profile</a>
+                    <a href="#" ngbDropdownItem class="d-flex align-items-center gap-2 lh-sm text-start">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="36" height="36" class="rounded-circle">
+                        <div>
+                            <strong class="d-block">Username</strong>
+                            <small>email&and;mail.com</small>
+                        </div>
+                    </a>
                     <div class="dropdown-divider"></div>
+                    <a ngbDropdownItem href="#">Profile</a>
                     <a ngbDropdownItem href="#">Sign out</a>
                 </ul>
             </div>
