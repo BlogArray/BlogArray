@@ -129,14 +129,14 @@ public static class ModelBuilderExtensions
 			  Id = 2,
 			  Name = "Editor",
 			  NormalizedName = "Editor".Normalize().ToUpper(),
-			  ConcurrencyStamp = "4877cca9-5a1c-472b-a130-98fdfb5a9b42"
-		  },
+			  ConcurrencyStamp = "5b20c5f7-175f-4b5a-a621-c36d42719f0c"
+          },
 		  new IdentityRole<int>
 		  {
 			  Id = 3,
 			  Name = "Author",
 			  NormalizedName = "Author".Normalize().ToUpper(),
-			  ConcurrencyStamp = "4877cca9-5a1c-472b-a130-98fdfb5a9b42"
+			  ConcurrencyStamp = "0aa90b5e-9dc3-496f-8b7d-13f235d2457f"
 		  }
 		);
 

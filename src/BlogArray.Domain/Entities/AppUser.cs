@@ -14,7 +14,7 @@ public class AppUser : IdentityUser<int>
 
 	public int? CreatedUserId { get; set; }
 
-	public DateTime UpdatedOn { get; set; }
+	public DateTime? UpdatedOn { get; set; }
 
 	public int? UpdatedUserId { get; set; }
 

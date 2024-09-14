@@ -12,16 +12,16 @@ public class AuthorEntityBase : KeyBase
 {
 	public DateTime CreatedOn { get; set; }
 
-	public int CreatedUserId { get; set; }
+	public int? CreatedUserId { get; set; }
 
-	public virtual AppUser CreatedUser { get; set; } = default!;
+	public virtual AppUser? CreatedUser { get; set; } = default!;
 }
 
 public class EntityBase : AuthorEntityBase
 {
-	public DateTime UpdatedOn { get; set; }
+	public DateTime? UpdatedOn { get; set; }
 
-	public int UpdatedUserId { get; set; }
+	public int? UpdatedUserId { get; set; }
 
-	public virtual AppUser UpdatedUser { get; set; } = default!;
+	public virtual AppUser? UpdatedUser { get; set; } = default!;
 }
