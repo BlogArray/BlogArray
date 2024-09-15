@@ -105,6 +105,10 @@ export class DashboardComponent {
       }
     };
   }
+
+  loadData(days: number) {
+    console.log(days);
+  }
 }
 
 export const dataSeries = [

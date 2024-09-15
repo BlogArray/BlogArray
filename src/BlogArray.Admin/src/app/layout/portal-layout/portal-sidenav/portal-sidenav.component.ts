@@ -20,11 +20,11 @@ export class PortalSidenavComponent {
       icon: 'pencil',
       items: [{
         name: 'All posts',
-        link: '/posts',
+        link: '/posts/list',
       },
       {
         name: 'Add new post',
-        link: '/post/new',
+        link: '/post/edit',
       }]
     },
     {
@@ -32,11 +32,11 @@ export class PortalSidenavComponent {
       icon: 'files',
       items: [{
         name: 'All pages',
-        link: '/pages',
+        link: '/pages/list',
       },
       {
         name: 'Add new page',
-        link: '/page/new',
+        link: '/page/edit',
       }]
     },
     {
@@ -44,11 +44,11 @@ export class PortalSidenavComponent {
       icon: 'grid',
       items: [{
         name: 'All categories',
-        link: '/categories',
+        link: '/categories/list',
       },
       {
         name: 'Add new category',
-        link: '/categories/new',
+        link: '/categories/edit',
       }]
     },
     {
@@ -62,11 +62,11 @@ export class PortalSidenavComponent {
       icon: 'image',
       items: [{
         name: 'Library',
-        link: '/media',
+        link: '/media/list',
       },
       {
         name: 'Add new media',
-        link: '/media/new',
+        link: '/media/edit',
       }]
     },
     {
@@ -74,11 +74,11 @@ export class PortalSidenavComponent {
       icon: 'people',
       items: [{
         name: 'All users',
-        link: '/users',
+        link: '/users/list',
       },
       {
         name: 'Add new user',
-        link: '/users/new',
+        link: '/users/edit',
       }]
     },
     {

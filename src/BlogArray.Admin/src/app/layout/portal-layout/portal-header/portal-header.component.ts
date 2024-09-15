@@ -9,6 +9,34 @@ export class PortalHeaderComponent {
   mobileMenuOpen = false;
   @Output() togleSidebar = new EventEmitter<boolean>();
 
+  menuItems = [
+    {
+      name: 'Posts',
+      icon: 'pencil',
+      link: '/post/edit'
+    },
+    {
+      name: 'Pages',
+      icon: 'files',
+      link: '/page/edit'
+    },
+    {
+      name: 'Categories',
+      icon: 'grid',
+      link: '/categories/edit'
+    },
+    {
+      name: 'Media',
+      icon: 'image',
+      link: '/media/edit'
+    },
+    {
+      name: 'Users',
+      icon: 'people',
+      link: '/users/edit'
+    },
+  ];
+
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
     this.togleSidebar.emit(this.mobileMenuOpen);

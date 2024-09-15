@@ -101,6 +101,10 @@ $background-color: #f0f0f0; // Some general background color
     cursor: pointer;
 }
 
+.h-main-app-body {
+    height: calc(100vh - 152px);
+}
+
 .hoverable-bg {
     .nav-item .nav-link:hover {
         --bs-bg-opacity: 1;

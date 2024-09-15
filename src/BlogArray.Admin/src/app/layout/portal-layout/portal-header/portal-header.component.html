@@ -18,11 +18,9 @@
                     </div>
                 </button>
                 <ul ngbDropdownMenu class="dropdown-menu shadow">
-                    <a ngbDropdownItem href="#"><i class="bi bi-pencil me-2"></i> Post</a>
-                    <a ngbDropdownItem href="#"><i class="bi bi-files me-2"></i> Page</a>
-                    <a ngbDropdownItem href="#"><i class="bi bi-grid me-2"></i> Category</a>
-                    <a ngbDropdownItem href="#"><i class="bi bi-image me-2"></i> Media</a>
-                    <a ngbDropdownItem href="#"><i class="bi bi-person me-2"></i> User</a>
+                    <a *ngFor="let item of menuItems" ngbDropdownItem [routerLink]="[item.link]">
+                        <i class="bi bi-{{item.icon}} me-2"></i> {{item.name}}
+                    </a>
                 </ul>
             </div>
             <div class="dropdown" ngbDropdown display="dynamic" placement="bottom-end">

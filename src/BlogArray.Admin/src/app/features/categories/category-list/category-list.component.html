@@ -1,0 +1,78 @@
+<div class="d-flex align-items-center justify-content-between">
+    <h3 class="mb-3">Categories</h3>
+    <div class="ms-auto">
+        <a class="btn btn-primary btn-sm" [routerLink]="['/categories','edit']">Add new category</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Slug
+                </th>
+                <th>
+                    Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    Uncategorized
+                    <div class="d-flex small visible-on-hover-item">
+
+                        <a title="Edit"
+                            class="me-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            href="/admin/categories/edit/1">Edit</a> |
+                        <a class="mx-1 text-danger link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            data-ajax="true" data-ajax-cache="true"
+                            data-ajax-confirm="The category will be deleted completely, so are you sure you wish to delete it? It cannot be reversed."
+                            data-ajax-failure="onTagDeleteFail" data-ajax-success="onTagDeleteSuccess"
+                            href="/admin/categories/delete/1" title="Delete">Delete</a>
+                        | <a title="Open in new window"
+                            class="ms-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            target="_blank" href="/category/uncategorized">
+                            Preview
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    uncategorized
+                </td>
+                <td>
+                    1
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Slug
+                </th>
+                <th>
+                    Count
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav>
