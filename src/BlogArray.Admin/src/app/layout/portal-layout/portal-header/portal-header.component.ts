@@ -33,7 +33,7 @@ export class PortalHeaderComponent {
     {
       name: 'Users',
       icon: 'people',
-      link: '/users/edit'
+      link: '/users/add'
     },
   ];
 

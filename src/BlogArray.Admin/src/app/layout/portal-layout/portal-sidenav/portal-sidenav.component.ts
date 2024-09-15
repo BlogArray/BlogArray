@@ -78,7 +78,7 @@ export class PortalSidenavComponent {
       },
       {
         name: 'Add new user',
-        link: '/users/edit',
+        link: '/users/add',
       }]
     },
     {

@@ -1,0 +1,62 @@
+<h3 class="mb-3">Add new user</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form id="addUserForm" action="/admin/users/new" method="post" novalidate="novalidate">
+
+            <div class="mb-3">
+                <label class="form-label required" for="Username">Username</label>
+                <input class="form-control" type="text" data-val="true" data-val-required="Enter a username"
+                    id="Username" name="Username" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Username"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Email">Email</label>
+                <input class="form-control" type="email" data-val="true" data-val-required="Enter an email address."
+                    id="Email" name="Email" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Email"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="DisplayName">Display name</label>
+                <input class="form-control" type="text" id="DisplayName" name="DisplayName" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="DisplayName"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Password">
+                    Password
+                    <button type="button" class="btn btn-outline-primary btn-sm transform-8"
+                        onclick="generatePassword()">Generate</button>
+                </label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" aria-label="Password" aria-describedby="button-pwd"
+                        data-val="true" data-val-required="Enter a strong password" id="Password" name="Password"
+                        value="">
+                    <button class="btn btn-outline-secondary" type="button" id="button-pwd" onclick="viewPwd(this)"
+                        title="Show/Hide Password">
+                        <i class="bi-eye d-none"></i>
+                        <i class="bi-eye-slash"></i>
+                    </button>
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Password"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Role">Role</label>
+                <select class="form-select" data-val="true" data-val-required="Select a role" id="Role" name="Role">
+                    <option value="Admin">Admin</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Author">Author</option>
+                </select>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Role"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create user" class="btn btn-primary">
+            </div>
+            <input name="__RequestVerificationToken" type="hidden"
+                value="CfDJ8LY6qgeYUf9AkqZQ2xg2KJAqOVdQPnXhGuN7WEKKVqbLZEElgfKxkjl9QVlBOOnA6eLrkUEhsXecqb-Mb-eFmJExigqLHY0qzIOr09jYEv83T4r0hYgDRJRx0OCIIF7iAo8DW5Cz0_DO-_naYh4X6TV8FhlRdbLTjLqOORb2AUu38AaYKdAWR8S2KGCqCfUKRw">
+        </form>
+    </div>
+</div>

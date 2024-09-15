@@ -1,0 +1,89 @@
+<h3 class="mb-3">Edit user anonymous.vtp.com</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form id="editUserForm" action="/admin/users/edit/2" method="post" novalidate="novalidate">
+            <input type="hidden" data-val="true" data-val-required="The Id field is required." id="Id" name="Id"
+                value="2">
+
+            <div class="mb-3">
+                <label class="form-label required" for="Username">Username</label>
+                <input readonly="" class="form-control disabled" aria-describedby="usernameHelpBlock" type="text"
+                    data-val="true" data-val-required="Enter a username" id="Username" name="Username"
+                    value="anonymous@vtp.com">
+                <div id="usernameHelpBlock" class="form-text">
+                    Usernames cannot be changed.
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Username"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Email">Email</label>
+                <input class="form-control" type="email" data-val="true" data-val-required="Enter an email address."
+                    id="Email" name="Email" value="anonymous@vtp.com">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Email"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="DisplayName">Display name</label>
+                <input class="form-control" type="text" id="DisplayName" name="DisplayName" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="DisplayName"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="Bio">Bio</label>
+                <textarea class="form-control" placeholder="Add bio" aria-describedby="bioHelpBlock" data-val="true"
+                    data-val-length="The field Bio must be a string with a maximum length of 512."
+                    data-val-length-max="512" id="Bio" maxlength="512" name="Bio"></textarea>
+                <div id="bioHelpBlock" class="form-text">
+                    Describe yourself briefly to complete your profile. This information may be displayed to the public.
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Bio"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" onclick="passwordClick()" type="checkbox" data-val="true"
+                        data-val-required="The Set new password field is required." id="ChangePassword"
+                        name="ChangePassword" value="true"> Set new password
+                </label>
+            </div>
+            <div class="mb-3" id="setPassword" style="display:none">
+                <label class="form-label" for="Password">
+                    Password
+                    <button type="button" class="btn btn-outline-primary btn-sm transform-8"
+                        onclick="generatePassword()">Generate</button>
+                </label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" aria-label="Password" aria-describedby="button-pwd"
+                        data-val="true" data-val-allowempty="false" data-val-requiredif="Enter a strong password"
+                        data-val-requiredif-expression="&quot;ChangePassword&quot;"
+                        data-val-requiredif-fieldsmap="{&quot;ChangePassword&quot;:&quot;bool&quot;}" id="Password"
+                        name="Password" value="">
+                    <button class="btn btn-outline-secondary" type="button" id="button-pwd" onclick="viewPwd(this)"
+                        title="Show/Hide Password">
+                        <i class="bi-eye d-none"></i>
+                        <i class="bi-eye-slash"></i>
+                    </button>
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Password"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Role">Role</label>
+                <select class="form-select" data-val="true" data-val-required="Select a role" id="Role" name="Role">
+                    <option value="Admin">Admin</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Author">Author</option>
+                </select>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Role"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+            <input name="__RequestVerificationToken" type="hidden"
+                value="CfDJ8LY6qgeYUf9AkqZQ2xg2KJCQUdvPDeffEtykVJUsaPzHdQhiMU4fVPbC_k73CoBghAJo3sdMVVegxiBOlD4-u486A6jV9NrVoAzVGhDb0mG27Iv6fWlbkqDNqlM_YIhdWRME1Y0biVxCm0yS7vr5Nhf8spTR2r1dVl1Omk7GXcd3k_wpuHl0NjO9OO0RVwSpMA"><input
+                name="ChangePassword" type="hidden" value="false">
+        </form>
+    </div>
+</div>

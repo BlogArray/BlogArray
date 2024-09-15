@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'categories',
         loadChildren: () => import('./features/categories/categories.module').then(m => m.CategoriesModule),
       },
+      {
+        path: 'users',
+        loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
     component: PortalLayoutComponent

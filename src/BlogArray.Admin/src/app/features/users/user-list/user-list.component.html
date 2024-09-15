@@ -1,0 +1,86 @@
+<div class="d-flex align-items-center justify-content-between">
+    <h3 class="mb-3">Users</h3>
+    <div class="ms-auto">
+        <a class="btn btn-primary btn-sm" [routerLink]="['/users','add']">Add new user</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="visible-on-hover">
+                <td>
+                    adminvtp.com
+                    <div class="d-flex small visible-on-hover-item">
+                        <a title="Profile"
+                            class="me-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            href="/admin/profile">
+                            Edit
+                        </a>
+                        |<a title="Open in new window"
+                            class="ms-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            target="_blank" href="/author/admin@vtp.com">
+                            View
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    Admin
+                </td>
+                <td>
+                    <a href="mailto:admin@vtp.com">adminvtp.com</a>
+                </td>
+                <td>
+                    Admin
+                </td>
+            </tr>
+            <tr class="visible-on-hover">
+                <td>
+                    anonymous,vtp.com
+                    <div class="d-flex small visible-on-hover-item">
+                        <a title="Edit"
+                            class="me-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            href="/admin/users/edit/2">
+                            Edit
+                        </a>
+                        <i>|</i>
+                        <a title="Edit"
+                            class="mx-1 text-danger link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            href="/admin/users/delete/2">
+                            Delete
+                        </a>
+                        |<a title="Open in new window"
+                            class="ms-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            target="_blank" href="/author/anonymous@vtp.com">
+                            View
+                        </a>
+                    </div>
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a href="mailto:anonymous@vtp.com">anonymousvtp.com</a>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>

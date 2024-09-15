@@ -1,0 +1,61 @@
+<div class="d-flex align-items-center justify-content-between">
+    <h3 class="my-3">Delete user anonymous.vtp.com</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form action="/admin/users/delete/2" method="post" novalidate="novalidate">
+
+            <input type="hidden" class="form-control" data-val="true" data-val-required="The Id field is required."
+                id="Id" name="Id" value="2">
+            <input type="hidden" class="form-control" data-val="true" data-val-required="Enter an email address."
+                id="Email" name="Email" value="anonymous@vtp.com">
+            <input type="hidden" class="form-control" data-val="true" data-val-required="Enter a username" id="Username"
+                name="Username" value="anonymous@vtp.com">
+            <table class="table table-borderless mb-3">
+                <tbody>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>anonymous.vtp.com</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Username</th>
+                        <td>anonymous.vtp.com</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mb-3">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" onclick="passwordClick()" checked="checked"
+                        data-val="true" data-val-required="The IsAttributeTo field is required." id="IsAttributeTo"
+                        name="IsAttributeTo" value="true">
+                    <label class="form-check-label" for="IsAttributeTo">
+                        Attribute all content to user
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" data-val="true" data-val-allowempty="false"
+                        data-val-assertthat="Select an user"
+                        data-val-assertthat-expression="&quot;AttributeToUser != null&quot;"
+                        data-val-assertthat-fieldsmap="{&quot;AttributeToUser&quot;:&quot;number&quot;}"
+                        data-val-requiredif="Select an user"
+                        data-val-requiredif-expression="&quot;IsAttributeTo == true&quot;"
+                        data-val-requiredif-fieldsmap="{&quot;IsAttributeTo&quot;:&quot;bool&quot;}"
+                        id="AttributeToUser" name="AttributeToUser">
+                        <option value="">-Select-</option>
+                        <option value="1">Admin</option>
+                    </select>
+                    <span class="text-danger field-validation-valid" data-valmsg-for="AttributeToUser"
+                        data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Confirm deletion" class="btn btn-primary">
+            </div>
+            <input name="__RequestVerificationToken" type="hidden"
+                value="CfDJ8LY6qgeYUf9AkqZQ2xg2KJDWuSP0fFhRJp8WJJcnJW8ddIqFiL7liUSEhFnLVcCd7a44g4_LwI9yDyGHDAdPDiz29pLM3O-IW6bVUFcSe9a8hK21ySlFTen4Dm0gTBCIATRzY2UaaKqzpd0zvlKHyEAHNyiOgACHbJyDFUKdwk7nbIHN8I2NKRZzmtK_Z3Hbnw"><input
+                name="IsAttributeTo" type="hidden" value="false">
+        </form>
+    </div>
+</div>
