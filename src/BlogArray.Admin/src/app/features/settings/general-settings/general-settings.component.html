@@ -1,0 +1,127 @@
+<h3 class="mb-3">General Settings</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <form action="/admin/settings/general" method="post" novalidate="novalidate">
+
+            <div class="mb-3">
+                <input type="hidden" id="Icon" name="Icon"
+                    value="/content/media/2024/7/980f3209-0969-4be6-986c-2403366700af.webp">
+                <label class="form-label" for="Icon">Site icon</label>
+                <div class="hstack gap-3">
+                    <img src="/content/media/2024/7/980f3209-0969-4be6-986c-2403366700af.webp" id="site-icon" width="62"
+                        height="62" class="rounded img-thumbnail" aria-describedby="iconHelp">
+                    <button type="button" class="btn btn-light" onclick="openIconManager()">Change site
+                        icon</button>
+                </div>
+                <div id="iconHelp" class="form-text">
+                    Site icons are displayed in browser tabs and bookmark bars. A square image of at least 512 ×
+                    512 pixels is recommended.
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="hidden" id="Logo" name="Logo" value="/content/images/logo.svg">
+                <label class="form-label" for="Logo">Site logo</label>
+                <div class="hstack gap-3">
+                    <img src="/content/images/logo.svg" id="site-logo" width="152" class="rounded img-thumbnail"
+                        aria-describedby="logoHelp">
+                    <button type="button" class="btn btn-light" onclick="openLogoManager()">Change site
+                        logo</button>
+                </div>
+                <div id="logoHelp" class="form-text">
+                    Site logos are displayed various places across the site, such as the header, footer etc. It
+                    is exact an representation of brand not as simple as an icon.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Title">Title</label>
+                <input class="form-control" type="text" data-val="true" data-val-required="The Title field is required."
+                    id="Title" name="Title" value="Vitalapuram">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Title"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Tagline">Tagline</label>
+                <input class="form-control" type="text" data-val="true"
+                    data-val-required="The Tagline field is required." id="Tagline" name="Tagline"
+                    value="A vibrant village">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Tagline"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="Description">Description</label>
+                <textarea class="form-control" placeholder="Add description" aria-describedby="descHelp" data-val="true"
+                    data-val-length="We recommend keeping your description between 60 and 220 characters."
+                    data-val-length-max="220" data-val-length-min="60" id="Description" maxlength="220"
+                    name="Description">Welcome to Vitalapuram, a vibrant village known for its rich history and community spirit. Explore our traditions, landmarks, and the people who make Vitalapuram unique.</textarea>
+                <div id="descHelp" class="form-text">
+                    Give a brief description of the site. Based on the theme, this information may be displayed
+                    to the public or useful for Search Engines (like Google, Bing, etc.).
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Description"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label required" for="HomePage">Home page</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" onclick="passwordClick()" value="posts" id="posts"
+                            data-val="true" data-val-required="The HomePage field is required." name="HomePage">
+                        <label class="form-check-label" for="posts">
+                            Latest posts
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" onclick="passwordClick()" value="page" id="page"
+                            checked="checked" name="HomePage">
+                        <label class="form-check-label" for="page">
+                            Static page
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label required" for="StaticHomePage">Home page</label>
+                        <select class="form-select" data-val="true" data-val-allowempty="false"
+                            data-val-assertthat="Select a page"
+                            data-val-assertthat-expression="&quot;StaticHomePage != null &amp;&amp; StaticHomePage != ''&quot;"
+                            data-val-assertthat-fieldsmap="{&quot;StaticHomePage&quot;:&quot;string&quot;}"
+                            data-val-required="Select a page" data-val-requiredif="Select a page"
+                            data-val-requiredif-expression="&quot;HomePage == 'page'&quot;"
+                            data-val-requiredif-fieldsmap="{&quot;HomePage&quot;:&quot;string&quot;}"
+                            id="StaticHomePage" name="StaticHomePage">
+                            <option value="">-Select-</option>
+                            <option value="about">About</option>
+                            <option value="contribute">Contribute</option>
+                            <option value="ramalayam-temple">Ramalayam Temple</option>
+                            <option selected="selected" value="home">Home</option>
+                            <option value="privacy-policy">Privacy Policy</option>
+                            <option value="donate">Donate</option>
+                        </select>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="StaticHomePage"
+                            data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="ItemsPerPage">Posts per each page</label>
+                <input class="form-control" type="number" data-val="true"
+                    data-val-required="The ItemsPerPage field is required." id="ItemsPerPage" name="ItemsPerPage"
+                    value="10"><input name="__Invariant" type="hidden" value="ItemsPerPage">
+                <span class="text-danger field-validation-valid" data-valmsg-for="ItemsPerPage"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" checked="checked" data-val="true"
+                    data-val-required="The SearchEngineVisibility field is required." id="SearchEngineVisibility"
+                    name="SearchEngineVisibility" value="true">
+                <label class="form-check-label required" for="SearchEngineVisibility">
+                    Visible for search engines
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>

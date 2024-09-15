@@ -1,0 +1,48 @@
+<h3 class="mb-3">Email Settings</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <form action="/admin/settings/email" method="post" novalidate="novalidate">
+
+            <div class="mb-3">
+                <label class="form-label required" for="Username">Username</label>
+                <input class="form-control" type="text" data-val="true"
+                    data-val-required="The Username field is required." id="Username" name="Username" value="localhost">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Username"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Password">Password</label>
+                <input class="form-control" type="text" data-val="true"
+                    data-val-required="The Password field is required." id="Password" name="Password" value="password">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Password"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Host">Host</label>
+                <input class="form-control" type="text" data-val="true" data-val-required="The Host field is required."
+                    id="Host" name="Host" value="localhost">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Host"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" for="Port">Port</label>
+                <input class="form-control" type="number" data-val="true"
+                    data-val-required="The Port field is required." id="Port" name="Port" value="587"><input
+                    name="__Invariant" type="hidden" value="Port">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Port"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" data-val="true"
+                    data-val-required="The UseSSL field is required." id="UseSSL" name="UseSSL" value="true">
+                <label class="form-check-label required" for="UseSSL">
+                    Use SSL
+                </label>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>

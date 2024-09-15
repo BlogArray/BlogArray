@@ -93,22 +93,17 @@ export class PortalSidenavComponent {
         link: '/settings/email',
       },
       {
-        name: 'Menus',
-        link: '/settings/menus',
+        name: 'Content',
+        link: '/settings/content',
       },
       {
-        name: 'Pages',
-        link: '/settings/pages',
+        name: 'Discussion',
+        link: '/settings/discussion',
       },
       {
         name: 'Media',
         link: '/settings/media',
-      },
-      {
-        name: 'Comments',
-        link: '/settings/comments',
-      }
-      ]
+      }]
     },
   ];
 

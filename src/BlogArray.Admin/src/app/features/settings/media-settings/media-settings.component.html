@@ -1,0 +1,72 @@
+<h3 class="mb-3">Media Settings</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <form action="/admin/settings/media" method="post" novalidate="novalidate">
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" data-val="true"
+                    data-val-required="The GenerateThumbnails field is required." id="GenerateThumbnails"
+                    name="GenerateThumbnails" value="true">
+                <label class="form-check-label" aria-describedby="thumbnailHelpBlock" for="GenerateThumbnails">
+                    Generate image thumbnails
+                </label>
+                <div id="thumbnailHelpBlock" class="form-text">
+                    An image of 150x150 pixels is generated, which may be useful for fast-loading pages.
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" data-val="true"
+                    data-val-required="The ResizeImage field is required." id="ResizeImage" name="ResizeImage"
+                    value="true">
+                <label class="form-check-label" aria-describedby="resizeHelpBlock" for="ResizeImage">
+                    Resize image
+                </label>
+                <div id="resizeHelpBlock" class="form-text">
+                    A 1024x1024 pixel image is generated, which may be useful for a quick loading page, while an
+                    original
+                    copy is kept.
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" data-val="true"
+                    data-val-required="The OptimizeImage field is required." id="OptimizeImage" name="OptimizeImage"
+                    value="true">
+                <label class="form-check-label" aria-describedby="optimizeHelpBlock" for="OptimizeImage">
+                    Optimize cropped image
+                </label>
+                <div id="optimizeHelpBlock" class="form-text">
+                    Cropped images are optimized for better performance, which may slightly reduce their quality.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required" aria-describedby="qualityHelpBlock" for="OptimizedQuality">Optimize
+                    quality</label>
+                <input class="form-control" type="number" data-val="true"
+                    data-val-range="The value should be between 10 and 100." data-val-range-max="100"
+                    data-val-range-min="10" data-val-required="The OptimizedQuality field is required."
+                    id="OptimizedQuality" name="OptimizedQuality" value=""><input name="__Invariant" type="hidden"
+                    value="OptimizedQuality">
+                <div id="qualityHelpBlock" class="form-text">
+                    Optimize the cropped images by setting the quality. This will only be effective if "Optimize cropped
+                    image" is enabled.
+                </div>
+                <span class="text-danger field-validation-valid" data-valmsg-for="OptimizedQuality"
+                    data-valmsg-replace="true"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" data-val="true"
+                    data-val-required="The OrganizeUploads field is required." id="OrganizeUploads"
+                    name="OrganizeUploads" value="true">
+                <label class="form-check-label" aria-describedby="orgHelpBlock" for="OrganizeUploads">
+                    Organize uploads
+                </label>
+                <div id="orgHelpBlock" class="form-text">
+                    Uploads are organized under folders based on months and years
+                </div>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Save changes" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>

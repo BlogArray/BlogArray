@@ -102,7 +102,7 @@ $background-color: #f0f0f0; // Some general background color
 }
 
 .h-main-app-body {
-    height: calc(100vh - 152px);
+    min-height: calc(100vh - 152px);
 }
 
 .hoverable-bg {
