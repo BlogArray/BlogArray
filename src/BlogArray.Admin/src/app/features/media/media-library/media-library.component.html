@@ -1,0 +1,56 @@
+<div class="d-flex align-items-center justify-content-between">
+    <h3 class="mb-3">Media</h3>
+    <div class="ms-auto">
+        <button type="submit" class="btn btn-danger btn-sm">Delete selected files</button>
+        <a class="btn btn-primary btn-sm" [routerLink]="['/media', 'upload']">Add new media</a>
+    </div>
+</div>
+<div id="page">
+    <div class="row filemanager">
+        <div class="col-sm-6 col-md-4 col-lg-2">
+            <label class="form-check-label w-100" for="2">
+                <div class="item">
+                    <div class="item-img">
+                        <img src="https://vitalapuram.com/content/media/2024/7/980f3209-0969-4be6-986c-2403366700af.webp"
+                            class="card-img-top object-fit-fill" alt="logo.webp">
+                    </div>
+                    <div class="form-check item-name lh-base" title="logo.webp">
+                        <input style="font-size: 1.375em;" class="form-check-input mt-2" name="files" type="checkbox"
+                            id="2" value="2">
+                        logo.webp
+                        <small class="d-block text-body-secondary text-truncate">
+                            Image
+                        </small>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-2">
+            <label class="form-check-label w-100" for="1">
+                <div class="item">
+                    <div class="item-img">
+                        <img src="https://vitalapuram.com/content/media/2024/7/42959cd2-99d3-41cc-86c5-2c0eca5371cc.webp"
+                            class="card-img-top object-fit-fill" alt="page-image.webp">
+                    </div>
+                    <div class="form-check item-name lh-base" title="page-image.webp">
+                        <input style="font-size: 1.375em;" class="form-check-input mt-2" name="files" type="checkbox"
+                            id="1" value="1">
+                        page-image.webp
+                        <small class="d-block text-body-secondary text-truncate">
+                            Image
+                        </small>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </div>
+    <div class="pt-4">
+        <div class="container">
+            <ul class="pagination">
+                <li class="page-item disabled"><a class="page-link" rel="prev">&lt;</a></li>
+                <li class="page-item disabled"><a class="page-link">Showing 1 to 2 of 2 entries.</a></li>
+                <li class="page-item disabled"><a class="page-link" rel="next">&gt;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

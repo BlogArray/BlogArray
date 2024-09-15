@@ -1,0 +1,15 @@
+<form action="/admin/media/upload" data-ajax="true" data-ajax-cache="true" data-ajax-failure="handleAjaxError"
+    data-ajax-method="post" data-ajax-success="onUpload" data-ajax-url="https://vitalapuram.com/admin/media/upload"
+    enctype="multipart/form-data" id="postEditForm" method="post">
+    <div class="mb-3 pt-5">
+        <label for="files" class="form-label">Upload one or more files using this form:</label>
+        <input required="" class="form-control" type="file" name="files" multiple="">
+        <span class="form-text">
+            Each file size should not exceed 5mb. Accepted file formats
+            png,gif,jpeg,jpg,zip,7z,pdf,doc,docx,xls,xlsx,mp3,mp4,avi
+        </span>
+    </div>
+    <div class="mb-3">
+        <input type="submit" value="Upload" class="btn btn-primary">
+    </div>
+</form>

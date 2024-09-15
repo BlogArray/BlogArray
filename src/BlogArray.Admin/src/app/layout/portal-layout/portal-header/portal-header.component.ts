@@ -28,7 +28,7 @@ export class PortalHeaderComponent {
     {
       name: 'Media',
       icon: 'image',
-      link: '/media/edit'
+      link: '/media/upload'
     },
     {
       name: 'Users',

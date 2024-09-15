@@ -62,11 +62,11 @@ export class PortalSidenavComponent {
       icon: 'image',
       items: [{
         name: 'Library',
-        link: '/media/list',
+        link: '/media/library',
       },
       {
         name: 'Add new media',
-        link: '/media/edit',
+        link: '/media/upload',
       }]
     },
     {
