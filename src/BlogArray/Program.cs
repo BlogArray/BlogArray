@@ -10,7 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddConnectionProvider(builder.Environment, builder.Configuration).ConfigureRepositories().AddLowercaseUrlsRouting();
+builder.Services.AddConnectionProvider(builder.Environment, builder.Configuration)
+    .AddAppAuthentication(builder.Configuration)
+    .ConfigureRepositories()
+    .AddLowercaseUrlsRouting();
 
 WebApplication app = builder.Build();
 
@@ -30,17 +33,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if (dbContext.Database.GetPendingMigrations().Any())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        if (dbContext.Database.GetPendingMigrations().Any())
-        {
-            await dbContext.Database.MigrateAsync();
-        }
+        await dbContext.Database.MigrateAsync();
     }
 }
 
