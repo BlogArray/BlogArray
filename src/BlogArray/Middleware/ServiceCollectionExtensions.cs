@@ -37,9 +37,9 @@ public static class ServiceCollectionExtensions
                 x => x.MigrationsAssembly("BlogArray.Persistence.SqlServer")));
                 break;
             case "Sqlite":
-                var sonnectionStringBuilder = new SqliteConnectionStringBuilder(connectionString);
-                var dataSourcePath = Path.Combine(environment.ContentRootPath, sonnectionStringBuilder.DataSource);
-                var dataSourceDirectory = Path.GetDirectoryName(dataSourcePath);
+                SqliteConnectionStringBuilder sonnectionStringBuilder = new(connectionString);
+                string dataSourcePath = Path.Combine(environment.ContentRootPath, sonnectionStringBuilder.DataSource);
+                string? dataSourceDirectory = Path.GetDirectoryName(dataSourcePath);
                 if (!string.IsNullOrEmpty(dataSourceDirectory) && !Directory.Exists(dataSourceDirectory)) Directory.CreateDirectory(dataSourceDirectory);
 
                 services.AddDbContext<AppDbContext, SqliteDbContext>(options =>

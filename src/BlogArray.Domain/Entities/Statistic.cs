@@ -2,11 +2,11 @@
 
 public class Statistic : KeyBase
 {
-	public string? UserAgent { get; set; } = default!;
+    public string? UserAgent { get; set; } = default!;
 
-	public DateTime ViewedOn { get; set; }
+    public DateTime ViewedOn { get; set; }
 
-	public int? PostId { get; set; }
+    public int? PostId { get; set; }
 
-	public Post? Post { get; set; } = default!;
+    public Post? Post { get; set; } = default!;
 }

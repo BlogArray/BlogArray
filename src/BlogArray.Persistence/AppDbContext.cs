@@ -1,6 +1,5 @@
 ﻿using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
-using BlogArray.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
