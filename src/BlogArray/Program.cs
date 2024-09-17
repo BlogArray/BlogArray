@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddConnectionProvider(builder.Configuration).ConfigureRepositories().AddLowercaseUrlsRouting();
+builder.Services.AddConnectionProvider(builder.Environment, builder.Configuration).ConfigureRepositories().AddLowercaseUrlsRouting();
 
 WebApplication app = builder.Build();
 

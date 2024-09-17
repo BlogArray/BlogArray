@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlogArray.Infrastructure.Context;
+namespace BlogArray.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser, IdentityRole<int>, int>(options)
+public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser, IdentityRole<int>, int>(options)
 {
     public DbSet<AppOption> AppOptions { get; set; }
 

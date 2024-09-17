@@ -1,4 +1,7 @@
-﻿using BlogArray.Infrastructure.Context;
+﻿using BlogArray.Persistence;
+using BlogArray.Persistence.Sqlite;
+using BlogArray.Persistence.SqlServer;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using NetCore.AutoRegisterDi;
 using System.Reflection;
@@ -12,7 +15,7 @@ public static class ServiceCollectionExtensions
         Assembly[] assembliesToScan =
         [
             Assembly.GetExecutingAssembly(),
-            Assembly.GetAssembly(typeof(AppDbContext))
+            //Assembly.GetAssembly(typeof(AppDbContext))
         ];
 
         services.RegisterAssemblyPublicNonGenericClasses(assembliesToScan).AsPublicImplementedInterfaces();
@@ -20,17 +23,28 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddConnectionProvider(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddConnectionProvider(this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration)
     {
-        string databaseType = configuration.GetValue("DatabaseType", "SqlServer");
+        string? databaseType = configuration.GetValue("DatabaseType", "SqlServer");
+
+        string? connectionString = configuration.GetConnectionString("BlogArrayConnection");
 
         switch (databaseType)
         {
             case "SqlServer":
-                services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection")));
+                services.AddDbContext<AppDbContext, SqlServerDbContext>(options =>
+                options.UseSqlServer(connectionString,
+                x => x.MigrationsAssembly("BlogArray.Persistence.SqlServer")));
                 break;
             case "Sqlite":
-                services.AddDbContext<AppDbContext>(options => options.UseSqlite(configuration.GetConnectionString("SqliteConnection")));
+                var sonnectionStringBuilder = new SqliteConnectionStringBuilder(connectionString);
+                var dataSourcePath = Path.Combine(environment.ContentRootPath, sonnectionStringBuilder.DataSource);
+                var dataSourceDirectory = Path.GetDirectoryName(dataSourcePath);
+                if (!string.IsNullOrEmpty(dataSourceDirectory) && !Directory.Exists(dataSourceDirectory)) Directory.CreateDirectory(dataSourceDirectory);
+
+                services.AddDbContext<AppDbContext, SqliteDbContext>(options =>
+                options.UseSqlite(connectionString,
+                x => x.MigrationsAssembly("BlogArray.Persistence.Sqlite")));
                 break;
             default:
                 throw new Exception("Database type not supported");

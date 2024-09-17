@@ -18,13 +18,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogArray.Tests", "tests\Bl
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "BlogArray.Admin", "src\BlogArray.Admin\BlogArray.Admin.esproj", "{01368827-B465-416E-9D5B-91C5C95B71C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Domain", "src\BlogArray.Domain\BlogArray.Domain.csproj", "{A5294118-4F44-4E46-A9B2-96D558DE6408}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogArray.Domain", "src\BlogArray.Domain\BlogArray.Domain.csproj", "{A5294118-4F44-4E46-A9B2-96D558DE6408}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Shared", "src\BlogArray.Shared\BlogArray.Shared.csproj", "{C6ACA940-566A-4E21-AA79-1CD337330C6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogArray.Shared", "src\BlogArray.Shared\BlogArray.Shared.csproj", "{C6ACA940-566A-4E21-AA79-1CD337330C6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Infrastructure", "src\BlogArray.Infrastructure\BlogArray.Infrastructure.csproj", "{368D74E8-C92C-4185-B398-F8465D898713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogArray.Infrastructure", "src\BlogArray.Infrastructure\BlogArray.Infrastructure.csproj", "{368D74E8-C92C-4185-B398-F8465D898713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Api", "src\BlogArray.Api\BlogArray.Api.csproj", "{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogArray.Api", "src\BlogArray.Api\BlogArray.Api.csproj", "{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Persistence", "src\BlogArray.Persistence\BlogArray.Persistence.csproj", "{3E0E2382-5B60-4730-B240-5F6D3F835471}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Persistence.SqlServer", "src\BlogArray.Persistence.SqlServer\BlogArray.Persistence.SqlServer.csproj", "{DA9B9905-62B3-40EE-B25F-47F4E649BB64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogArray.Persistence.Sqlite", "src\BlogArray.Persistence.Sqlite\BlogArray.Persistence.Sqlite.csproj", "{913E93E9-14BF-4016-B189-02D399F257F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +68,18 @@ Global
 		{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E0E2382-5B60-4730-B240-5F6D3F835471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E0E2382-5B60-4730-B240-5F6D3F835471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E0E2382-5B60-4730-B240-5F6D3F835471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E0E2382-5B60-4730-B240-5F6D3F835471}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9B9905-62B3-40EE-B25F-47F4E649BB64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9B9905-62B3-40EE-B25F-47F4E649BB64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9B9905-62B3-40EE-B25F-47F4E649BB64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9B9905-62B3-40EE-B25F-47F4E649BB64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913E93E9-14BF-4016-B189-02D399F257F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913E93E9-14BF-4016-B189-02D399F257F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913E93E9-14BF-4016-B189-02D399F257F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913E93E9-14BF-4016-B189-02D399F257F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +92,9 @@ Global
 		{C6ACA940-566A-4E21-AA79-1CD337330C6F} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
 		{368D74E8-C92C-4185-B398-F8465D898713} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
 		{E06B67F9-C87A-4629-BFD6-2D6FE4CD9359} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
+		{3E0E2382-5B60-4730-B240-5F6D3F835471} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
+		{DA9B9905-62B3-40EE-B25F-47F4E649BB64} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
+		{913E93E9-14BF-4016-B189-02D399F257F3} = {FEB88E11-767A-4B3A-BF09-FAB4ED4BF84B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32387B2E-1403-4501-A1D5-4ED5AFE5E7CA}

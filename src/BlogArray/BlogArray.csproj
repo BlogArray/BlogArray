@@ -36,6 +36,9 @@
 		<ProjectReference Include="..\BlogArray.Api\BlogArray.Api.csproj" />
 		<ProjectReference Include="..\BlogArray.Domain\BlogArray.Domain.csproj" />
 		<ProjectReference Include="..\BlogArray.Infrastructure\BlogArray.Infrastructure.csproj" />
+		<ProjectReference Include="..\BlogArray.Persistence.Sqlite\BlogArray.Persistence.Sqlite.csproj" />
+		<ProjectReference Include="..\BlogArray.Persistence.SqlServer\BlogArray.Persistence.SqlServer.csproj" />
+		<ProjectReference Include="..\BlogArray.Persistence\BlogArray.Persistence.csproj" />
 		<ProjectReference Include="..\BlogArray.Shared\BlogArray.Shared.csproj" />
 	</ItemGroup>
 

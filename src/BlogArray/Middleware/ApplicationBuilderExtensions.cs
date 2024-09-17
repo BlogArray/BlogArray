@@ -1,4 +1,4 @@
-﻿using BlogArray.Infrastructure.Context;
+﻿using BlogArray.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogArray.Middleware;
