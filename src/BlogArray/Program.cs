@@ -1,19 +1,11 @@
-using BlogArray.Middleware;
-using BlogArray.Persistence;
-using Microsoft.EntityFrameworkCore;
+using BlogArray.Api.Middleware;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddConnectionProvider(builder.Environment, builder.Configuration)
-    .AddAppAuthentication(builder.Configuration)
-    .ConfigureRepositories()
-    .AddLowercaseUrlsRouting();
+builder.Services.AddBlogArray(builder.Environment, builder.Configuration);
 
 WebApplication app = builder.Build();
 
@@ -25,27 +17,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseBlogArray();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-if (app.Environment.IsDevelopment())
-{
-    using IServiceScope scope = app.Services.CreateScope();
-    AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if (dbContext.Database.GetPendingMigrations().Any())
-    {
-        await dbContext.Database.MigrateAsync();
-    }
-}
+app.AddBlogArrayMigration();
 
 app.MapControllerRoute(
     name: "default",
