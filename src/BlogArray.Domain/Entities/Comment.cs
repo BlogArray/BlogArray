@@ -24,7 +24,7 @@ public class Comment : EntityBase
 
     public string ParsedContent { get; set; } = default!;
 
-    public CommentStatus Status { get; set; }
+    public CommentStatus Status { get; set; } = CommentStatus.Published;
 
     public int? ParentId { get; set; }
 

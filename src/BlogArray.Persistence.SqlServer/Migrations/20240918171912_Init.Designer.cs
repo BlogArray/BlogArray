@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20240917164708_Init")]
+    [Migration("20240918171912_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -288,9 +288,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
@@ -354,27 +352,14 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PostStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(2);
+                        .HasColumnType("int");
 
                     b.Property<int>("PostType")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("PublishedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("RawContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ShowAuthor")
                         .HasColumnType("bit");
@@ -422,14 +407,54 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.HasIndex("CreatedUserId");
 
-                    b.HasIndex("ParentId");
-
                     b.HasIndex("Slug")
                         .IsUnique();
 
                     b.HasIndex("UpdatedUserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("BlogArray.Domain.Entities.PostRevision", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EditorType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLatest")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("ParsedContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RawContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostRevisions");
                 });
 
             modelBuilder.Entity("BlogArray.Domain.Entities.PostTerm", b =>
@@ -798,11 +823,6 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         .HasForeignKey("CreatedUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("BlogArray.Domain.Entities.Post", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("BlogArray.Domain.Entities.AppUser", "UpdatedUser")
                         .WithMany()
                         .HasForeignKey("UpdatedUserId")
@@ -810,9 +830,25 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.Navigation("CreatedUser");
 
-                    b.Navigation("Parent");
-
                     b.Navigation("UpdatedUser");
+                });
+
+            modelBuilder.Entity("BlogArray.Domain.Entities.PostRevision", b =>
+                {
+                    b.HasOne("BlogArray.Domain.Entities.AppUser", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BlogArray.Domain.Entities.Post", "Post")
+                        .WithMany("PostRevisions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlogArray.Domain.Entities.PostTerm", b =>
@@ -907,6 +943,8 @@ namespace BlogArray.Persistence.SqlServer.Migrations
             modelBuilder.Entity("BlogArray.Domain.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("PostRevisions");
 
                     b.Navigation("Terms");
                 });

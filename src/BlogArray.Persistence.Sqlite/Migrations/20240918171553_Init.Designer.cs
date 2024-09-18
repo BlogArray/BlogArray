@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20240917164059_Init")]
+    [Migration("20240918171553_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -276,9 +276,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(1);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("TEXT");
@@ -340,26 +338,13 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("PostStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(2);
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PostType")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("PublishedOn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RawContent")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("ShowAuthor")
@@ -408,14 +393,52 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
                     b.HasIndex("CreatedUserId");
 
-                    b.HasIndex("ParentId");
-
                     b.HasIndex("Slug")
                         .IsUnique();
 
                     b.HasIndex("UpdatedUserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("BlogArray.Domain.Entities.PostRevision", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EditorType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsLatest")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("ParsedContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RawContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostRevisions");
                 });
 
             modelBuilder.Entity("BlogArray.Domain.Entities.PostTerm", b =>
@@ -771,11 +794,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasForeignKey("CreatedUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("BlogArray.Domain.Entities.Post", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("BlogArray.Domain.Entities.AppUser", "UpdatedUser")
                         .WithMany()
                         .HasForeignKey("UpdatedUserId")
@@ -783,9 +801,25 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
                     b.Navigation("CreatedUser");
 
-                    b.Navigation("Parent");
-
                     b.Navigation("UpdatedUser");
+                });
+
+            modelBuilder.Entity("BlogArray.Domain.Entities.PostRevision", b =>
+                {
+                    b.HasOne("BlogArray.Domain.Entities.AppUser", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BlogArray.Domain.Entities.Post", "Post")
+                        .WithMany("PostRevisions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BlogArray.Domain.Entities.PostTerm", b =>
@@ -880,6 +914,8 @@ namespace BlogArray.Persistence.Sqlite.Migrations
             modelBuilder.Entity("BlogArray.Domain.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("PostRevisions");
 
                     b.Navigation("Terms");
                 });

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace BlogArray.Persistence.Sqlite.Migrations
 {
@@ -217,14 +219,11 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     Title = table.Column<string>(type: "TEXT", maxLength: 160, nullable: false),
                     Slug = table.Column<string>(type: "TEXT", maxLength: 160, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
-                    RawContent = table.Column<string>(type: "TEXT", nullable: false),
-                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
                     Cover = table.Column<string>(type: "TEXT", maxLength: 160, nullable: true),
                     Views = table.Column<int>(type: "INTEGER", nullable: false),
                     PostType = table.Column<int>(type: "INTEGER", nullable: false),
-                    PostStatus = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 2),
+                    PostStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     PublishedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ParentId = table.Column<int>(type: "INTEGER", nullable: true),
                     IsFeatured = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsWidePage = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
                     ShowContactPage = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
@@ -252,12 +251,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         name: "FK_Posts_AspNetUsers_UpdatedUserId",
                         column: x => x.UpdatedUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Posts_Posts_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -303,7 +296,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     UserAgent = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     RawContent = table.Column<string>(type: "TEXT", nullable: false),
                     ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
                     ParentId = table.Column<int>(type: "INTEGER", nullable: true),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -333,6 +326,37 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostRevisions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RawContent = table.Column<string>(type: "TEXT", nullable: false),
+                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
+                    IsLatest = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    EditorType = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostRevisions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostRevisions_AspNetUsers_CreatedUserId",
+                        column: x => x.CreatedUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PostRevisions_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
@@ -501,14 +525,19 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                 column: "UpdatedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_CreatedUserId",
-                table: "Posts",
+                name: "IX_PostRevisions_CreatedUserId",
+                table: "PostRevisions",
                 column: "CreatedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ParentId",
+                name: "IX_PostRevisions_PostId",
+                table: "PostRevisions",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_CreatedUserId",
                 table: "Posts",
-                column: "ParentId");
+                column: "CreatedUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_Slug",
@@ -578,6 +607,9 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "PostRevisions");
 
             migrationBuilder.DropTable(
                 name: "PostTerms");

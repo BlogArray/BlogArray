@@ -1,5 +1,4 @@
 ﻿using BlogArray.Domain.Entities;
-using BlogArray.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +10,8 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
     public DbSet<AppOption> AppOptions { get; set; }
 
     public DbSet<Post> Posts { get; set; }
+
+    public DbSet<PostRevision> PostRevisions { get; set; }
 
     public DbSet<Term> Terms { get; set; }
 
@@ -47,18 +48,12 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
         builder.Entity<Post>(entity =>
         {
             entity.HasIndex(b => b.Slug).IsUnique();
-            entity.Property(b => b.PostStatus).HasDefaultValue(PostStatus.Published);
             entity.Property(e => e.AllowComments).HasDefaultValue(true);
             entity.Property(e => e.ShowCover).HasDefaultValue(true);
             entity.Property(e => e.ShowSharingIcon).HasDefaultValue(true);
             entity.Property(e => e.ShowHeading).HasDefaultValue(true);
             entity.Property(e => e.ShowContactPage).HasDefaultValue(false);
             entity.Property(e => e.IsWidePage).HasDefaultValue(false);
-
-            entity.HasOne(e => e.Parent)
-                .WithMany()
-                .HasForeignKey(e => e.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(u => u.CreatedUser)
                 .WithMany()
@@ -68,6 +63,16 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
             entity.HasOne(u => u.UpdatedUser)
                 .WithMany()
                 .HasForeignKey(u => u.UpdatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<PostRevision>(entity =>
+        {
+            entity.Property(e => e.IsLatest).HasDefaultValue(true);
+
+            entity.HasOne(u => u.CreatedUser)
+                .WithMany()
+                .HasForeignKey(u => u.CreatedUserId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -95,8 +100,6 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
 
         builder.Entity<Comment>(entity =>
         {
-            entity.Property(e => e.Status).HasDefaultValue(CommentStatus.Published);
-
             entity.HasOne(u => u.CreatedUser)
                 .WithMany()
                 .HasForeignKey(u => u.CreatedUserId)

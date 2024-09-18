@@ -17,10 +17,6 @@ public class Post : EntityBase
     [StringLength(450)]
     public string Description { get; set; } = default!;
 
-    public string RawContent { get; set; } = default!;
-
-    public string ParsedContent { get; set; } = default!;
-
     [StringLength(160)]
     public string? Cover { get; set; }
 
@@ -28,11 +24,9 @@ public class Post : EntityBase
 
     public PostType PostType { get; set; }
 
-    public PostStatus PostStatus { get; set; }
+    public PostStatus PostStatus { get; set; } = PostStatus.Published;
 
     public DateTime? PublishedOn { get; set; }
-
-    public int? ParentId { get; set; }
 
     public bool IsFeatured { get; set; }
 
@@ -56,5 +50,6 @@ public class Post : EntityBase
 
     public virtual List<Comment>? Comments { get; set; }
 
-    public virtual Post Parent { get; set; } = default!;
+    public virtual List<PostRevision>? PostRevisions { get; set; }
+
 }
