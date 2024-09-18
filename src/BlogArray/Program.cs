@@ -39,8 +39,8 @@ app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    using IServiceScope scope = app.Services.CreateScope();
+    AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     if (dbContext.Database.GetPendingMigrations().Any())
     {
         await dbContext.Database.MigrateAsync();
