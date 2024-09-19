@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlogArray.Persistence;
 
-public class AppDbContext() : DbContext
+public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<AppUser> AppUsers { get; set; }
 

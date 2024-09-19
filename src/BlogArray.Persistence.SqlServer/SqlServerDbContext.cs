@@ -1,6 +1,8 @@
-﻿namespace BlogArray.Persistence.SqlServer;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class SqlServerDbContext() : AppDbContext
+namespace BlogArray.Persistence.SqlServer;
+
+public class SqlServerDbContext(DbContextOptions<SqlServerDbContext> options) : AppDbContext(options)
 {
 
 }

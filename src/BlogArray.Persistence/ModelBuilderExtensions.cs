@@ -150,7 +150,7 @@ public static class ModelBuilderExtensions
               EmailConfirmed = true,
               UserName = "admin",
               AccessFailedCount = 0,
-              PasswordHash = "AQAAAAIAAYagAAAAELFIWWskHI9+r0MoDtV9uOjsEAFbJk23ACkLY8bP2acdySuMNeOWFrkp1tKM/7zyFA==",
+              PasswordHash = "$2a$11$xO.YQRxXr4KYzralfcHauuSmpiPpJy.YRQpJTt4QTZJsMauYIi3Ca",
               RoleId = 1,
           },
           new AppUser

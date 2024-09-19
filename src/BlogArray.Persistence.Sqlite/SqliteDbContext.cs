@@ -1,6 +1,8 @@
-﻿namespace BlogArray.Persistence.Sqlite;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class SqliteDbContext() : AppDbContext
+namespace BlogArray.Persistence.Sqlite;
+
+public class SqliteDbContext(DbContextOptions<SqliteDbContext> options) : AppDbContext(options)
 {
 
 }
