@@ -1,12 +1,14 @@
 ﻿using BlogArray.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogArray.Persistence;
 
-public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser, IdentityRole<int>, int>(options)
+public class AppDbContext() : DbContext
 {
+    public DbSet<AppUser> AppUsers { get; set; }
+
+    public DbSet<AppRole> AppRoles { get; set; }
+
     public DbSet<AppOption> AppOptions { get; set; }
 
     public DbSet<Post> Posts { get; set; }
@@ -29,6 +31,10 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
 
         builder.Entity<AppUser>(entity =>
         {
+            entity.HasIndex(b => b.UserName).IsUnique();
+
+            entity.HasIndex(b => b.Email).IsUnique();
+
             entity.HasOne(u => u.CreatedUser)
                 .WithMany()
                 .HasForeignKey(u => u.CreatedUserId)
@@ -38,6 +44,11 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser,
                 .WithMany()
                 .HasForeignKey(u => u.UpdatedUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<AppRole>(entity =>
+        {
+            entity.HasIndex(b => b.NormalizedName).IsUnique();
         });
 
         builder.Entity<AppOption>(e =>

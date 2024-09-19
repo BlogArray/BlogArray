@@ -1,7 +1,6 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -115,72 +114,58 @@ public static class ModelBuilderExtensions
 
     public static void Seed(this ModelBuilder builder)
     {
+        builder.Entity<AppRole>().HasData(
+            new AppRole
+            {
+                Id = 1,
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new AppRole
+            {
+                Id = 2,
+                Name = "Editor",
+                NormalizedName = "EDITOR"
+            },
+            new AppRole
+            {
+                Id = 3,
+                Name = "Author",
+                NormalizedName = "AUTHOR"
+            },
+            new AppRole
+            {
+                Id = 4,
+                Name = "Subscriber",
+                NormalizedName = "SUBSCRIBER"
+            });
 
-        _ = builder.Entity<IdentityRole<int>>().HasData(
-          new IdentityRole<int>
-          {
-              Id = 1,
-              Name = "Admin",
-              NormalizedName = "Admin".Normalize().ToUpper(),
-              ConcurrencyStamp = "4877cca9-5a1c-472b-a130-98fdfb5a9b42"
-          },
-          new IdentityRole<int>
-          {
-              Id = 2,
-              Name = "Editor",
-              NormalizedName = "Editor".Normalize().ToUpper(),
-              ConcurrencyStamp = "5b20c5f7-175f-4b5a-a621-c36d42719f0c"
-          },
-          new IdentityRole<int>
-          {
-              Id = 3,
-              Name = "Author",
-              NormalizedName = "Author".Normalize().ToUpper(),
-              ConcurrencyStamp = "0aa90b5e-9dc3-496f-8b7d-13f235d2457f"
-          }
-        );
-
-        _ = builder.Entity<AppUser>().HasData(
+        builder.Entity<AppUser>().HasData(
           new AppUser
           {
               Id = 1,
               CreatedOn = new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893),
               DisplayName = "Admin",
               Email = "admin@vtp.com",
-              NormalizedEmail = "admin@vtp.com".Normalize().ToUpper(),
               EmailConfirmed = true,
               UserName = "admin",
-              NormalizedUserName = "admin".Normalize().ToUpper(),
               AccessFailedCount = 0,
-              ConcurrencyStamp = "8e05ab5d-3251-4ad9-8128-ceba2f331d1a",
-              SecurityStamp = "FIS7U5Q4NMTNFYCFY6APLEOV36B2SFDJ",
-              PasswordHash = "AQAAAAIAAYagAAAAELFIWWskHI9+r0MoDtV9uOjsEAFbJk23ACkLY8bP2acdySuMNeOWFrkp1tKM/7zyFA=="
+              PasswordHash = "AQAAAAIAAYagAAAAELFIWWskHI9+r0MoDtV9uOjsEAFbJk23ACkLY8bP2acdySuMNeOWFrkp1tKM/7zyFA==",
+              RoleId = 1,
           },
           new AppUser
           {
               Id = 2,
               CreatedOn = new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893),
               Email = "anonymous@vtp.com",
-              NormalizedEmail = "anonymous@vtp.com".Normalize().ToUpper(),
               EmailConfirmed = false,
               UserName = "anonymous",
-              NormalizedUserName = "anonymous".Normalize().ToUpper(),
               AccessFailedCount = 0,
               LockoutEnabled = true,
-              SecurityStamp = "FIS7U5Q4NMTNFYCFY6APLEOV36Q2AWER",
-              ConcurrencyStamp = "4877cca9-5a1c-542b-a130-98fdfb5a1f31"
-          }
-        );
+              RoleId = 4,
+          });
 
-        _ = builder.Entity<IdentityUserRole<int>>().HasData(
-          new IdentityUserRole<int>
-          {
-              RoleId = 1,
-              UserId = 1
-          }
-        );
-
-        _ = builder.Entity<AppOption>().HasData(
+        builder.Entity<AppOption>().HasData(
           new AppOption
           {
               Id = 1,

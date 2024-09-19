@@ -1,8 +1,6 @@
-﻿using BlogArray.Domain.Entities;
-using BlogArray.Persistence;
+﻿using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
@@ -111,19 +109,6 @@ namespace BlogArray.Api.Middleware
 
         private static IServiceCollection AddAppAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<AppUser, IdentityRole<int>>(opt =>
-            {
-                opt.Lockout.AllowedForNewUsers = false;
-                opt.SignIn.RequireConfirmedEmail = true;
-                opt.SignIn.RequireConfirmedAccount = true;
-                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
-                opt.User.RequireUniqueEmail = true;
-                opt.Lockout.MaxFailedAccessAttempts = 3;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
-                opt.Password.RequiredLength = 8;
-            })/*.AddSignInManager<SignInManagerExtension<AppUser>>()*/
-            .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = "Jwt";
