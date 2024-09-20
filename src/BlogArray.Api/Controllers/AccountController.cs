@@ -8,11 +8,11 @@ namespace BlogArray.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [AllowAnonymous]
-public class AccountController(IAccountRepository accountRepository) : ControllerBase
+public class AccountController(IAccountRepository accountRepository) : BaseController
 {
     // POST: api/account/authenticate
     [HttpPost("authenticate")]
-    public async Task<IActionResult> Authenticate([FromBody] SignInDTO signIn)
+    public async Task<IActionResult> Authenticate([FromBody] SignIn signIn)
     {
         if (!ModelState.IsValid)
         {
@@ -20,7 +20,7 @@ public class AccountController(IAccountRepository accountRepository) : Controlle
         }
 
         // Authenticate user using the repository
-        SignInResultDTO result = await accountRepository.Authenticate(signIn);
+        Domain.DTOs.SignInResult result = await accountRepository.Authenticate(signIn);
 
         // Return appropriate response based on the authentication result
         if (!result.Success)

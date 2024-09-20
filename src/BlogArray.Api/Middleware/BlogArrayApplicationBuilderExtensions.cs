@@ -7,6 +7,8 @@ namespace BlogArray.Api.Middleware
     {
         public static IApplicationBuilder UseBlogArray(this IApplicationBuilder app)
         {
+            app.UseExceptionHandler();
+
             app.AddSwagger();
 
             app.UseHttpsRedirection();

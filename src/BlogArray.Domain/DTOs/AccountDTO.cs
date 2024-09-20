@@ -2,7 +2,7 @@
 
 namespace BlogArray.Domain.DTOs;
 
-public class SignInDTO
+public class SignIn
 {
     [Required]
     public required string Username { get; set; }
@@ -12,7 +12,7 @@ public class SignInDTO
     public required string Password { get; set; }
 }
 
-public class SignInResultDTO
+public class SignInResult
 {
     public bool Success { get; set; }
 

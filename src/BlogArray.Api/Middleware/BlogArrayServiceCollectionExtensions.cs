@@ -19,6 +19,10 @@ namespace BlogArray.Api.Middleware
         {
             services.AddControllers();
 
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            
+            services.AddProblemDetails();
+
             services.AddLowercaseUrlsRouting();
 
             services.ConfigureSwagger();

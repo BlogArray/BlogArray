@@ -14,7 +14,7 @@ namespace BlogArray.Infrastructure.Repositories;
 
 public class AccountRepository(AppDbContext db, IConfiguration Configuration) : IAccountRepository
 {
-    public async Task<SignInResultDTO> Authenticate(SignInDTO signIn)
+    public async Task<SignInResult> Authenticate(SignIn signIn)
     {
         AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == signIn.Username || u.UserName == signIn.Username);
 
@@ -37,7 +37,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         }
 
         // Generate token for successful sign-in
-        return new SignInResultDTO
+        return new SignInResult
         {
             Success = true,
             Type = "Token",
@@ -47,14 +47,14 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     }
 
     // Helper method to create standardized invalid sign-in results
-    private static SignInResultDTO CreateInvalidSignInResult(string message) => new()
+    private static SignInResult CreateInvalidSignInResult(string message, string type = "Invalid") => new()
     {
         Success = false,
-        Type = "Invalid",
+        Type = type,
         Message = message
     };
 
-    public TokenData GenerateTokenData(AppUser appUser)
+    private TokenData GenerateTokenData(AppUser appUser)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(Configuration["BlogArray:Jwt:Key"]));
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
@@ -66,7 +66,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
             new Claim(ClaimTypes.Name, appUser.UserName),
             new Claim(ClaimTypes.GivenName, appUser.DisplayName ?? appUser.UserName),
             new Claim(ClaimTypes.Email, appUser.Email),
-            new Claim(ClaimTypes.Role, appUser.Role?.NormalizedName ?? "User") // Safe null handling
+            new Claim(ClaimTypes.Role, appUser.Role.NormalizedName)
         ];
 
         // Token expiration in 7 days
