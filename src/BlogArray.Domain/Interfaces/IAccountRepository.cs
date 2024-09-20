@@ -4,5 +4,7 @@ namespace BlogArray.Domain.Interfaces;
 
 public interface IAccountRepository
 {
-    Task<SignInResult> Authenticate(SignIn signIn);
+    Task<LoginResult> Authenticate(LoginRequest loginRequest);
+
+    Task<UserInfo?> GetUser(int userId);
 }

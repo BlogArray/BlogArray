@@ -69,10 +69,23 @@ public class AppUser : EntityBase
     public int AccessFailedCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the hashed representation of the email confirm or 2fa or lockout code for this user.
+    /// Gets or sets the hashed representation of the security code, used for email confirmation, two-factor authentication (2FA), or account lockout.
     /// </summary>
-    public string? SecurityCode { get; set; }
+    public string? SecurityCodeHash { get; set; }
 
+    /// <summary>
+    /// Gets or sets the date and time when the security code was issued.
+    /// </summary>
+    public DateTime? SecurityCodeIssuedAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the number of times the security code has been issued.
+    /// </summary>
+    public int SecurityCodeIssueCount { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier for the user's role.
+    /// </summary>
     public int RoleId { get; set; }
 
     public AppRole Role { get; set; } = default!;

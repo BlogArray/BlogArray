@@ -14,30 +14,30 @@ namespace BlogArray.Infrastructure.Repositories;
 
 public class AccountRepository(AppDbContext db, IConfiguration Configuration) : IAccountRepository
 {
-    public async Task<SignInResult> Authenticate(SignIn signIn)
+    public async Task<LoginResult> Authenticate(LoginRequest loginRequest)
     {
-        AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == signIn.Username || u.UserName == signIn.Username);
+        AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginRequest.Username || u.UserName == loginRequest.Username);
 
         // Validate user existence
         if (user == null)
         {
-            return CreateInvalidSignInResult("Invalid username or password.");
+            return CreateInvalidLoginResult("Invalid username or password.");
         }
 
         // Validate password
-        if (string.IsNullOrEmpty(user.PasswordHash) || !BCrypt.Net.BCrypt.Verify(signIn.Password, user.PasswordHash))
+        if (string.IsNullOrEmpty(user.PasswordHash) || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
         {
-            return CreateInvalidSignInResult("Invalid username or password.");
+            return CreateInvalidLoginResult("Invalid username or password.");
         }
 
         // Check if account is locked
         if (user.LockoutEnabled)
         {
-            return CreateInvalidSignInResult("User account is locked for additional security.");
+            return CreateInvalidLoginResult("User account is locked for additional security.");
         }
 
         // Generate token for successful sign-in
-        return new SignInResult
+        return new LoginResult
         {
             Success = true,
             Type = "Token",
@@ -46,15 +46,33 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         };
     }
 
+    public async Task<UserInfo?> GetUser(int userId)
+    {
+        UserInfo? userInfo = await db.AppUsers.Select(u => new UserInfo
+        {
+            Id = u.Id,
+            Email = u.Email,
+            UserName = u.UserName,
+            DisplayName = u.DisplayName,
+            EmailConfirmed = u.EmailConfirmed,
+            LockoutEnabled = u.LockoutEnabled,
+            Bio = u.Bio,
+            LockoutEnd = u.LockoutEnd,
+            Role = u.Role.NormalizedName
+        }).FirstOrDefaultAsync(u => u.Id == userId);
+
+        return userInfo;
+    }
+
     // Helper method to create standardized invalid sign-in results
-    private static SignInResult CreateInvalidSignInResult(string message, string type = "Invalid") => new()
+    private static LoginResult CreateInvalidLoginResult(string message, string type = "Invalid") => new()
     {
         Success = false,
         Type = type,
         Message = message
     };
 
-    private TokenData GenerateTokenData(AppUser appUser)
+    private TokenResponse GenerateTokenData(AppUser appUser)
     {
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(Configuration["BlogArray:Jwt:Key"]));
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
@@ -70,21 +88,25 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         ];
 
         // Token expiration in 7 days
-        DateTime expire = DateTimeManager.Now().AddDays(7);
+        int vaildDays = 7;
+        DateTime issueDate = DateTimeManager.Now();
+        DateTime expire = issueDate.AddDays(vaildDays);
+
         JwtSecurityToken jwtToken = new(
             issuer: Configuration["BlogArray:Jwt:Issuer"],
             audience: Configuration["BlogArray:Jwt:Audience"],
             claims: claims,
-            notBefore: DateTimeManager.Now(),
+            notBefore: issueDate,
             expires: expire,
             signingCredentials: creds
         );
 
         // TokenData object creation
-        return new TokenData
+        return new TokenResponse
         {
             Token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-            ExpiresInUtc = expire
+            ExpiresIn = vaildDays * 24 * 60 * 60,
+            IssueInUtc = issueDate
         };
     }
 

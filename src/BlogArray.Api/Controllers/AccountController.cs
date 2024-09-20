@@ -1,4 +1,5 @@
 ﻿using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Errors;
 using BlogArray.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +8,16 @@ namespace BlogArray.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
 public class AccountController(IAccountRepository accountRepository) : BaseController
 {
-    // POST: api/account/authenticate
-    [HttpPost("authenticate")]
-    public async Task<IActionResult> Authenticate([FromBody] SignIn signIn)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="loginRequest"></param>
+    /// <returns></returns>
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         if (!ModelState.IsValid)
         {
@@ -20,7 +25,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseContr
         }
 
         // Authenticate user using the repository
-        Domain.DTOs.SignInResult result = await accountRepository.Authenticate(signIn);
+        LoginResult result = await accountRepository.Authenticate(loginRequest);
 
         // Return appropriate response based on the authentication result
         if (!result.Success)
@@ -37,4 +42,23 @@ public class AccountController(IAccountRepository accountRepository) : BaseContr
         // If authentication is successful, return the generated token
         return Ok(result.TokenData);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("userinfo")]
+    [Authorize]
+    public async Task<IActionResult> Userinfo()
+    {
+        var user = await accountRepository.GetUser(LoggedInUserID);
+
+        if (user == null)
+        {
+            return UserErrors.NotFound(LoggedInUserID);
+        }
+
+        return Ok(user);
+    }
+
 }

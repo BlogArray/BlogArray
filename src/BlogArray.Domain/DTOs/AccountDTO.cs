@@ -2,7 +2,7 @@
 
 namespace BlogArray.Domain.DTOs;
 
-public class SignIn
+public class LoginRequest
 {
     [Required]
     public required string Username { get; set; }
@@ -12,7 +12,7 @@ public class SignIn
     public required string Password { get; set; }
 }
 
-public class SignInResult
+public class LoginResult
 {
     public bool Success { get; set; }
 
@@ -20,12 +20,14 @@ public class SignInResult
 
     public string? Message { get; set; }
 
-    public TokenData? TokenData { get; set; }
+    public TokenResponse? TokenData { get; set; }
 }
 
-public class TokenData
+public class TokenResponse
 {
     public required string Token { get; set; }
 
-    public required DateTime ExpiresInUtc { get; set; }
+    public required int ExpiresIn { get; set; }
+
+    public required DateTime IssueInUtc { get; set; }
 }
