@@ -2,6 +2,7 @@
 using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
@@ -20,7 +21,7 @@ namespace BlogArray.Api.Middleware
             services.AddControllers();
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
-            
+
             services.AddProblemDetails();
 
             services.AddLowercaseUrlsRouting();
@@ -50,18 +51,24 @@ namespace BlogArray.Api.Middleware
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    Description = "JWT Authorization header using the Bearer scheme. Put **_ONLY_** your JWT Bearer token on textbox below!",
+                    BearerFormat = "JWT",
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http
                 });
+
                 s.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
                     new OpenApiSecurityScheme
-                    {Reference = new OpenApiReference{
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }},
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme
+                        }
+                    },
                     Array.Empty<string>()
                 }});
             });
