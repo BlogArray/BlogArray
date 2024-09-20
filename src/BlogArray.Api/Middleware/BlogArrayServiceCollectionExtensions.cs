@@ -1,4 +1,5 @@
-﻿using BlogArray.Persistence;
+﻿using BlogArray.Infrastructure.Repositories;
+using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
 using Microsoft.Data.Sqlite;
@@ -69,7 +70,7 @@ namespace BlogArray.Api.Middleware
             Assembly[] assembliesToScan =
             [
                 Assembly.GetExecutingAssembly(),
-            //Assembly.GetAssembly(typeof(AppDbContext))
+                Assembly.GetAssembly(typeof(AccountRepository))
             ];
 
             services.RegisterAssemblyPublicNonGenericClasses(assembliesToScan).AsPublicImplementedInterfaces();
