@@ -243,12 +243,15 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     }
 
     // Helper method to create standardized invalid sign-in results
-    private static LoginResult CreateInvalidLoginResult(string message, string type = "Invalid") => new()
+    private static LoginResult CreateInvalidLoginResult(string message, string type = "Invalid")
     {
-        Success = false,
-        Type = type,
-        Message = message
-    };
+        return new()
+        {
+            Success = false,
+            Type = type,
+            Message = message
+        };
+    }
 
     private TokenResponse GenerateTokenData(AppUser appUser)
     {

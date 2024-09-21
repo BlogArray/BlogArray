@@ -62,12 +62,7 @@ public class AccountController(IMediator mediatr) : BaseController
         // Retrieve user info by sending a GetUserByIdQuery to the mediator
         UserInfo? user = await mediatr.Send(new GetUserByIdQuery(LoggedInUserID));
 
-        if (user == null)
-        {
-            return UserErrors.NotFound(LoggedInUserID);
-        }
-
-        return Ok(user);
+        return user == null ? UserErrors.NotFound(LoggedInUserID) : Ok(user);
     }
 
     /// <summary>
@@ -85,12 +80,7 @@ public class AccountController(IMediator mediatr) : BaseController
         // Send a CreateUserCommand to the mediator to create a new user
         ReturnResult<int> result = await mediatr.Send(new CreateUserCommand(createUser, LoggedInUserID));
 
-        if (!result.Status)
-        {
-            return ErrorDetails.CreateResponse(result.Code, result.Title, result.Message);
-        }
-
-        return Ok(result.Result);
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Result);
     }
 
     /// <summary>
@@ -108,11 +98,6 @@ public class AccountController(IMediator mediatr) : BaseController
         // Send an EditUserCommand to the mediator to update user info
         ReturnResult<int> result = await mediatr.Send(new EditUserCommand(editUserInfo, LoggedInUserID));
 
-        if (!result.Status)
-        {
-            return ErrorDetails.CreateResponse(result.Code, result.Title, result.Message);
-        }
-
-        return Ok(result.Message);
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 }

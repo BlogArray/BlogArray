@@ -1,9 +1,7 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Shared.Helpers;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace BlogArray.Api.Controllers;
@@ -22,7 +20,7 @@ public class BaseController : ControllerBase
 
     protected IActionResult ModelStateError(ModelStateDictionary ModelState)
     {
-        var errors = ModelState.Values.SelectMany(state => state.Errors).Select(error => error.ErrorMessage).ToArray();
+        string[] errors = ModelState.Values.SelectMany(state => state.Errors).Select(error => error.ErrorMessage).ToArray();
 
         return BadRequest(ErrorDetails.BadRequest("", "", errors));
     }

@@ -20,7 +20,7 @@ public class ReturnResult
         set
         {
             _code = value;
-            Status = (_code == 200);
+            Status = _code == 200;
         }
     }
 
@@ -100,47 +100,63 @@ public class ErrorDetails
     /// Returns a success response (HTTP 200).
     /// </summary>
     public static IActionResult Success(string title, string description, string[]? errors = null)
-        => CreateResponse(200, title, description, errors);
+    {
+        return CreateResponse(200, title, description, errors);
+    }
 
     /// <summary>
     /// Returns a bad request response (HTTP 400).
     /// </summary>
     public static IActionResult BadRequest(string title, string description, string[]? errors = null)
-        => CreateResponse(400, title, description, errors);
+    {
+        return CreateResponse(400, title, description, errors);
+    }
 
     /// <summary>
     /// Returns an unauthorized response (HTTP 401).
     /// </summary>
     public static IActionResult Unauthorized(string title, string description, string[]? errors = null)
-        => CreateResponse(401, title, description, errors);
+    {
+        return CreateResponse(401, title, description, errors);
+    }
 
     /// <summary>
     /// Returns a forbidden response (HTTP 403).
     /// </summary>
     public static IActionResult Forbidden(string title, string description, string[]? errors = null)
-        => CreateResponse(403, title, description, errors);
+    {
+        return CreateResponse(403, title, description, errors);
+    }
 
     /// <summary>
     /// Returns a not found response (HTTP 404).
     /// </summary>
     public static IActionResult NotFound(string title, string description, string[]? errors = null)
-        => CreateResponse(404, title, description, errors);
+    {
+        return CreateResponse(404, title, description, errors);
+    }
 
     /// <summary>
     /// Returns a conflict response (HTTP 409).
     /// </summary>
     public static IActionResult Conflict(string title, string description, string[]? errors = null)
-        => CreateResponse(409, title, description, errors);
+    {
+        return CreateResponse(409, title, description, errors);
+    }
 
     /// <summary>
     /// Returns an internal server error response (HTTP 500).
     /// </summary>
     public static IActionResult InternalServerError(string title, string description, string[]? errors = null)
-        => CreateResponse(500, title, description, errors);
+    {
+        return CreateResponse(500, title, description, errors);
+    }
 
     /// <summary>
     /// Creates a custom error response.
     /// </summary>
     public static IActionResult CreateError(int code, string title, string description, string[]? errors = null)
-        => CreateResponse(code, title, description, errors);
+    {
+        return CreateResponse(code, title, description, errors);
+    }
 }

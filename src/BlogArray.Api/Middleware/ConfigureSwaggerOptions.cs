@@ -23,14 +23,17 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     /// Initializes a new instance of the <see cref="ConfigureSwaggerOptions"/> class.
     /// </summary>
     /// <param name="provider">The <see cref="IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
-    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+    {
+        this.provider = provider;
+    }
 
     /// <inheritdoc />
     public void Configure(SwaggerGenOptions options)
     {
         // add a swagger document for each discovered API version
         // note: you might choose to skip or document deprecated API versions differently
-        foreach (var description in provider.ApiVersionDescriptions)
+        foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
         }
@@ -38,8 +41,8 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
     private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
     {
-        var text = new StringBuilder();
-        var info = new OpenApiInfo()
+        StringBuilder text = new();
+        OpenApiInfo info = new()
         {
             Title = "AusFleet",
             Version = description.ApiVersion.ToString(),
@@ -64,9 +67,9 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             {
                 text.AppendLine();
 
-                for (var i = 0; i < policy.Links.Count; i++)
+                for (int i = 0; i < policy.Links.Count; i++)
                 {
-                    var link = policy.Links[i];
+                    LinkHeaderValue link = policy.Links[i];
 
                     if (link.Type == "text/html")
                     {
@@ -99,18 +102,18 @@ public class SwaggerDefaultValues : IOperationFilter
     /// <inheritdoc />
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        var apiDescription = context.ApiDescription;
+        ApiDescription apiDescription = context.ApiDescription;
 
         operation.Deprecated |= apiDescription.IsDeprecated();
 
         // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/1752#issue-663991077
-        foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
+        foreach (ApiResponseType responseType in context.ApiDescription.SupportedResponseTypes)
         {
             // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/blob/b7cf75e7905050305b115dd96640ddd6e74c7ac9/src/Swashbuckle.AspNetCore.SwaggerGen/SwaggerGenerator/SwaggerGenerator.cs#L383-L387
-            var responseKey = responseType.IsDefaultResponse ? "default" : responseType.StatusCode.ToString();
-            var response = operation.Responses[responseKey];
+            string responseKey = responseType.IsDefaultResponse ? "default" : responseType.StatusCode.ToString();
+            OpenApiResponse response = operation.Responses[responseKey];
 
-            foreach (var contentType in response.Content.Keys)
+            foreach (string? contentType in response.Content.Keys)
             {
                 if (!responseType.ApiResponseFormats.Any(x => x.MediaType == contentType))
                 {
@@ -126,9 +129,9 @@ public class SwaggerDefaultValues : IOperationFilter
 
         // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/412
         // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/pull/413
-        foreach (var parameter in operation.Parameters)
+        foreach (OpenApiParameter? parameter in operation.Parameters)
         {
-            var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
+            ApiParameterDescription description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
 
             parameter.Description ??= description.ModelMetadata?.Description;
 
@@ -138,7 +141,7 @@ public class SwaggerDefaultValues : IOperationFilter
                  description.ModelMetadata is ModelMetadata modelMetadata)
             {
                 // REF: https://github.com/Microsoft/aspnet-api-versioning/issues/429#issuecomment-605402330
-                var json = JsonSerializer.Serialize(description.DefaultValue, modelMetadata.ModelType);
+                string json = JsonSerializer.Serialize(description.DefaultValue, modelMetadata.ModelType);
                 parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
             }
 

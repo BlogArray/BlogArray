@@ -29,11 +29,11 @@ namespace BlogArray.Api.Middleware
         {
             app.UseSwagger();
 
-            var apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+            IApiVersionDescriptionProvider apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
 
             app.UseSwaggerUI(options =>
             {
-                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
+                foreach (ApiVersionDescription? description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
                 {
                     options.SwaggerEndpoint($"{description.GroupName}/swagger.json",
                         description.GroupName.ToUpperInvariant());

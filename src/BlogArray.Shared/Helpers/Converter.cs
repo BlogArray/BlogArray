@@ -6,7 +6,7 @@ public class Converter
 {
     public static int ToInt(object value, int defaultValue = 0)
     {
-       string valueConverted = CheckNulls(value);
+        string valueConverted = CheckNulls(value);
 
         return int.TryParse(valueConverted.Replace(",", ""), out int retValue) ? retValue : defaultValue;
     }

@@ -9,7 +9,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     {
         logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
-        var problemDetails = new ProblemDetails
+        ProblemDetails problemDetails = new()
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "Server error"
