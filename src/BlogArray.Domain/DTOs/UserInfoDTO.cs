@@ -26,6 +26,8 @@ public class UserInfo : BasicUserInfo
 
     public DateTimeOffset? LockoutEnd { get; set; }
 
+    public int RoleId { get; set; }
+
     public string? Role { get; set; }
 
 }
@@ -35,8 +37,6 @@ public class CreateUser : UserInfo
     [Required(AllowEmptyStrings = false, ErrorMessage = "Enter a strong password")]
     [DataType(DataType.Password)]
     public required string Password { get; set; }
-
-    public int RoleId { get; set; }
 }
 
 public class EditUserInfo : UserInfo

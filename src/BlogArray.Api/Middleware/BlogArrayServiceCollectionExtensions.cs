@@ -1,10 +1,13 @@
-﻿using BlogArray.Infrastructure.Repositories;
+﻿using BlogArray.Application.Users.Commands;
+using BlogArray.Infrastructure.Repositories;
 using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -27,6 +30,8 @@ namespace BlogArray.Api.Middleware
             services.AddLowercaseUrlsRouting();
 
             services.ConfigureSwagger();
+            
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
             services.ConfigureRepositories()
                 .AddConnectionProvider(environment, configuration)

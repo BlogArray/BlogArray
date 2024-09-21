@@ -58,6 +58,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
             LockoutEnabled = u.LockoutEnabled,
             Bio = u.Bio,
             LockoutEnd = u.LockoutEnd,
+            RoleId = u.RoleId,
             Role = u.Role.NormalizedName
         }).FirstOrDefaultAsync(u => u.Id == userId);
 

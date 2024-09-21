@@ -1,6 +1,8 @@
-﻿using BlogArray.Domain.DTOs;
+﻿using BlogArray.Application.Users.Commands;
+using BlogArray.Application.Users.Queries;
+using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Errors;
-using BlogArray.Domain.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +10,7 @@ namespace BlogArray.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(IAccountRepository accountRepository) : BaseController
+public class AccountController(IMediator mediatr) : BaseController
 {
     /// <summary>
     /// 
@@ -25,7 +27,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseContr
         }
 
         // Authenticate user using the repository
-        LoginResult result = await accountRepository.Authenticate(loginRequest);
+        LoginResult result = await mediatr.Send(new AuthenticateCommand(loginRequest));
 
         // Return appropriate response based on the authentication result
         if (!result.Success)
@@ -51,7 +53,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseContr
     [Authorize]
     public async Task<IActionResult> Userinfo()
     {
-        var user = await accountRepository.GetUser(LoggedInUserID);
+        UserInfo? user = await mediatr.Send(new GetUserByIdQuery(LoggedInUserID));
 
         if (user == null)
         {
