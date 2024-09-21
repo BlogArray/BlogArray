@@ -1,13 +1,12 @@
-﻿using BlogArray.Application.Users.Commands;
+﻿using Asp.Versioning;
+using BlogArray.Application.Users.Commands;
 using BlogArray.Infrastructure.Repositories;
 using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -29,8 +28,10 @@ namespace BlogArray.Api.Middleware
 
             services.AddLowercaseUrlsRouting();
 
+            services.AddVersioning();
+
             services.ConfigureSwagger();
-            
+
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
             services.ConfigureRepositories()
@@ -39,9 +40,29 @@ namespace BlogArray.Api.Middleware
 
             return services;
         }
+
         public static IServiceCollection AddLowercaseUrlsRouting(this IServiceCollection services)
         {
             services.AddRouting(options => options.LowercaseUrls = true);
+
+            return services;
+        }
+
+        public static IServiceCollection AddVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
+                                                                new HeaderApiVersionReader("x-api-version"),
+                                                                new MediaTypeApiVersionReader("x-api-version"));
+            }).AddApiExplorer(setup =>
+            {
+                setup.GroupNameFormat = "'v'VVV";
+                setup.SubstituteApiVersionInUrl = true;
+            });
 
             return services;
         }
@@ -52,7 +73,9 @@ namespace BlogArray.Api.Middleware
 
             services.AddSwaggerGen(s =>
             {
-                s.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogArray API", Version = "v1" });
+                //s.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogArray API", Version = "v1" });
+
+                s.OperationFilter<SwaggerDefaultValues>();
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -64,18 +87,23 @@ namespace BlogArray.Api.Middleware
                     Type = SecuritySchemeType.Http
                 });
 
-                s.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                OpenApiSecurityScheme? key = new()
                 {
-                    new OpenApiSecurityScheme
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = JwtBearerDefaults.AuthenticationScheme
-                        }
+                        Type = ReferenceType.SecurityScheme,
+                        Id = JwtBearerDefaults.AuthenticationScheme
                     },
-                    Array.Empty<string>()
-                }});
+                    In = ParameterLocation.Header
+                };
+
+                OpenApiSecurityRequirement? requirement = new() { { key, new List<string>() } };
+
+                s.AddSecurityRequirement(requirement);
+
+                string? xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string? xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                s.IncludeXmlComments(xmlPath);
             });
 
             return services;

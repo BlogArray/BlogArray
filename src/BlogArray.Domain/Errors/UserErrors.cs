@@ -37,6 +37,18 @@ public static class UserErrors
     /// Returns an unauthorized error response when the user is not authorized to perform the action.
     /// </summary>
     /// <returns>An <see cref="IActionResult"/> representing the unauthorized error.</returns>
+    public static IActionResult Invalid() => ErrorDetails.Unauthorized("User.Invalid", "Invalid username or password.");
+
+    /// <summary>
+    /// Returns an unauthorized error response when the user is not authorized to perform the action.
+    /// </summary>
+    /// <returns>An <see cref="IActionResult"/> representing the unauthorized error.</returns>
+    public static IActionResult UserLocked() => ErrorDetails.Unauthorized("User.Lockedout", "User account is locked for additional security.");
+
+    /// <summary>
+    /// Returns an unauthorized error response when the user is not authorized to perform the action.
+    /// </summary>
+    /// <returns>An <see cref="IActionResult"/> representing the unauthorized error.</returns>
     public static IActionResult Unauthorized() => ErrorDetails.Unauthorized("User.Unauthorized", "You are not authorized to perform this action.");
 
     /// <summary>

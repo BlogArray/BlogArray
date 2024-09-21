@@ -1,4 +1,5 @@
-﻿using BlogArray.Persistence;
+﻿using Asp.Versioning.ApiExplorer;
+using BlogArray.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogArray.Api.Middleware
@@ -27,7 +28,18 @@ namespace BlogArray.Api.Middleware
         private static IApplicationBuilder AddSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+
+            var apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+
+            app.UseSwaggerUI(options =>
+            {
+                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
+                {
+                    options.SwaggerEndpoint($"{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+            });
+
             return app;
         }
 

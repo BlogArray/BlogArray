@@ -4,13 +4,39 @@ namespace BlogArray.Domain.DTOs;
 
 public class ReturnResult<T> : ReturnResult
 {
-    public required T Result { get; set; }
+    public T? Result { get; set; }
 }
 
 public class ReturnResult
 {
-    public bool Status { get; set; } = false;
+    private int _code;
 
+    /// <summary>
+    /// The HTTP status code. Automatically sets <see cref="Status"/> to true if the code is 200.
+    /// </summary>
+    public int Code
+    {
+        get => _code;
+        set
+        {
+            _code = value;
+            Status = (_code == 200);
+        }
+    }
+
+    /// <summary>
+    /// Indicates whether the operation was successful. This is automatically set to true if <see cref="Code"/> is 200.
+    /// </summary>
+    public bool Status { get; private set; }
+
+    /// <summary>
+    /// Title of the return result.
+    /// </summary>
+    public string? Title { get; set; }
+
+    /// <summary>
+    /// The message detailing the result of the operation.
+    /// </summary>
     public required string Message { get; set; }
 }
 
@@ -25,7 +51,7 @@ public class ErrorDetails
     /// <param name="status">The HTTP status code associated with the error.</param>
     /// <param name="title">A short title describing the error.</param>
     /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An array of specific error messages, if applicable.</param>
+    /// <param name="errors">An optional array of specific error messages.</param>
     private ErrorDetails(int status, string title, string description, string[]? errors = null)
     {
         Status = status;
@@ -42,7 +68,7 @@ public class ErrorDetails
     /// <summary>
     /// Gets or sets the short title describing the error.
     /// </summary>
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Gets or sets the detailed description of the error.
@@ -55,107 +81,66 @@ public class ErrorDetails
     public string[]? Errors { get; set; }
 
     /// <summary>
-    /// Returns a success response (HTTP 200).
+    /// Creates an error response based on the provided status code.
     /// </summary>
-    /// <param name="title">A short title describing the success.</param>
-    /// <param name="description">A detailed description of the success.</param>
-    /// <param name="errors">An optional array of specific messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing a success response.</returns>
-    public static IActionResult Success(string title, string description, string[]? errors = null)
+    /// <param name="statusCode">The HTTP status code.</param>
+    /// <param name="title">A short title describing the status.</param>
+    /// <param name="description">A detailed description of the status.</param>
+    /// <param name="errors">An optional array of specific error messages.</param>
+    /// <returns>An <see cref="IActionResult"/> representing the response.</returns>
+    public static IActionResult CreateResponse(int statusCode, string title, string description, string[]? errors = null)
     {
-        return new ObjectResult(new ErrorDetails(200, title, description, errors))
+        return new ObjectResult(new ErrorDetails(statusCode, title, description, errors))
         {
-            StatusCode = 200
+            StatusCode = statusCode
         };
     }
+
+    /// <summary>
+    /// Returns a success response (HTTP 200).
+    /// </summary>
+    public static IActionResult Success(string title, string description, string[]? errors = null)
+        => CreateResponse(200, title, description, errors);
 
     /// <summary>
     /// Returns a bad request response (HTTP 400).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing a bad request error.</returns>
     public static IActionResult BadRequest(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(400, title, description, errors))
-        {
-            StatusCode = 400
-        };
-    }
+        => CreateResponse(400, title, description, errors);
 
     /// <summary>
     /// Returns an unauthorized response (HTTP 401).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing an unauthorized error.</returns>
     public static IActionResult Unauthorized(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(401, title, description, errors))
-        {
-            StatusCode = 401
-        };
-    }
+        => CreateResponse(401, title, description, errors);
 
     /// <summary>
     /// Returns a forbidden response (HTTP 403).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing a forbidden error.</returns>
     public static IActionResult Forbidden(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(403, title, description, errors))
-        {
-            StatusCode = 403
-        };
-    }
+        => CreateResponse(403, title, description, errors);
 
     /// <summary>
     /// Returns a not found response (HTTP 404).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing a not found error.</returns>
     public static IActionResult NotFound(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(404, title, description, errors))
-        {
-            StatusCode = 404
-        };
-    }
+        => CreateResponse(404, title, description, errors);
 
     /// <summary>
-    /// Returns a not found response (HTTP 409).
+    /// Returns a conflict response (HTTP 409).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing a not found error.</returns>
     public static IActionResult Conflict(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(409, title, description, errors))
-        {
-            StatusCode = 409
-        };
-    }
+        => CreateResponse(409, title, description, errors);
 
     /// <summary>
     /// Returns an internal server error response (HTTP 500).
     /// </summary>
-    /// <param name="title">A short title describing the error.</param>
-    /// <param name="description">A detailed description of the error.</param>
-    /// <param name="errors">An optional array of specific error messages.</param>
-    /// <returns>An <see cref="IActionResult"/> representing an internal server error.</returns>
     public static IActionResult InternalServerError(string title, string description, string[]? errors = null)
-    {
-        return new ObjectResult(new ErrorDetails(500, title, description, errors))
-        {
-            StatusCode = 500
-        };
-    }
+        => CreateResponse(500, title, description, errors);
+
+    /// <summary>
+    /// Creates a custom error response.
+    /// </summary>
+    public static IActionResult CreateError(int code, string title, string description, string[]? errors = null)
+        => CreateResponse(code, title, description, errors);
 }
