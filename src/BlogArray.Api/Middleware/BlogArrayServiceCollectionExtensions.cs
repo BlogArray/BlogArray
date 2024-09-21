@@ -5,6 +5,7 @@ using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace BlogArray.Api.Middleware
             services.AddLowercaseUrlsRouting();
 
             services.AddVersioning();
+
+            services.AddFluentValidationAutoValidation();
 
             services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 

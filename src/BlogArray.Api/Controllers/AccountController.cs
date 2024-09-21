@@ -15,7 +15,7 @@ namespace BlogArray.Api.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(IMediator mediatr, IValidator<LoginRequest> validator) : BaseController
+public class AccountController(IMediator mediatr) : BaseController
 {
     /// <summary>
     /// Authenticates a user based on login request credentials and generates a token if successful.
@@ -29,11 +29,9 @@ public class AccountController(IMediator mediatr, IValidator<LoginRequest> valid
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
-        var validationResult = await validator.ValidateAsync(loginRequest);
-
-        if (!validationResult.IsValid)
+        if (!ModelState.IsValid)
         {
-            return ErrorDetails.BadRequest("Validation", "Invalid input data.", validationResult.Errors.Select(s => s.ErrorMessage).ToArray());
+            return ModelStateError(ModelState);
         }
 
         // Authenticate user by sending an AuthenticateCommand to the mediator

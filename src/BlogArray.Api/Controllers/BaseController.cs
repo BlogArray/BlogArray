@@ -22,7 +22,7 @@ public class BaseController : ControllerBase
     {
         string[] errors = ModelState.Values.SelectMany(state => state.Errors).Select(error => error.ErrorMessage).ToArray();
 
-        return BadRequest(ErrorDetails.BadRequest("", "", errors));
+        return ErrorDetails.BadRequest("Validation", "Invalid input data.", errors);
     }
 
     protected IActionResult Success<T>(T result)
