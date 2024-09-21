@@ -1,8 +1,18 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
+using FluentValidation;
 using MediatR;
 
-namespace BlogArray.Application.Users.Commands;
+namespace BlogArray.Application.Features.Users.Commands;
+
+public class EditUserValidator : AbstractValidator<EditUserInfo>
+{
+    public EditUserValidator()
+    {
+        RuleFor(x => x.UserName).NotNull().NotEmpty();
+        RuleFor(x => x.Password).NotNull().NotEmpty();
+    }
+}
 
 public class EditUserCommand(EditUserInfo model, int loggedInUser) : IRequest<ReturnResult<int>>
 {

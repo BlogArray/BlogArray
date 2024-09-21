@@ -1,9 +1,10 @@
 ﻿using Asp.Versioning;
-using BlogArray.Application.Users.Commands;
+using BlogArray.Application.Features.Users.Commands;
 using BlogArray.Infrastructure.Repositories;
 using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
 using BlogArray.Persistence.SqlServer;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace BlogArray.Api.Middleware
             services.AddLowercaseUrlsRouting();
 
             services.AddVersioning();
+
+            services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
             services.ConfigureSwagger();
 

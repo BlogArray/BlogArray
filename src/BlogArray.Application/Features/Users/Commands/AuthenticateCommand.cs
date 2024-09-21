@@ -1,8 +1,18 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
+using FluentValidation;
 using MediatR;
 
-namespace BlogArray.Application.Users.Commands;
+namespace BlogArray.Application.Features.Users.Commands;
+
+public class LoginRequestValidator : AbstractValidator<LoginRequest>
+{
+    public LoginRequestValidator()
+    {
+        RuleFor(x => x.Username).NotNull().NotEmpty();
+        RuleFor(x => x.Password).NotNull().NotEmpty();
+    }
+}
 
 public class AuthenticateCommand(LoginRequest model) : IRequest<LoginResult>
 {

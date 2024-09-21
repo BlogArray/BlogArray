@@ -2,7 +2,7 @@
 using BlogArray.Domain.Interfaces;
 using MediatR;
 
-namespace BlogArray.Application.Users.Queries;
+namespace BlogArray.Application.Features.Users.Queries;
 
 public class GetUserByIdQuery(int Id) : IRequest<UserInfo?>
 {

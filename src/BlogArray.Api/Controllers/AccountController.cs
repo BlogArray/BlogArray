@@ -1,7 +1,8 @@
-﻿using BlogArray.Application.Users.Commands;
-using BlogArray.Application.Users.Queries;
+﻿using BlogArray.Application.Features.Users.Commands;
+using BlogArray.Application.Features.Users.Queries;
 using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Errors;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace BlogArray.Api.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(IMediator mediatr) : BaseController
+public class AccountController(IMediator mediatr, IValidator<LoginRequest> validator) : BaseController
 {
     /// <summary>
     /// Authenticates a user based on login request credentials and generates a token if successful.
@@ -28,9 +29,11 @@ public class AccountController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
-        if (!ModelState.IsValid)
+        var validationResult = await validator.ValidateAsync(loginRequest);
+
+        if (!validationResult.IsValid)
         {
-            return BadRequest("Invalid input data.");
+            return ErrorDetails.BadRequest("Validation", "Invalid input data.", validationResult.Errors.Select(s => s.ErrorMessage).ToArray());
         }
 
         // Authenticate user by sending an AuthenticateCommand to the mediator
@@ -77,6 +80,11 @@ public class AccountController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> CreateUser([FromBody] CreateUser createUser)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Invalid input data.");
+        }
+
         // Send a CreateUserCommand to the mediator to create a new user
         ReturnResult<int> result = await mediatr.Send(new CreateUserCommand(createUser, LoggedInUserID));
 
@@ -95,6 +103,11 @@ public class AccountController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> UpdateUserinfo([FromBody] EditUserInfo editUserInfo)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Invalid input data.");
+        }
+
         // Send an EditUserCommand to the mediator to update user info
         ReturnResult<int> result = await mediatr.Send(new EditUserCommand(editUserInfo, LoggedInUserID));
 

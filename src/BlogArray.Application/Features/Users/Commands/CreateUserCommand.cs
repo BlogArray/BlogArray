@@ -1,9 +1,19 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
+using FluentValidation;
 using MediatR;
 
-namespace BlogArray.Application.Users.Commands;
+namespace BlogArray.Application.Features.Users.Commands;
 
+public class CreateUserValidator : AbstractValidator<CreateUser>
+{
+    public CreateUserValidator()
+    {
+        RuleFor(x => x.Email).NotEmpty().EmailAddress();
+        RuleFor(x => x.UserName).NotNull().NotEmpty();
+        RuleFor(x => x.Password).NotNull().NotEmpty();
+    }
+}
 
 public class CreateUserCommand(CreateUser model, int loggedInUser) : IRequest<ReturnResult<int>>
 {
