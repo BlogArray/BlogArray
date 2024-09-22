@@ -58,3 +58,13 @@ public class EditUserInfo : UserInfo
     public string? Password { get; set; }
 
 }
+
+public class UserProfile : BasicUserInfoBio
+{
+    [DisplayName("Set new password")]
+    public bool ChangePassword { get; set; }
+
+    [DataType(DataType.Password)]
+    public string? Password { get; set; }
+
+}

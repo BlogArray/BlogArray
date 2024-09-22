@@ -50,4 +50,19 @@ public interface IUserRepository
     /// and allows for updating other details such as bio, display name, and password (if requested).
     /// </remarks>
     Task<ReturnResult<int>> EditUserAsync(EditUserInfo updateUser, int userIdToUpdate, int loggedInUser);
+
+    /// <summary>
+    /// Updates an existing user's information in the system except role.
+    /// </summary>
+    /// <param name="userProfile">The user information to update.</param>
+    /// <param name="loggedInUser">The user id of current loggedin user.</param>
+    /// <returns>
+    /// A <see cref="ReturnResult{T}"/> object containing the result of the update operation.
+    /// If successful, the <see cref="ReturnResult{T}.Status"/> will be true.
+    /// </returns>
+    /// <remarks>
+    /// This method normalizes the user's email to lowercase, checks for email duplication,
+    /// and allows for updating other details such as bio, display name, and password (if requested).
+    /// </remarks>
+    Task<ReturnResult<int>> UpdateProfileAsync(UserProfile userProfile, int loggedInUser);
 }

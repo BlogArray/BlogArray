@@ -237,7 +237,94 @@ public class UserRepository(AppDbContext db) : IUserRepository
         {
             Code = StatusCodes.Status200OK,
             Title = "User.Updated",
-            Message = $"User '{updateUser.Username}' was successfully updated."
+            Message = $"User '{user.Username}' was successfully updated."
+        };
+    }
+
+    /// <summary>
+    /// Updates an existing user's information in the system except role.
+    /// </summary>
+    /// <param name="userProfile">The user information to update.</param>
+    /// <param name="userIdToUpdate">The user id of user to update.</param>
+    /// <param name="loggedInUser">The user id of current loggedin user.</param>
+    /// <returns>
+    /// A <see cref="ReturnResult{T}"/> object containing the result of the update operation.
+    /// If successful, the <see cref="ReturnResult{T}.Status"/> will be true.
+    /// </returns>
+    /// <remarks>
+    /// This method normalizes the user's email to lowercase, checks for email duplication,
+    /// and allows for updating other details such as bio, display name, and password (if requested).
+    /// </remarks>
+    public async Task<ReturnResult<int>> UpdateProfileAsync(UserProfile userProfile, int loggedInUser)
+    {
+        // Normalize email to lowercase
+        userProfile.Email = userProfile.Email.ToLowerInvariant();
+        userProfile.Username = userProfile.Username.ToLowerInvariant();
+
+        // Check if the email already exists for another user.
+        if (await db.AppUsers.AnyAsync(a => a.Email == userProfile.Email && a.Id != loggedInUser))
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Title = "User.EmailExists",
+                Message = $"The email '{userProfile.Email}' is already registered with another account."
+            };
+        }
+
+        // Check if username already exists
+        if (await db.AppUsers.AnyAsync(a => a.Username == userProfile.Username && a.Id != loggedInUser))
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Title = "User.UsernameExists",
+                Message = $"The username '{userProfile.Username}' is already registered."
+            };
+        }
+
+        // Retrieve the user by id
+        AppUser? user = await db.AppUsers.FirstOrDefaultAsync(a => a.Id == loggedInUser);
+
+        /// <summary>
+        /// If user is not found, return a not found error.
+        /// </summary>
+        if (user == null)
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Title = "User.NotFound",
+                Message = $"The user with email '{userProfile.Email}' could not be found in the system."
+            };
+        }
+
+        // Update user details
+        user.Email = userProfile.Email;
+        user.Username = userProfile.Username;
+        user.Bio = userProfile.Bio;
+        user.DisplayName = userProfile.DisplayName;
+
+        // If password change is requested, hash the new password
+        if (userProfile.ChangePassword)
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userProfile.Password);
+        }
+
+        user.UpdatedOn = DateTimeManager.Now();
+        user.UpdatedUserId = loggedInUser;
+
+        // Save changes to the database
+        await db.SaveChangesAsync();
+
+        /// <summary>
+        /// Return success result indicating the user was updated.
+        /// </summary>
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = "User.Updated",
+            Message = $"User '{user.Username}' was successfully updated."
         };
     }
 
