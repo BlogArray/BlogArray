@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace BlogArray.Domain.DTOs;
 
@@ -46,8 +45,6 @@ public class PageOptionsVM
 
     //If HomePage is page
     [Required(ErrorMessage = "Select a page")]
-    [RequiredIf("HomePage == 'page'", AllowEmptyStrings = false, ErrorMessage = "Select a page")]
-    [AssertThat("StaticHomePage != null && StaticHomePage != ''", ErrorMessage = "Select a page")]
     public string StaticHomePage { get; set; } = default!;
 
     //If HomePage is page
@@ -129,7 +126,6 @@ public class MediaOptions
     public bool OptimizeImage { get; set; } = default!;
 
     [Range(10, 100, ErrorMessage = "The value should be between 10 and 100.")]
-    [RequiredIf("OptimizeImage == true", AllowEmptyStrings = false, ErrorMessage = "Enter image quality to optimise")]
     public int? OptimizedQuality { get; set; } = default!;
 
     public bool OrganizeUploads { get; set; } = default!;

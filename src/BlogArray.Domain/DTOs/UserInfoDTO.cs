@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
 namespace BlogArray.Domain.DTOs;
 
@@ -44,7 +43,6 @@ public class EditUserInfo : UserInfo
     [DisplayName("Set new password")]
     public bool ChangePassword { get; set; }
 
-    [RequiredIf("ChangePassword", AllowEmptyStrings = false, ErrorMessage = "Enter a strong password")]
     [DataType(DataType.Password)]
     public string? Password { get; set; }
 
