@@ -64,7 +64,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -336,7 +336,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Bio", "CreatedOn", "CreatedUserId", "DisplayName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "PasswordHash", "RoleId", "SecurityCodeHash", "SecurityCodeIssueCount", "SecurityCodeIssuedAt", "TwoFactorEnabled", "UpdatedOn", "UpdatedUserId", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "Bio", "CreatedOn", "CreatedUserId", "DisplayName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "PasswordHash", "RoleId", "SecurityCodeHash", "SecurityCodeIssueCount", "SecurityCodeIssuedAt", "TwoFactorEnabled", "UpdatedOn", "UpdatedUserId", "Username" },
                 values: new object[,]
                 {
                     { 1, 0, null, new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893), null, "Admin", "admin@vtp.com", true, false, null, "$2a$11$xO.YQRxXr4KYzralfcHauuSmpiPpJy.YRQpJTt4QTZJsMauYIi3Ca", 1, null, 0, null, false, null, null, "admin" },
@@ -377,9 +377,9 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 column: "UpdatedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUsers_UserName",
+                name: "IX_AppUsers_Username",
                 table: "AppUsers",
-                column: "UserName",
+                column: "Username",
                 unique: true);
 
             migrationBuilder.CreateIndex(

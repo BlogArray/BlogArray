@@ -9,7 +9,7 @@ public class AppUser : EntityBase
     /// </summary>
     [Required]
     [MaxLength(64)]
-    public required string UserName { get; set; }
+    public required string Username { get; set; }
 
     /// <summary>
     /// Gets or sets a salted and hashed representation of the password for this user.

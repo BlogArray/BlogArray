@@ -29,7 +29,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     /// </remarks>
     public async Task<LoginResult> Authenticate(LoginRequest loginRequest)
     {
-        AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginRequest.Username || u.UserName == loginRequest.Username);
+        AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginRequest.Username || u.Username == loginRequest.Username);
 
         // Validate user existence
         if (user == null)
@@ -60,6 +60,74 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     }
 
     /// <summary>
+    /// Creates a new user in the system.
+    /// </summary>
+    /// <param name="user">The user data required for creating the account.</param>
+    /// <returns>
+    /// A <see cref="ReturnResult{T}"/> containing the result of the user creation.
+    /// If successful, <see cref="ReturnResult{T}.Result"/> contains the ID of the newly created user.
+    /// </returns>
+    /// <remarks>
+    /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
+    /// If either the username or email is already registered, the method returns an error result.
+    /// </remarks>
+    public async Task<ReturnResult<int>> RegisterUser(RegisterRequest user)
+    {
+        // Normalize email and username to lowercase
+        user.Email = user.Email.ToLowerInvariant();
+        user.Username = user.Username.ToLowerInvariant();
+
+        // Check if username already exists
+        if (await db.AppUsers.AnyAsync(a => a.Username == user.Username))
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Title = "User.UsernameExists",
+                Message = $"The username '{user.Username}' is already registered."
+            };
+        }
+
+        // Check if email already exists
+        if (await db.AppUsers.AnyAsync(a => a.Email == user.Email))
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Title = "User.EmailExists",
+                Message = $"The email '{user.Email}' is already associated with another account."
+            };
+        }
+
+        // Create a new AppUser object
+        AppUser newUser = new()
+        {
+            Email = user.Email,
+            Username = user.Username,
+            DisplayName = user.Username,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password),
+            AccessFailedCount = 0,
+            CreatedOn = DateTimeManager.Now(),
+            EmailConfirmed = true,
+            LockoutEnabled = false,
+            TwoFactorEnabled = false
+        };
+
+        // Add the new user to the database
+        await db.AppUsers.AddAsync(newUser);
+        await db.SaveChangesAsync();
+
+        // Return success result
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = "User.Created",
+            Message = $"User '{user.Username}' was successfully created.",
+            Result = newUser.Id
+        };
+    }
+
+    /// <summary>
     /// Retrieves user information by user ID.
     /// </summary>
     /// <param name="userId">The unique identifier of the user.</param>
@@ -77,7 +145,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         {
             Id = u.Id,
             Email = u.Email,
-            UserName = u.UserName,
+            Username = u.Username,
             DisplayName = u.DisplayName,
             EmailConfirmed = u.EmailConfirmed,
             LockoutEnabled = u.LockoutEnabled,
@@ -107,16 +175,16 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     {
         // Normalize email and username to lowercase
         user.Email = user.Email.ToLowerInvariant();
-        user.UserName = user.UserName.ToLowerInvariant();
+        user.Username = user.Username.ToLowerInvariant();
 
         // Check if username already exists
-        if (await db.AppUsers.AnyAsync(a => a.UserName == user.UserName))
+        if (await db.AppUsers.AnyAsync(a => a.Username == user.Username))
         {
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Title = "User.UsernameExists",
-                Message = $"The username '{user.UserName}' is already registered."
+                Message = $"The username '{user.Username}' is already registered."
             };
         }
 
@@ -135,7 +203,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         AppUser newUser = new()
         {
             Email = user.Email,
-            UserName = user.UserName,
+            Username = user.Username,
             RoleId = user.RoleId,
             Bio = user.Bio,
             DisplayName = user.DisplayName,
@@ -157,7 +225,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         {
             Code = StatusCodes.Status200OK,
             Title = "User.Created",
-            Message = $"User '{user.UserName}' was successfully created.",
+            Message = $"User '{user.Username}' was successfully created.",
             Result = newUser.Id
         };
     }
@@ -194,7 +262,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         }
 
         // Retrieve the user by username
-        AppUser? user = await db.AppUsers.FirstOrDefaultAsync(a => a.UserName == updateUser.UserName);
+        AppUser? user = await db.AppUsers.FirstOrDefaultAsync(a => a.Username == updateUser.Username);
 
         /// <summary>
         /// If user is not found, return a not found error.
@@ -238,7 +306,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         {
             Code = StatusCodes.Status200OK,
             Title = "User.Updated",
-            Message = $"User '{updateUser.UserName}' was successfully updated."
+            Message = $"User '{updateUser.Username}' was successfully updated."
         };
     }
 
@@ -262,8 +330,8 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
         List<Claim> claims =
         [
             new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString()),
-            new Claim(ClaimTypes.Name, appUser.UserName),
-            new Claim(ClaimTypes.GivenName, appUser.DisplayName ?? appUser.UserName),
+            new Claim(ClaimTypes.Name, appUser.Username),
+            new Claim(ClaimTypes.GivenName, appUser.DisplayName ?? appUser.Username),
             new Claim(ClaimTypes.Email, appUser.Email),
             new Claim(ClaimTypes.Role, appUser.Role.NormalizedName)
         ];

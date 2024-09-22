@@ -19,6 +19,20 @@ public interface IAccountRepository
     Task<LoginResult> Authenticate(LoginRequest loginRequest);
 
     /// <summary>
+    /// Creates a new user in the system.
+    /// </summary>
+    /// <param name="user">The user data required for creating the account.</param>
+    /// <returns>
+    /// A <see cref="ReturnResult{T}"/> containing the result of the user creation.
+    /// If successful, <see cref="ReturnResult{T}.Result"/> contains the ID of the newly created user.
+    /// </returns>
+    /// <remarks>
+    /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
+    /// If either the username or email is already registered, the method returns an error result.
+    /// </remarks>
+    Task<ReturnResult<int>> RegisterUser(RegisterRequest user);
+    
+    /// <summary>
     /// Retrieves user information by user ID.
     /// </summary>
     /// <param name="userId">The unique identifier of the user.</param>

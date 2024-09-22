@@ -3,7 +3,7 @@ using BlogArray.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
 
-namespace BlogArray.Application.Features.Users.Commands;
+namespace BlogArray.Application.Features.Account.Commands;
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {

@@ -218,7 +218,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     b.Property<int?>("UpdatedUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
@@ -234,7 +234,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
                     b.HasIndex("UpdatedUserId");
 
-                    b.HasIndex("UserName")
+                    b.HasIndex("Username")
                         .IsUnique();
 
                     b.ToTable("AppUsers");
@@ -253,7 +253,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                             RoleId = 1,
                             SecurityCodeIssueCount = 0,
                             TwoFactorEnabled = false,
-                            UserName = "admin"
+                            Username = "admin"
                         },
                         new
                         {
@@ -266,7 +266,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                             RoleId = 4,
                             SecurityCodeIssueCount = 0,
                             TwoFactorEnabled = false,
-                            UserName = "anonymous"
+                            Username = "anonymous"
                         });
                 });
 

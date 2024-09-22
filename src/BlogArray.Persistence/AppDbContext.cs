@@ -31,7 +31,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         builder.Entity<AppUser>(entity =>
         {
-            entity.HasIndex(b => b.UserName).IsUnique();
+            entity.HasIndex(b => b.Username).IsUnique();
 
             entity.HasIndex(b => b.Email).IsUnique();
 

@@ -6,16 +6,22 @@ namespace BlogArray.Domain.DTOs;
 public class BasicUserInfo
 {
 
-    public required string UserName { get; set; }
+    public required string Username { get; set; }
 
     public string? DisplayName { get; set; }
 
     public required string Email { get; set; }
 
-    public string? Bio { get; set; }
 }
 
-public class UserInfo : BasicUserInfo
+public class BasicUserInfoBio : BasicUserInfo
+{
+
+    public string? Bio { get; set; }
+
+}
+
+public class UserInfo : BasicUserInfoBio
 {
     public int Id { get; set; }
 

@@ -23,6 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Users\Validators\" />
+    <Folder Include="Features\Account\Queries\" />
   </ItemGroup>
 </Project>
