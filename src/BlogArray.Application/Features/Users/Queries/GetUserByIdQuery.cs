@@ -9,10 +9,10 @@ public class GetUserByIdQuery(int Id) : IRequest<UserInfo?>
     public int Id { get; } = Id;
 }
 
-public class GetUserByIdQueryHandler(IAccountRepository accountRepository) : IRequestHandler<GetUserByIdQuery, UserInfo?>
+public class GetUserByIdQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUserByIdQuery, UserInfo?>
 {
     public async Task<UserInfo?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        return await accountRepository.GetUser(request.Id);
+        return await userRepository.GetUser(request.Id);
     }
 }

@@ -33,10 +33,10 @@ public class EditUserCommand(EditUserInfo model, int loggedInUser) : IRequest<Re
     public int LoggedInUserId { get; set; } = loggedInUser;
 }
 
-internal class EditUserCommandHandler(IAccountRepository accountRepository) : IRequestHandler<EditUserCommand, ReturnResult<int>>
+internal class EditUserCommandHandler(IUserRepository userRepository) : IRequestHandler<EditUserCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(EditUserCommand request, CancellationToken cancellationToken)
     {
-        return await accountRepository.EditUser(request.Model, request.LoggedInUserId);
+        return await userRepository.EditUser(request.Model, request.LoggedInUserId);
     }
 }

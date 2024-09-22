@@ -25,10 +25,10 @@ public class CreateUserCommand(CreateUser model, int loggedInUser) : IRequest<Re
     public int LoggedInUserId { get; set; } = loggedInUser;
 }
 
-internal class CreateUserCommandHandler(IAccountRepository accountRepository) : IRequestHandler<CreateUserCommand, ReturnResult<int>>
+internal class CreateUserCommandHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        return await accountRepository.CreateUser(request.Model, request.LoggedInUserId);
+        return await userRepository.CreateUser(request.Model, request.LoggedInUserId);
     }
 }
