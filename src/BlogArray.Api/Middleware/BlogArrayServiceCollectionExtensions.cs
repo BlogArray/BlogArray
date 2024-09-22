@@ -18,42 +18,53 @@ using System.Text;
 
 namespace BlogArray.Api.Middleware;
 
+/// <summary>
+/// Contains extension methods for configuring services in the BlogArray application.
+/// </summary>
 public static class BlogArrayServiceCollectionExtensions
 {
+    /// <summary>
+    /// Configures the BlogArray services and middleware.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <param name="environment">The IWebHostEnvironment instance.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
+    /// <returns>The IServiceCollection instance after configuration.</returns>
     public static IServiceCollection AddBlogArray(this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration)
     {
         services.AddControllers();
-
         services.AddExceptionHandler<GlobalExceptionHandler>();
-
         services.AddProblemDetails();
-
         services.AddLowercaseUrlsRouting();
-
         services.AddVersioning();
-
         services.AddFluentValidationAutoValidation();
-
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
-
         services.ConfigureSwagger();
-
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
         services.ConfigureRepositories()
-            .AddConnectionProvider(environment, configuration)
-            .AddAppAuthentication(configuration);
+                .AddConnectionProvider(environment, configuration)
+                .AddAppAuthentication(configuration);
 
         return services;
     }
 
+    /// <summary>
+    /// Configures routing to enforce lowercase URLs.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance with lowercase URL routing.</returns>
     public static IServiceCollection AddLowercaseUrlsRouting(this IServiceCollection services)
     {
         services.AddRouting(options => options.LowercaseUrls = true);
-
         return services;
     }
 
+    /// <summary>
+    /// Configures API versioning with support for URL segments, headers, and media types.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance with versioning configured.</returns>
     public static IServiceCollection AddVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
@@ -61,9 +72,11 @@ public static class BlogArrayServiceCollectionExtensions
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
-            options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
-                                                            new HeaderApiVersionReader("x-api-version"),
-                                                            new MediaTypeApiVersionReader("x-api-version"));
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("x-api-version"),
+                new MediaTypeApiVersionReader("x-api-version")
+            );
         }).AddApiExplorer(setup =>
         {
             setup.GroupNameFormat = "'v'VVV";
@@ -73,27 +86,29 @@ public static class BlogArrayServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configures Swagger for the BlogArray API with JWT security support.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance with Swagger configured.</returns>
     private static IServiceCollection ConfigureSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
-
         services.AddSwaggerGen(s =>
         {
-            //s.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogArray API", Version = "v1" });
-
             s.OperationFilter<SwaggerDefaultValues>();
 
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
-                Description = "JWT Authorization header using the Bearer scheme. Put **_ONLY_** your JWT Bearer token on textbox below!",
+                Description = "JWT Authorization header using the Bearer scheme. Enter only the JWT token.",
                 BearerFormat = "JWT",
                 Scheme = JwtBearerDefaults.AuthenticationScheme,
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http
             });
 
-            OpenApiSecurityScheme? key = new()
+            OpenApiSecurityScheme? securityScheme = new()
             {
                 Reference = new OpenApiReference
                 {
@@ -103,9 +118,12 @@ public static class BlogArrayServiceCollectionExtensions
                 In = ParameterLocation.Header
             };
 
-            OpenApiSecurityRequirement? requirement = new() { { key, new List<string>() } };
+            var securityRequirement = new OpenApiSecurityRequirement
+            {
+                { securityScheme, new List<string>() }
+            };
 
-            s.AddSecurityRequirement(requirement);
+            s.AddSecurityRequirement(securityRequirement);
 
             string? xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             string? xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -115,6 +133,11 @@ public static class BlogArrayServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Registers repository implementations from specified assemblies.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <returns>The IServiceCollection instance with repositories configured.</returns>
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         Assembly[] assembliesToScan =
@@ -124,32 +147,38 @@ public static class BlogArrayServiceCollectionExtensions
         ];
 
         services.RegisterAssemblyPublicNonGenericClasses(assembliesToScan).AsPublicImplementedInterfaces();
-
         return services;
     }
 
+    /// <summary>
+    /// Adds the database connection provider based on environment configuration.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <param name="environment">The IWebHostEnvironment instance.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
+    /// <returns>The IServiceCollection instance with the appropriate database connection configured.</returns>
     private static IServiceCollection AddConnectionProvider(this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration)
     {
         string? databaseType = configuration.GetValue("BlogArray:DatabaseType", "SqlServer");
-
         string? connectionString = configuration.GetValue<string>("BlogArray:BlogArrayConnection");
 
         switch (databaseType)
         {
             case "SqlServer":
                 services.AddDbContext<AppDbContext, SqlServerDbContext>(options =>
-                options.UseSqlServer(connectionString,
-                x => x.MigrationsAssembly("BlogArray.Persistence.SqlServer")));
+                    options.UseSqlServer(connectionString, x => x.MigrationsAssembly("BlogArray.Persistence.SqlServer")));
                 break;
             case "Sqlite":
-                SqliteConnectionStringBuilder sonnectionStringBuilder = new(connectionString);
-                string dataSourcePath = Path.Combine(environment.ContentRootPath, sonnectionStringBuilder.DataSource);
+                SqliteConnectionStringBuilder connectionStringBuilder = new(connectionString);
+                string dataSourcePath = Path.Combine(environment.ContentRootPath, connectionStringBuilder.DataSource);
                 string? dataSourceDirectory = Path.GetDirectoryName(dataSourcePath);
-                if (!string.IsNullOrEmpty(dataSourceDirectory) && !Directory.Exists(dataSourceDirectory)) Directory.CreateDirectory(dataSourceDirectory);
+                if (!string.IsNullOrEmpty(dataSourceDirectory) && !Directory.Exists(dataSourceDirectory))
+                {
+                    Directory.CreateDirectory(dataSourceDirectory);
+                }
 
                 services.AddDbContext<AppDbContext, SqliteDbContext>(options =>
-                options.UseSqlite(connectionString,
-                x => x.MigrationsAssembly("BlogArray.Persistence.Sqlite")));
+                    options.UseSqlite(connectionString, x => x.MigrationsAssembly("BlogArray.Persistence.Sqlite")));
                 break;
             default:
                 throw new Exception("Database type not supported");
@@ -158,6 +187,12 @@ public static class BlogArrayServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configures JWT-based authentication for the BlogArray application.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
+    /// <returns>The IServiceCollection instance with authentication configured.</returns>
     private static IServiceCollection AddAppAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(options =>
@@ -178,7 +213,7 @@ public static class BlogArrayServiceCollectionExtensions
                 ClockSkew = TimeSpan.Zero,
             };
 
-            options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+            options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
                 {
@@ -188,14 +223,10 @@ public static class BlogArrayServiceCollectionExtensions
                     }
                     return Task.CompletedTask;
                 },
-                OnAuthenticationFailed = context =>
-                {
-                    return Task.CompletedTask;
-                }
+                OnAuthenticationFailed = context => Task.CompletedTask
             };
         });
 
         return services;
     }
-
 }
