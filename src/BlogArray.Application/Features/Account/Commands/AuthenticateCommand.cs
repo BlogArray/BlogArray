@@ -23,6 +23,6 @@ internal class AuthenticateCommandHandler(IAccountRepository accountRepository) 
 {
     public async Task<LoginResult> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
     {
-        return await accountRepository.Authenticate(request.Model);
+        return await accountRepository.AuthenticateAsync(request.Model);
     }
 }

@@ -4,6 +4,8 @@ namespace BlogArray.Domain.Interfaces;
 
 public interface IUserRepository
 {
+    Task<PagedResult<BasicUserInfoRole>> GetPaginatedUsersAsync(int pageNumber, int pageSize, string? searchTerm);
+
     /// <summary>
     /// Retrieves user information by user ID.
     /// </summary>
@@ -16,7 +18,7 @@ public interface IUserRepository
     /// This method fetches user details from the system based on the provided user ID.
     /// If the user does not exist, the method returns <c>null</c>.
     /// </remarks>
-    Task<UserInfo?> GetUser(int userId);
+    Task<UserInfo?> GetUserAsync(int userId);
 
     /// <summary>
     /// Creates a new user in the system.
@@ -31,12 +33,13 @@ public interface IUserRepository
     /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
     /// If either the username or email is already registered, the method returns an error result.
     /// </remarks>
-    Task<ReturnResult<int>> CreateUser(CreateUser user, int loggedInUser);
+    Task<ReturnResult<int>> CreateUserAsync(CreateUser user, int loggedInUser);
 
     /// <summary>
     /// Updates an existing user's information in the system.
     /// </summary>
     /// <param name="updateUser">The user information to update.</param>
+    /// <param name="userIdToUpdate">The user id of user to update.</param>
     /// <param name="loggedInUser">The user id of current loggedin user.</param>
     /// <returns>
     /// A <see cref="ReturnResult{T}"/> object containing the result of the update operation.
@@ -46,5 +49,5 @@ public interface IUserRepository
     /// This method normalizes the user's email to lowercase, checks for email duplication,
     /// and allows for updating other details such as bio, display name, and password (if requested).
     /// </remarks>
-    Task<ReturnResult<int>> EditUser(EditUserInfo updateUser, int loggedInUser);
+    Task<ReturnResult<int>> EditUserAsync(EditUserInfo updateUser, int userIdToUpdate, int loggedInUser);
 }

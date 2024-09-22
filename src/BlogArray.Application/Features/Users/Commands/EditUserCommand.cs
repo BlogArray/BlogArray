@@ -26,17 +26,19 @@ public class EditUserValidator : AbstractValidator<EditUserInfo>
     }
 }
 
-public class EditUserCommand(EditUserInfo model, int loggedInUser) : IRequest<ReturnResult<int>>
+public class EditUserCommand(EditUserInfo model, int userIdToUpdate, int loggedInUser) : IRequest<ReturnResult<int>>
 {
     public EditUserInfo Model { get; set; } = model;
 
     public int LoggedInUserId { get; set; } = loggedInUser;
+
+    public int UserIdToUpdate { get; set; } = userIdToUpdate;
 }
 
 internal class EditUserCommandHandler(IUserRepository userRepository) : IRequestHandler<EditUserCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(EditUserCommand request, CancellationToken cancellationToken)
     {
-        return await userRepository.EditUser(request.Model, request.LoggedInUserId);
+        return await userRepository.EditUserAsync(request.Model, request.UserIdToUpdate, request.LoggedInUserId);
     }
 }

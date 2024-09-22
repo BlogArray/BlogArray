@@ -22,6 +22,6 @@ internal class RegisterUserCommandHandler(IAccountRepository accountRepository) 
 {
     public async Task<ReturnResult<int>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        return await accountRepository.RegisterUser(request.Model);
+        return await accountRepository.RegisterUserAsync(request.Model);
     }
 }

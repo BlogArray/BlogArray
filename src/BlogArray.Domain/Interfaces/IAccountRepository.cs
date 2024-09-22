@@ -16,7 +16,7 @@ public interface IAccountRepository
     /// This method validates the user's credentials and returns authentication information, such as JWT tokens or user details.
     /// If authentication fails, the returned <see cref="LoginResult"/> will indicate the failure reason.
     /// </remarks>
-    Task<LoginResult> Authenticate(LoginRequest loginRequest);
+    Task<LoginResult> AuthenticateAsync(LoginRequest loginRequest);
 
     /// <summary>
     /// Creates a new user in the system.
@@ -30,6 +30,6 @@ public interface IAccountRepository
     /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
     /// If either the username or email is already registered, the method returns an error result.
     /// </remarks>
-    Task<ReturnResult<int>> RegisterUser(RegisterRequest user);
+    Task<ReturnResult<int>> RegisterUserAsync(RegisterRequest user);
 
 }

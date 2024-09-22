@@ -27,7 +27,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     /// This method validates the user's credentials and returns authentication information, such as JWT tokens or user details.
     /// If authentication fails, the returned <see cref="LoginResult"/> will indicate the failure reason.
     /// </remarks>
-    public async Task<LoginResult> Authenticate(LoginRequest loginRequest)
+    public async Task<LoginResult> AuthenticateAsync(LoginRequest loginRequest)
     {
         AppUser? user = await db.AppUsers.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginRequest.Username || u.Username == loginRequest.Username);
 
@@ -71,7 +71,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
     /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
     /// If either the username or email is already registered, the method returns an error result.
     /// </remarks>
-    public async Task<ReturnResult<int>> RegisterUser(RegisterRequest user)
+    public async Task<ReturnResult<int>> RegisterUserAsync(RegisterRequest user)
     {
         // Normalize email and username to lowercase
         user.Email = user.Email.ToLowerInvariant();

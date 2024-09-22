@@ -29,6 +29,6 @@ internal class CreateUserCommandHandler(IUserRepository userRepository) : IReque
 {
     public async Task<ReturnResult<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        return await userRepository.CreateUser(request.Model, request.LoggedInUserId);
+        return await userRepository.CreateUserAsync(request.Model, request.LoggedInUserId);
     }
 }

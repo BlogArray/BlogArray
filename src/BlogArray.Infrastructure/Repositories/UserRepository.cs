@@ -1,6 +1,7 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Interfaces;
+using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
 using BlogArray.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,52 @@ namespace BlogArray.Infrastructure.Repositories;
 
 public class UserRepository(AppDbContext db) : IUserRepository
 {
+    /// <summary>
+    /// Retrieves a paginated list of users with optional search functionality.
+    /// </summary>
+    /// <param name="pageNumber">The index of the page to retrieve (1-based).</param>
+    /// <param name="pageSize">The number of users per page.</param>
+    /// <param name="searchTerm">
+    /// The term used to search users by <see cref="AppUser.DisplayName"/>, 
+    /// <see cref="AppUser.Username"/>, or <see cref="AppUser.Email"/>. 
+    /// This is optional, and if null or empty, all users are retrieved.
+    /// </param>
+    /// <returns>
+    /// A paginated list of users with basic information and their associated role.
+    /// </returns>
+    /// <remarks>
+    /// This method returns a paginated list of users filtered by the provided search term.
+    /// If no search term is provided, it returns all users paginated based on the specified page number and page size.
+    /// </remarks>
+    public async Task<PagedResult<BasicUserInfoRole>> GetPaginatedUsersAsync(int pageNumber, int pageSize, string? searchTerm)
+    {
+        // Define the query to get all users from the AppUsers table
+        IQueryable<AppUser> query = db.AppUsers;
+
+        // Filter the query by the search term, if provided
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            query = query.Where(u => u.DisplayName.Contains(searchTerm) ||
+                                     u.Username.Contains(searchTerm) ||
+                                     u.Email.Contains(searchTerm));
+        }
+
+        // Project the result to BasicUserInfoRole and paginate the data
+        PagedResult<BasicUserInfoRole> pagedUsers = await query
+            .OrderBy(u => u.Id) // Order by user Id
+            .Select(u => new BasicUserInfoRole
+            {
+                Id = u.Id,
+                Username = u.Username,
+                DisplayName = u.DisplayName,
+                Email = u.Email,
+                Role = u.Role.NormalizedName
+            })
+            .ToPagedListAsync(pageNumber, pageSize);
+
+        return pagedUsers;
+    }
+
     /// <summary>
     /// Retrieves user information by user ID.
     /// </summary>
@@ -22,7 +69,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
     /// This method fetches user details from the system based on the provided user ID.
     /// If the user does not exist, the method returns <c>null</c>.
     /// </remarks>
-    public async Task<UserInfo?> GetUser(int userId)
+    public async Task<UserInfo?> GetUserAsync(int userId)
     {
         UserInfo? userInfo = await db.AppUsers.Select(u => new UserInfo
         {
@@ -54,7 +101,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
     /// This method normalizes the user's email and username to lowercase and checks if they already exist in the system.
     /// If either the username or email is already registered, the method returns an error result.
     /// </remarks>
-    public async Task<ReturnResult<int>> CreateUser(CreateUser user, int loggedInUser)
+    public async Task<ReturnResult<int>> CreateUserAsync(CreateUser user, int loggedInUser)
     {
         // Normalize email and username to lowercase
         user.Email = user.Email.ToLowerInvariant();
@@ -117,6 +164,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
     /// Updates an existing user's information in the system.
     /// </summary>
     /// <param name="updateUser">The user information to update.</param>
+    /// <param name="userIdToUpdate">The user id of user to update.</param>
     /// <param name="loggedInUser">The user id of current loggedin user.</param>
     /// <returns>
     /// A <see cref="ReturnResult{T}"/> object containing the result of the update operation.
@@ -126,7 +174,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
     /// This method normalizes the user's email to lowercase, checks for email duplication,
     /// and allows for updating other details such as bio, display name, and password (if requested).
     /// </remarks>
-    public async Task<ReturnResult<int>> EditUser(EditUserInfo updateUser, int loggedInUser)
+    public async Task<ReturnResult<int>> EditUserAsync(EditUserInfo updateUser, int userIdToUpdate, int loggedInUser)
     {
         // Normalize email to lowercase
         updateUser.Email = updateUser.Email.ToLowerInvariant();
@@ -134,7 +182,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
         /// <summary>
         /// Check if the email already exists for another user.
         /// </summary>
-        if (await db.AppUsers.AnyAsync(a => a.Email == updateUser.Email && a.Id != updateUser.Id))
+        if (await db.AppUsers.AnyAsync(a => a.Email == updateUser.Email && a.Id != userIdToUpdate))
         {
             return new ReturnResult<int>
             {
@@ -145,7 +193,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
         }
 
         // Retrieve the user by username
-        AppUser? user = await db.AppUsers.FirstOrDefaultAsync(a => a.Username == updateUser.Username);
+        AppUser? user = await db.AppUsers.FirstOrDefaultAsync(a => a.Id == userIdToUpdate);
 
         /// <summary>
         /// If user is not found, return a not found error.

@@ -5,6 +5,7 @@ namespace BlogArray.Domain.DTOs;
 
 public class BasicUserInfo
 {
+    public int Id { get; set; }
 
     public required string Username { get; set; }
 
@@ -21,9 +22,13 @@ public class BasicUserInfoBio : BasicUserInfo
 
 }
 
+public class BasicUserInfoRole : BasicUserInfo
+{
+    public string? Role { get; set; }
+}
+
 public class UserInfo : BasicUserInfoBio
 {
-    public int Id { get; set; }
 
     public bool EmailConfirmed { get; set; }
 

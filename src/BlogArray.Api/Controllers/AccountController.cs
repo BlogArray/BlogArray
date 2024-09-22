@@ -25,7 +25,7 @@ public class AccountController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenResponse))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginRequest loginRequest)
     {
         if (!ModelState.IsValid)
         {
@@ -57,7 +57,7 @@ public class AccountController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest registerRequest)
+    public async Task<IActionResult> RegisterUserAsync([FromBody] RegisterRequest registerRequest)
     {
         if (!ModelState.IsValid)
         {

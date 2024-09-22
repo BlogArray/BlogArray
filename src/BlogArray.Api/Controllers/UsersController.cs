@@ -16,6 +16,23 @@ namespace BlogArray.Api.Controllers;
 public class UsersController(IMediator mediatr) : BaseController
 {
     /// <summary>
+    /// Retrieves the current logged-in user's information.
+    /// </summary>
+    /// <returns>Returns an HTTP 200 status with the user's information, or a 404 if the user is not found.</returns>
+    [Authorize]
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserInfo))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> UserInfoAsync()
+    {
+        // Retrieve user info by sending a GetUserByIdQuery to the mediator
+        UserInfo? user = await mediatr.Send(new GetUserByIdQuery(LoggedInUserID));
+
+        return user == null ? UserErrors.NotFound(LoggedInUserID) : Ok(user);
+    }
+
+    /// <summary>
     /// Creates a new user account based on the provided user information.
     /// </summary>
     /// <param name="createUser">The user information required for creating a new account.</param>
@@ -25,7 +42,7 @@ public class UsersController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> CreateUser([FromBody] CreateUser createUser)
+    public async Task<IActionResult> CreateUserAsync([FromBody] CreateUser createUser)
     {
         if (!ModelState.IsValid)
         {
@@ -39,20 +56,27 @@ public class UsersController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Retrieves the current logged-in user's information.
+    /// Updates the user information bassed on id.
     /// </summary>
-    /// <returns>Returns an HTTP 200 status with the user's information, or a 404 if the user is not found.</returns>
+    /// <param name="editUserInfo">The updated user information.</param>
+    /// <param name="id">The ID of the user whose information is to be updated.</param>
+    /// <returns>Returns an HTTP 200 status if the user information is updated successfully, or an error response if it fails.</returns>
     [Authorize]
-    [HttpGet("info")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserInfo))]
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Userinfo()
+    public async Task<IActionResult> UpdateUserInfoAsync([FromBody] EditUserInfo editUserInfo, int id)
     {
-        // Retrieve user info by sending a GetUserByIdQuery to the mediator
-        UserInfo? user = await mediatr.Send(new GetUserByIdQuery(LoggedInUserID));
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Invalid input data.");
+        }
 
-        return user == null ? UserErrors.NotFound(LoggedInUserID) : Ok(user);
+        // Send an EditUserCommand to the mediator to update user info
+        ReturnResult<int> result = await mediatr.Send(new EditUserCommand(editUserInfo, id, LoggedInUserID));
+
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 
     /// <summary>
@@ -61,11 +85,11 @@ public class UsersController(IMediator mediatr) : BaseController
     /// <param name="editUserInfo">The updated user information.</param>
     /// <returns>Returns an HTTP 200 status if the user information is updated successfully, or an error response if it fails.</returns>
     [Authorize]
-    [HttpPost("info")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> UpdateUserinfo([FromBody] EditUserInfo editUserInfo)
+    public async Task<IActionResult> UpdateUserProfileAsync([FromBody] EditUserInfo editUserInfo)
     {
         if (!ModelState.IsValid)
         {
@@ -73,7 +97,7 @@ public class UsersController(IMediator mediatr) : BaseController
         }
 
         // Send an EditUserCommand to the mediator to update user info
-        ReturnResult<int> result = await mediatr.Send(new EditUserCommand(editUserInfo, LoggedInUserID));
+        ReturnResult<int> result = await mediatr.Send(new EditUserCommand(editUserInfo, LoggedInUserID, LoggedInUserID));
 
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
