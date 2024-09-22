@@ -122,7 +122,7 @@ public class UsersController(IMediator mediatr) : BaseController
         }
 
         // Send an EditUserCommand to the mediator to update user info
-        ReturnResult<int> result = await mediatr.Send(new UpdateUserProfileCommand(userProfile, LoggedInUserID, LoggedInUserID));
+        ReturnResult<int> result = await mediatr.Send(new UpdateUserProfileCommand(userProfile, LoggedInUserID));
 
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
