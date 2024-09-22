@@ -118,7 +118,7 @@ public static class BlogArrayServiceCollectionExtensions
                 In = ParameterLocation.Header
             };
 
-            var securityRequirement = new OpenApiSecurityRequirement
+            OpenApiSecurityRequirement securityRequirement = new()
             {
                 { securityScheme, new List<string>() }
             };

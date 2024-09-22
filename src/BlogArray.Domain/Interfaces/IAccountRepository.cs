@@ -31,5 +31,5 @@ public interface IAccountRepository
     /// If either the username or email is already registered, the method returns an error result.
     /// </remarks>
     Task<ReturnResult<int>> RegisterUser(RegisterRequest user);
-    
+
 }
