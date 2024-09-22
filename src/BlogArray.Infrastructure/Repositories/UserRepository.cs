@@ -237,7 +237,8 @@ public class UserRepository(AppDbContext db) : IUserRepository
         {
             Code = StatusCodes.Status200OK,
             Title = "User.Updated",
-            Message = $"User '{user.Username}' was successfully updated."
+            Message = $"User '{user.Username}' was successfully updated.",
+            Result = user.Id
         };
     }
 
@@ -324,7 +325,8 @@ public class UserRepository(AppDbContext db) : IUserRepository
         {
             Code = StatusCodes.Status200OK,
             Title = "User.Updated",
-            Message = $"User '{user.Username}' was successfully updated."
+            Message = $"User '{user.Username}' was successfully updated.",
+            Result = user.Id
         };
     }
 
