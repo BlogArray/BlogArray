@@ -135,4 +135,44 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
         };
     }
 
+    public async Task<ReturnResult<int>> DeleteCategoryAsync(int id)
+    {
+        Term? term = await db.Terms.FirstOrDefaultAsync(a => a.Id == id);
+
+        if (term == null)
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Title = "Category.NotFound",
+                Message = $"The category with the id '{id}' could not be found in the system."
+            };
+        }
+
+        //TODO Check for default category
+        //if (term.Id == AppConstants.PageOptions.DefaultCategory)
+        //{
+        //    return new ReturnResult<int>
+        //    {
+        //        Code = StatusCodes.Status404NotFound,
+        //        Title = "Category.NotFound",
+        //        Message = $"You cannot deleted the default category."
+        //    };
+        //}
+
+        //await db.Terms.Where(p => p.Id == id).ExecuteDeleteAsync();
+
+        db.Terms.Remove(term);
+
+        await db.SaveChangesAsync();
+
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = "Category.Deleted",
+            Message = $"Category '{term.Name}' was successfully deleted.",
+            Result = term.Id
+        };
+    }
+
 }

@@ -117,7 +117,7 @@ public class CategoriesController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Delete(int id)
     {
-        // Placeholder for the delete operation
-        return Ok();
+        ReturnResult<int> result = await mediatr.Send(new DeleteCategoryCommand(id));
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 }

@@ -14,4 +14,6 @@ public interface ICategoryRepository
 
     Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfoDescription category);
 
+    Task<ReturnResult<int>> DeleteCategoryAsync(int id);
+
 }
