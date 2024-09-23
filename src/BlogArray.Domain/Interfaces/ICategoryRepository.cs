@@ -6,10 +6,12 @@ public interface ICategoryRepository
 {
     Task<CategoryInfo?> GetCategoryAsync(int id);
 
-    Task<PagedResult<CategoryInfoCount>> GetPaginatedCategoryAsync(int pageNumber, int pageSize, string? searchTerm);
+    Task<CategoryInfo?> GetCategoryAsync(string slug);
 
-    Task<ReturnResult<int>> CreateCategoryAsync(CategoryInfo category);
+    Task<PagedResult<CategoryInfo>> GetPaginatedCategoryAsync(int pageNumber, int pageSize, string? searchTerm);
 
-    Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfo category);
+    Task<ReturnResult<int>> CreateCategoryAsync(CategoryInfoDescription category);
+
+    Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfoDescription category);
 
 }

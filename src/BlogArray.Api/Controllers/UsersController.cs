@@ -29,10 +29,10 @@ public class UsersController(IMediator mediatr) : BaseController
     /// </returns>
     [Authorize]
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserInfo))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<BasicUserInfoRole>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> GetAllUsers(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
+    public async Task<IActionResult> GetAllUsersAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
         // Retrieve users by sending a GetUsersQuery to the mediator
         PagedResult<BasicUserInfoRole> users = await mediatr.Send(new GetUsersQuery(pageNumber, pageSize, searchTerm));

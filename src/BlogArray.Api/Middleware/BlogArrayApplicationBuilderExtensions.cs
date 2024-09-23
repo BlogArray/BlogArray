@@ -56,6 +56,8 @@ public static class BlogArrayApplicationBuilderExtensions
         // Configure Swagger UI to support multiple API versions
         app.UseSwaggerUI(options =>
         {
+            options.DefaultModelsExpandDepth(-1);
+
             foreach (ApiVersionDescription? description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
             {
                 options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",

@@ -19,11 +19,23 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
             Name = c.Name,
             Slug = c.Slug,
             Description = c.Description,
-            Count = c.PostTerms.Count
-        }).FirstOrDefaultAsync();
+            PostsCount = c.PostTerms.Count
+        }).FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<PagedResult<CategoryInfoCount>> GetPaginatedCategoryAsync(int pageNumber, int pageSize, string? searchTerm)
+    public Task<CategoryInfo?> GetCategoryAsync(string slug)
+    {
+        return db.Terms.Select(c => new CategoryInfo
+        {
+            Id = c.Id,
+            Name = c.Name,
+            Slug = c.Slug,
+            Description = c.Description,
+            PostsCount = c.PostTerms.Count
+        }).FirstOrDefaultAsync(c => c.Slug == slug);
+    }
+
+    public async Task<PagedResult<CategoryInfo>> GetPaginatedCategoryAsync(int pageNumber, int pageSize, string? searchTerm)
     {
         IQueryable<Term> query = db.Terms;
 
@@ -33,21 +45,22 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
                                      u.Name.Contains(searchTerm));
         }
 
-        PagedResult<CategoryInfoCount> pagedResult = await query
+        PagedResult<CategoryInfo> pagedResult = await query
             .OrderBy(u => u.Id) // Order by Id
-            .Select(u => new CategoryInfoCount
+            .Select(u => new CategoryInfo
             {
                 Id = u.Id,
                 Name = u.Name,
                 Slug = u.Slug,
-                Count = u.PostTerms.Count
+                Description = u.Description,
+                PostsCount = u.PostTerms.Count
             })
             .ToPagedListAsync(pageNumber, pageSize);
 
         return pagedResult;
     }
 
-    public async Task<ReturnResult<int>> CreateCategoryAsync(CategoryInfo category)
+    public async Task<ReturnResult<int>> CreateCategoryAsync(CategoryInfoDescription category)
     {
         string slug = category.Slug.ToSlug();
 
@@ -57,7 +70,7 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
             {
                 Code = StatusCodes.Status400BadRequest,
                 Title = "Category.Exists",
-                Message = $"There is already a category with the name '{category.Name}', try another name."
+                Message = $"There is already a category with the name '{slug}', try another name."
             };
         }
 
@@ -81,17 +94,17 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
         };
     }
 
-    public async Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfo category)
+    public async Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfoDescription category)
     {
         string slug = category.Slug.ToSlug();
 
-        if (await db.Terms.Where(p => p.Slug == slug).AnyAsync())
+        if (await db.Terms.Where(p => p.Slug == slug && p.Id != id).AnyAsync())
         {
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status400BadRequest,
                 Title = "Category.Exists",
-                Message = $"There is already a category with the name '{category.Name}', try another name."
+                Message = $"There is already a category with the name '{category.Slug}', try another name."
             };
         }
 
@@ -103,7 +116,7 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
             {
                 Code = StatusCodes.Status404NotFound,
                 Title = "Category.NotFound",
-                Message = $"The category with the name '{category.Name}' could not be found in the system."
+                Message = $"The category with the name '{category.Slug}' could not be found in the system."
             };
         }
 

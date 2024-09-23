@@ -1,43 +1,123 @@
-﻿using BlogArray.Domain.Constants;
+﻿using BlogArray.Application.Features.Categories.Commands;
+using BlogArray.Application.Features.Categories.Queries;
+using BlogArray.Domain.Constants;
+using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Errors;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogArray.Api.Controllers;
 
+/// <summary>
+/// Categories Controller
+/// </summary>
+/// <param name="mediatr"></param>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = RoleConstants.AdminEditorAuthor)]
-public class CategoriesController : ControllerBase
+public class CategoriesController(IMediator mediatr) : BaseController
 {
-    // GET: api/<CategoriesController>
+    /// <summary>
+    /// Retrieves a paginated list of categories.
+    /// </summary>
+    /// <param name="pageNumber">The page number to retrieve (default is 1).</param>
+    /// <param name="pageSize">The size of the page to retrieve (default is 10).</param>
+    /// <param name="searchTerm">Optional search term for filtering categories.</param>
+    /// <returns>A paginated list of categories or an error response if not found.</returns>
     [HttpGet]
-    public IEnumerable<string> Get()
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<CategoryInfo>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
-        return new string[] { "value1", "value2" };
+        PagedResult<CategoryInfo> pagedResult = await mediatr.Send(new GetCategorysQuery(pageNumber, pageSize, searchTerm));
+        return Ok(pagedResult);
     }
 
-    // GET api/<CategoriesController>/5
+    /// <summary>
+    /// Retrieves a category by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the category to retrieve.</param>
+    /// <returns>The category if found, or an error response if not found.</returns>
     [HttpGet("{id}")]
-    public string Get(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryInfo))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Get(int id)
     {
-        return "value";
+        CategoryInfo? category = await mediatr.Send(new GetCategoryByIdQuery(id));
+        return category == null ? CategoryErrors.NotFound(id) : Ok(category);
     }
 
-    // POST api/<CategoriesController>
+    /// <summary>
+    /// Retrieves a category by its slug.
+    /// </summary>
+    /// <param name="slug">The slug of the category to retrieve.</param>
+    /// <returns>The category if found, or an error response if not found.</returns>
+    [HttpGet("slug/{slug}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryInfo))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Get(string slug)
+    {
+        CategoryInfo? category = await mediatr.Send(new GetCategoryBySlugQuery(slug));
+        return category == null ? CategoryErrors.SlugNotFound(slug) : Ok(category);
+    }
+
+    /// <summary>
+    /// Creates a new category.
+    /// </summary>
+    /// <param name="model">The category information to create.</param>
+    /// <returns>The ID of the newly created category or an error response.</returns>
     [HttpPost]
-    public void Post([FromBody] string value)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Post([FromBody] CategoryInfoDescription model)
     {
+        if (!ModelState.IsValid)
+        {
+            return ModelStateError(ModelState);
+        }
+
+        ReturnResult<int> result = await mediatr.Send(new CreateCategoryCommand(model));
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Result);
     }
 
-    // PUT api/<CategoriesController>/5
+    /// <summary>
+    /// Updates an existing category by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the category to update.</param>
+    /// <param name="model">The updated category information.</param>
+    /// <returns>A success message or an error response if the update fails.</returns>
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Put(int id, [FromBody] CategoryInfoDescription model)
     {
+        if (!ModelState.IsValid)
+        {
+            return ModelStateError(ModelState);
+        }
+
+        ReturnResult<int> result = await mediatr.Send(new UpdateCategoryCommand(model, id));
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 
-    // DELETE api/<CategoriesController>/5
+    /// <summary>
+    /// Deletes an existing category by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the category to delete.</param>
+    /// <returns>A success response or an error response if deletion fails.</returns>
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Delete(int id)
     {
+        // Placeholder for the delete operation
+        return Ok();
     }
 }
