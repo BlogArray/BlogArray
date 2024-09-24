@@ -38,9 +38,13 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
         StringBuilder text = new();
         OpenApiInfo info = new()
         {
-            Title = "AusFleet",
+            Title = "BlogArray",
             Version = description.ApiVersion.ToString(),
-            Contact = new OpenApiContact() { Name = "Ausfleet Support Team", Email = "customerservice@ausfleet.net" },
+            License = new OpenApiLicense
+            {
+                Name = "MIT License",
+                Url = new Uri("https://github.com/BlogArray/BlogArray/blob/main/LICENSE")
+            }
         };
 
         if (description.IsDeprecated)
