@@ -43,7 +43,7 @@ public class UserRepository(AppDbContext db) : IUserRepository
 
         // Project the result to BasicUserInfoRole and paginate the data
         PagedResult<BasicUserInfoRole> pagedUsers = await query
-            .OrderBy(u => u.Id) // Order by user Id
+            .OrderByDescending(u => u.Id) // Order by user Id
             .Select(u => new BasicUserInfoRole
             {
                 Id = u.Id,

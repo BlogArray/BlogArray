@@ -46,7 +46,7 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
         }
 
         PagedResult<CategoryInfo> pagedResult = await query
-            .OrderBy(u => u.Id) // Order by Id
+            .OrderByDescending(u => u.Id) // Order by Id
             .Select(u => new CategoryInfo
             {
                 Id = u.Id,

@@ -1,9 +1,13 @@
 ﻿using BlogArray.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 
-namespace BlogArray.Domain.Entities;
+namespace BlogArray.Domain.DTOs;
 
-public class Storage : AuthorEntityBase
+public class BasicMediaInfo
+{
+    public int Id { get; set; }
+}
+
+public class MediaInfo : BasicMediaInfo
 {
     public bool IsDeleted { get; set; }
 
@@ -11,20 +15,16 @@ public class Storage : AuthorEntityBase
 
     public AssetType AssetType { get; set; }
 
-    [StringLength(2048)]
     public string Slug { get; set; } = default!;
 
-    [StringLength(256)]
     public string Name { get; set; } = default!;
 
-    [StringLength(255)]
     public string? Description { get; set; } = default!;
 
-    [StringLength(2048)]
     public string Path { get; set; } = default!;
 
     public long Length { get; set; }
 
-    [StringLength(128)]
     public string ContentType { get; set; } = default!;
+
 }
