@@ -1,5 +1,4 @@
-﻿using BlogArray.Application.Features.Categories.Commands;
-using BlogArray.Application.Features.Users.Commands;
+﻿using BlogArray.Application.Features.Users.Commands;
 using BlogArray.Application.Features.Users.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
