@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogArray.Domain.DTOs;
 
-public class AppOptionBase
+public class AppOptionsBase
 {
     public string Key { get; set; } = default!;
 
     public string Value { get; set; } = default!;
 }
 
-public class SiteInfoVM
+public class SiteInfo
 {
     public string Title { get; set; } = default!;
 
@@ -25,7 +25,7 @@ public class SiteInfoVM
     public string? Logo { get; set; }
 }
 
-public class SMTPOptionsVM
+public class SMTPOptions
 {
     public string Username { get; set; } = default!;
 
@@ -38,7 +38,7 @@ public class SMTPOptionsVM
     public bool UseSSL { get; set; }
 }
 
-public class PageOptionsVM
+public class PageOptions
 {
     //Accepts posts, page
     public string HomePage { get; set; } = default!;

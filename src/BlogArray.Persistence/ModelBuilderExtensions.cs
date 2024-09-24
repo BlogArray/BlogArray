@@ -170,7 +170,7 @@ public static class ModelBuilderExtensions
           {
               Id = 1,
               Key = "SiteInfo",
-              Value = JsonSerializer.Serialize(new SiteInfoVM
+              Value = JsonSerializer.Serialize(new SiteInfo
               {
                   Title = "Bloggery",
                   Tagline = "A robust blogging platform.",
@@ -185,7 +185,7 @@ public static class ModelBuilderExtensions
           {
               Id = 2,
               Key = "SMTP",
-              Value = JsonSerializer.Serialize(new SMTPOptionsVM
+              Value = JsonSerializer.Serialize(new SMTPOptions
               {
                   Username = "localhost",
                   Password = "password",
@@ -200,7 +200,7 @@ public static class ModelBuilderExtensions
           {
               Id = 3,
               Key = "PageOptions",
-              Value = JsonSerializer.Serialize(new PageOptionsVM
+              Value = JsonSerializer.Serialize(new PageOptions
               {
                   HomePage = "posts",
                   StaticHomePage = "home",

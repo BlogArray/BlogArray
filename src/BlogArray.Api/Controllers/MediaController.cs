@@ -1,6 +1,7 @@
 ﻿using BlogArray.Application.Features.Media.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ public class MediaController(IMediator mediatr) : BaseController
     /// <param name="searchTerm">
     /// Optional search term to filter media/assets by their name.
     /// </param>
+    /// <param name="assetType">Asset type.</param>
     /// <returns>
     /// A paginated list of media/assets, optionally filtered by the search term, wrapped in an <see cref="IActionResult"/>.
     /// </returns>
@@ -30,9 +32,9 @@ public class MediaController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<MediaInfo>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> GetAllMediaAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
+    public async Task<IActionResult> GetAllMediaAsync(int pageNumber = 1, int pageSize = 10, AssetType? assetType = null, string? searchTerm = null)
     {
-        PagedResult<MediaInfo> media = await mediatr.Send(new GetMediaQuery(pageNumber, pageSize, searchTerm));
+        PagedResult<MediaInfo> media = await mediatr.Send(new GetMediaQuery(pageNumber, pageSize, searchTerm, assetType));
 
         return Ok(media);
     }

@@ -98,6 +98,8 @@ public static class BlogArrayServiceCollectionExtensions
         {
             s.OperationFilter<SwaggerDefaultValues>();
 
+            s.SchemaFilter<EnumSchemaFilter>();
+
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Name = "Authorization",

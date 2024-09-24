@@ -3,6 +3,7 @@ using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
@@ -144,6 +145,29 @@ public class SwaggerDefaultValues : IOperationFilter
             }
 
             parameter.Required |= description.IsRequired;
+        }
+    }
+}
+
+/// <summary>
+/// 
+/// </summary>
+public class EnumSchemaFilter : ISchemaFilter
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="schema"></param>
+    /// <param name="context"></param>
+    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    {
+        if (context.Type.IsEnum)
+        {
+            schema.Enum.Clear();
+            foreach (var name in Enum.GetNames(context.Type))
+            {
+                schema.Enum.Add(new OpenApiString(name));
+            }
         }
     }
 }

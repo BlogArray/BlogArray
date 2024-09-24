@@ -1,5 +1,6 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
+using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
@@ -8,9 +9,14 @@ namespace BlogArray.Infrastructure.Repositories;
 
 public class MediaRepository(AppDbContext db) : IMediaRepository
 {
-    public async Task<PagedResult<MediaInfo>> GetPaginatedAsync(int pageNumber, int pageSize, string? searchTerm)
+    public async Task<PagedResult<MediaInfo>> GetPaginatedAsync(int pageNumber, int pageSize, string? searchTerm, AssetType? assetType)
     {
         IQueryable<Storage> query = db.Storages;
+
+        if (assetType.HasValue)
+        {
+            query = query.Where(u => u.AssetType == assetType);
+        }
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
