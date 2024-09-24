@@ -65,4 +65,13 @@ public interface IUserRepository
     /// and allows for updating other details such as bio, display name, and password (if requested).
     /// </remarks>
     Task<ReturnResult<int>> UpdateProfileAsync(UserProfile userProfile, int loggedInUser);
+
+    /// <summary>
+    /// Deletes a user by their ID and optionally attributes their data to another user.
+    /// </summary>
+    /// <param name="id">The ID of the user to be deleted.</param>
+    /// <param name="canAttributeTo">Specifies if the data of the deleted user can be attributed to another user.</param>
+    /// <param name="attributeToUser">The ID of the user to whom the data should be attributed, if applicable.</param>
+    /// <returns>A <see cref="ReturnResult{T}"/> containing the result of the operation, with the ID of the deleted user, or an error message if the operation fails.</returns>
+    Task<ReturnResult<int>> DeleteUserAsync(int id, bool canAttributeTo, int attributeToUser);
 }

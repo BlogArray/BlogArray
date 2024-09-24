@@ -330,4 +330,54 @@ public class UserRepository(AppDbContext db) : IUserRepository
         };
     }
 
+    /// <summary>
+    /// Deletes a user by their ID and optionally attributes their data to another user.
+    /// </summary>
+    /// <param name="id">The ID of the user to be deleted.</param>
+    /// <param name="canAttributeTo">Specifies if the data of the deleted user can be attributed to another user.</param>
+    /// <param name="attributeToUser">The ID of the user to whom the data should be attributed, if applicable.</param>
+    /// <returns>A <see cref="ReturnResult{T}"/> containing the result of the operation, with the ID of the deleted user, or an error message if the operation fails.</returns>
+    public async Task<ReturnResult<int>> DeleteUserAsync(int id, bool canAttributeTo, int attributeToUser)
+    {
+        if (await db.AppUsers.AnyAsync(a => a.Id == id))
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status400BadRequest,
+                Title = "User.NotFound",
+                Message = $"The user with id '{id}' could not be found in the system."
+            };
+        }
+
+        if (canAttributeTo)
+        {
+            if (await db.AppUsers.AnyAsync(a => a.Id == attributeToUser))
+            {
+                return new ReturnResult<int>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Title = "User.NotFound",
+                    Message = $"The user with id '{attributeToUser}' could not be found in the system."
+                };
+            }
+
+            await db.Posts.Where(p => p.CreatedUserId == id).ExecuteUpdateAsync(setter => setter.SetProperty(b => b.CreatedUserId, attributeToUser));
+        }
+        else
+        {
+            await db.Posts.Where(p => p.CreatedUserId == id).ExecuteDeleteAsync();
+        }
+
+        await db.AppUsers.Where(p => p.Id == id).ExecuteDeleteAsync();
+
+        // Return success result indicating the user was updated.
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = "User.Deleted",
+            Message = $"User with id '{id}' was successfully deleted.",
+            Result = 1
+        };
+    }
+
 }

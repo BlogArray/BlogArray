@@ -1,4 +1,5 @@
-﻿using BlogArray.Application.Features.Users.Commands;
+﻿using BlogArray.Application.Features.Categories.Commands;
+using BlogArray.Application.Features.Users.Commands;
 using BlogArray.Application.Features.Users.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
@@ -126,4 +127,30 @@ public class UsersController(IMediator mediatr) : BaseController
 
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
+
+    /// <summary>
+    /// Deletes a user by their ID and optionally attributes the user's data to another user.
+    /// </summary>
+    /// <param name="id">The ID of the user to be deleted.</param>
+    /// <param name="canAttributeTo">
+    /// Specifies whether the deleted user's data should be attributed to another user.
+    /// If set to <c>true</c>, the data will be attributed to the user specified by <paramref name="attributeToUser"/>.
+    /// </param>
+    /// <param name="attributeToUser">The ID of the user to attribute the deleted user's data, if applicable.</param>
+    /// <returns>
+    /// An <see cref="IActionResult"/> indicating the result of the operation:
+    /// - <see cref="StatusCodes.Status200OK"/> if the deletion is successful.
+    /// - <see cref="StatusCodes.Status404NotFound"/> if the user is not found.
+    /// - <see cref="StatusCodes.Status400BadRequest"/> if the request is invalid.
+    /// </returns>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Delete(int id, bool canAttributeTo, int attributeToUser)
+    {
+        ReturnResult<int> result = await mediatr.Send(new DeleteUserCommand(id, canAttributeTo, attributeToUser));
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
+    }
+
 }

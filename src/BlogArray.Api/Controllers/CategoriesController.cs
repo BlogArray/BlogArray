@@ -120,4 +120,5 @@ public class CategoriesController(IMediator mediatr) : BaseController
         ReturnResult<int> result = await mediatr.Send(new DeleteCategoryCommand(id));
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
+
 }
