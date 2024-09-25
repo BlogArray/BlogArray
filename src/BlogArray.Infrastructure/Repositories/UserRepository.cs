@@ -6,9 +6,11 @@ using BlogArray.Persistence;
 using BlogArray.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using NetCore.AutoRegisterDi;
 
 namespace BlogArray.Infrastructure.Repositories;
 
+[RegisterAsScoped]
 public class UserRepository(AppDbContext db) : IUserRepository
 {
     /// <summary>

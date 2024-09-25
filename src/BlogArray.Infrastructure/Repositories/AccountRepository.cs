@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using NetCore.AutoRegisterDi;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace BlogArray.Infrastructure.Repositories;
 
+[RegisterAsScoped]
 public class AccountRepository(AppDbContext db, IConfiguration Configuration) : IAccountRepository
 {
     /// <summary>

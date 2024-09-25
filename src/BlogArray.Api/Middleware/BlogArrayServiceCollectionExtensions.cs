@@ -1,5 +1,8 @@
 ﻿using Asp.Versioning;
 using BlogArray.Application.Features.Account.Commands;
+using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Interfaces;
+using BlogArray.Infrastructure.Caching;
 using BlogArray.Infrastructure.Repositories;
 using BlogArray.Persistence;
 using BlogArray.Persistence.Sqlite;
@@ -35,28 +38,20 @@ public static class BlogArrayServiceCollectionExtensions
         services.AddControllers();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-        services.AddLowercaseUrlsRouting();
-        services.AddVersioning();
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
-        services.ConfigureSwagger();
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
-        services.ConfigureRepositories()
-                .AddConnectionProvider(environment, configuration)
-                .AddAppAuthentication(configuration);
-
-        return services;
-    }
-
-    /// <summary>
-    /// Configures routing to enforce lowercase URLs.
-    /// </summary>
-    /// <param name="services">The IServiceCollection instance.</param>
-    /// <returns>The IServiceCollection instance with lowercase URL routing.</returns>
-    public static IServiceCollection AddLowercaseUrlsRouting(this IServiceCollection services)
-    {
         services.AddRouting(options => options.LowercaseUrls = true);
+
+        services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
+
+        services.AddVersioning()
+            .ConfigureSwagger()
+            .ConfigureRepositories()
+            .AddConnectionProvider(environment, configuration)
+            .AddAppAuthentication(configuration)
+            .AddCache(configuration);
+
         return services;
     }
 
@@ -161,8 +156,8 @@ public static class BlogArrayServiceCollectionExtensions
     /// <returns>The IServiceCollection instance with the appropriate database connection configured.</returns>
     private static IServiceCollection AddConnectionProvider(this IServiceCollection services, IWebHostEnvironment environment, IConfiguration configuration)
     {
-        string? databaseType = configuration.GetValue("BlogArray:DatabaseType", "SqlServer");
-        string? connectionString = configuration.GetValue<string>("BlogArray:BlogArrayConnection");
+        string? databaseType = configuration.GetValue("BlogArray:Database:Type", "SqlServer");
+        string? connectionString = configuration.GetValue<string>("BlogArray:Database:ConnectionString");
 
         switch (databaseType)
         {
@@ -231,4 +226,43 @@ public static class BlogArrayServiceCollectionExtensions
 
         return services;
     }
+
+    /// <summary>
+    /// Configures cache for the BlogArray application.
+    /// </summary>
+    /// <param name="services">The IServiceCollection instance.</param>
+    /// <param name="configuration">The IConfiguration instance.</param>
+    /// <returns>The IServiceCollection instance with cache configured.</returns>
+    public static IServiceCollection AddCache(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Read the cache type from configuration
+        string? cacheType = configuration.GetValue<string>("BlogArray:Cache:Type", "InMemory");
+
+        // Configure cache options
+        services.Configure<CacheConfiguration>(configuration.GetSection("BlogArray:Cache"));
+
+        // Add memory cache service (for in-memory caching)
+        services.AddMemoryCache();
+
+        // Add Redis cache service if needed (assumes you’ve registered RedisCacheService elsewhere)
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetValue<string>("BlogArray:Cache:ConnectionString");
+        });
+
+        // Register cache services based on the cache type
+        services.AddScoped<ICacheService>(serviceProvider =>
+        {
+            switch (cacheType?.ToLowerInvariant())
+            {
+                case "redis":
+                    return serviceProvider.GetService<RedisCacheService>() ?? throw new InvalidOperationException("RedisCacheService is not available");
+                case "memory":
+                default:
+                    return serviceProvider.GetService<InMemoryCacheService>() ?? throw new InvalidOperationException("InMemoryCacheService is not available");
+            }
+        });
+        return services;
+    }
+
 }

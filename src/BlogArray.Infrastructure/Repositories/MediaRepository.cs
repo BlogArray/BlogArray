@@ -4,9 +4,11 @@ using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
+using NetCore.AutoRegisterDi;
 
 namespace BlogArray.Infrastructure.Repositories;
 
+[RegisterAsScoped]
 public class MediaRepository(AppDbContext db) : IMediaRepository
 {
     public async Task<PagedResult<MediaInfo>> GetPaginatedAsync(int pageNumber, int pageSize, string? searchTerm, AssetType? assetType)
