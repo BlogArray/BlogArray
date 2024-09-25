@@ -17,7 +17,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseBlogArray();
+await app.UseBlogArray();
 
 app.AddBlogArrayMigration();
 

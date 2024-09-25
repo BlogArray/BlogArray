@@ -6,6 +6,6 @@ builder.Services.AddBlogArray(builder.Environment, builder.Configuration);
 
 WebApplication app = builder.Build();
 
-app.UseBlogArray();
+await app.UseBlogArray();
 
 app.Run();

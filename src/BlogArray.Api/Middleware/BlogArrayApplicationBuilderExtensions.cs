@@ -1,4 +1,6 @@
 ﻿using Asp.Versioning.ApiExplorer;
+using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Interfaces;
 using BlogArray.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +16,7 @@ public static class BlogArrayApplicationBuilderExtensions
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> instance with the configured middleware.</returns>
-    public static IApplicationBuilder UseBlogArray(this IApplicationBuilder app)
+    public static async Task<IApplicationBuilder> UseBlogArray(this IApplicationBuilder app)
     {
         // Exception handler middleware
         app.UseExceptionHandler();
@@ -36,6 +38,8 @@ public static class BlogArrayApplicationBuilderExtensions
 
         // Enables authorization middleware
         app.UseAuthorization();
+
+        await app.CacheAutoLoadOptionsAsync();
 
         return app;
     }
@@ -64,6 +68,22 @@ public static class BlogArrayApplicationBuilderExtensions
                     description.GroupName.ToUpperInvariant());
             }
         });
+
+        return app;
+    }
+
+    /// <summary>
+    /// Adds Default Autoload options to the application.
+    /// </summary>
+    /// <param name="app">The <see cref="IApplicationBuilder"/> instance.</param>
+    /// <returns>The <see cref="IApplicationBuilder"/> instance with Swagger configuration.</returns>
+    public static async Task<IApplicationBuilder> CacheAutoLoadOptionsAsync(this IApplicationBuilder app)
+    {
+        IServiceScope scope = app.ApplicationServices.CreateScope();
+
+        IAppOptionsRepository? appOptionsRepository = scope.ServiceProvider.GetService<IAppOptionsRepository>();
+
+        await appOptionsRepository.CacheAutoLoadOptions();
 
         return app;
     }

@@ -45,12 +45,12 @@ public static class BlogArrayServiceCollectionExtensions
 
         services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
-        services.AddVersioning()
-            .ConfigureSwagger()
-            .ConfigureRepositories()
-            .AddConnectionProvider(environment, configuration)
-            .AddAppAuthentication(configuration)
-            .AddCache(configuration);
+        services.ConfigureRepositories();
+        services.AddVersioning();
+        services.ConfigureSwagger();
+        services.AddConnectionProvider(environment, configuration);
+        services.AddAppAuthentication(configuration);
+        services.AddCache(configuration);
 
         return services;
     }
@@ -235,6 +235,9 @@ public static class BlogArrayServiceCollectionExtensions
     /// <returns>The IServiceCollection instance with cache configured.</returns>
     public static IServiceCollection AddCache(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<InMemoryCacheService>();
+        services.AddScoped<RedisCacheService>();
+
         // Read the cache type from configuration
         string? cacheType = configuration.GetValue<string>("BlogArray:Cache:Type", "InMemory");
 
@@ -250,6 +253,7 @@ public static class BlogArrayServiceCollectionExtensions
             options.Configuration = configuration.GetValue<string>("BlogArray:Cache:ConnectionString");
         });
 
+
         // Register cache services based on the cache type
         services.AddScoped<ICacheService>(serviceProvider =>
         {
@@ -257,7 +261,7 @@ public static class BlogArrayServiceCollectionExtensions
             {
                 case "redis":
                     return serviceProvider.GetService<RedisCacheService>() ?? throw new InvalidOperationException("RedisCacheService is not available");
-                case "memory":
+                case "inmemory":
                 default:
                     return serviceProvider.GetService<InMemoryCacheService>() ?? throw new InvalidOperationException("InMemoryCacheService is not available");
             }
