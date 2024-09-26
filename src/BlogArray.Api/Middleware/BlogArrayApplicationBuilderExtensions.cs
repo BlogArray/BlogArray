@@ -81,7 +81,7 @@ public static class BlogArrayApplicationBuilderExtensions
     {
         IServiceScope scope = app.ApplicationServices.CreateScope();
 
-        IAppOptionsRepository? appOptionsRepository = scope.ServiceProvider.GetService<IAppOptionsRepository>();
+        IAppOptionsRepository appOptionsRepository = scope.ServiceProvider.GetRequiredService<IAppOptionsRepository>();
 
         await appOptionsRepository.CacheAutoLoadOptions();
 
@@ -106,4 +106,5 @@ public static class BlogArrayApplicationBuilderExtensions
 
         return app;
     }
+
 }

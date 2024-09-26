@@ -24,8 +24,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Account\Queries\" />
-    <Folder Include="Features\Settings\Commands\" />
-    <Folder Include="Features\Settings\Queries\" />
     <Folder Include="Features\Posts\Commands\" />
     <Folder Include="Features\Posts\Queries\" />
   </ItemGroup>

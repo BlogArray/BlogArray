@@ -1,13 +1,19 @@
-﻿using System.ComponentModel;
+﻿using BlogArray.Domain.Enums;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogArray.Domain.DTOs;
 
 public class AppOptionsBase
 {
+    [StringLength(256)]
     public string Key { get; set; } = default!;
 
     public string Value { get; set; } = default!;
+
+    public OptionType OptionType { get; set; } = default!;
+
+    public bool AutoLoad { get; set; } = true;
 }
 
 public class SiteInfo
