@@ -25,7 +25,7 @@ public class RedisCacheService(IDistributedCache distributedCache, IOptions<Cach
     /// <returns>True if the value was found in the cache, otherwise false.</returns>
     public bool TryGet<T>(string cacheKey, out T value)
     {
-        var cachedValue = distributedCache.GetString(cacheKey);
+        string? cachedValue = distributedCache.GetString(cacheKey);
         if (!string.IsNullOrEmpty(cachedValue))
         {
             value = JsonSerializer.Deserialize<T>(cachedValue);
@@ -45,7 +45,7 @@ public class RedisCacheService(IDistributedCache distributedCache, IOptions<Cach
     /// <returns>The value that was cached.</returns>
     public T Set<T>(string cacheKey, T value)
     {
-        var serializedValue = JsonSerializer.Serialize(value);
+        string serializedValue = JsonSerializer.Serialize(value);
         distributedCache.SetString(cacheKey, serializedValue, new DistributedCacheEntryOptions
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(cacheConfig.Value.AbsoluteExpirationInHours),
@@ -63,7 +63,7 @@ public class RedisCacheService(IDistributedCache distributedCache, IOptions<Cach
     /// <returns>The cached value or the value created by the factory.</returns>
     public async Task<T> GetOrCreateAsync<T>(string cacheKey, Func<Task<T>> factory)
     {
-        var cachedValue = await distributedCache.GetStringAsync(cacheKey);
+        string? cachedValue = await distributedCache.GetStringAsync(cacheKey);
 
         if (!string.IsNullOrEmpty(cachedValue))
         {

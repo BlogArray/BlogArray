@@ -25,8 +25,7 @@ public class InMemoryCacheService(IMemoryCache memoryCache, IOptions<CacheConfig
     public bool TryGet<T>(string cacheKey, out T value)
     {
         memoryCache.TryGetValue(cacheKey, out value);
-        if (value == null) return false;
-        else return true;
+        return value != null;
     }
 
     /// <summary>

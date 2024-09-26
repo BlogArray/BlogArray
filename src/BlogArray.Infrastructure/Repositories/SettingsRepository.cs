@@ -11,7 +11,7 @@ using System.Text.Json;
 namespace BlogArray.Infrastructure.Repositories;
 
 [RegisterAsScoped]
-public class AppOptionsRepository(AppDbContext db, ICacheService cache) : IAppOptionsRepository
+public class SettingsRepository(AppDbContext db, ICacheService cache) : ISettingsRepository
 {
 
     public async Task<PagedResult<AppOptionsBase>> GetOptions(int pageNumber = 1, int pageSize = 10, bool onlyAutoload = true)

@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning.ApiExplorer;
-using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Persistence;
 using Microsoft.EntityFrameworkCore;
