@@ -7,6 +7,6 @@ public class MediaOptionsValidator : AbstractValidator<MediaOptions>
 {
     public MediaOptionsValidator()
     {
-        RuleFor(x => x.OptimizedQuality).LessThanOrEqualTo(10).GreaterThanOrEqualTo(100);
+        RuleFor(x => x.OptimizedQuality).GreaterThanOrEqualTo(10).LessThanOrEqualTo(100);
     }
 }
