@@ -1,5 +1,5 @@
-﻿using BlogArray.Application.Features.Settings.Commands;
-using BlogArray.Application.Features.Settings.Queries;
+﻿using BlogArray.Application.Features.AppOptions.Commands;
+using BlogArray.Application.Features.AppOptions.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Errors;
