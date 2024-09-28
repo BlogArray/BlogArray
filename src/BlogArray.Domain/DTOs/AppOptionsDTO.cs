@@ -29,6 +29,22 @@ public class SiteInfo
     public string? Icon { get; set; }
 
     public string? Logo { get; set; }
+
+
+    //Accepts posts, page
+    public string HomePage { get; set; } = default!;
+
+    //If HomePage is page
+    public string StaticHomePage { get; set; } = default!;
+
+    //If HomePage is page
+    //public string PostsPage { get; set; } = default!;
+
+    //Posts per page
+    public int ItemsPerPage { get; set; }
+
+    //Searchengine visibility
+    public bool SearchEngineVisibility { get; set; }
 }
 
 public class SMTPOptions
@@ -44,28 +60,12 @@ public class SMTPOptions
     public bool UseSSL { get; set; }
 }
 
-public class PageOptions
+public class ContentOptions
 {
-    //Accepts posts, page
-    public string HomePage { get; set; } = default!;
-
-    //If HomePage is page
-    [Required(ErrorMessage = "Select a page")]
-    public string StaticHomePage { get; set; } = default!;
-
-    //If HomePage is page
-    //public string PostsPage { get; set; } = default!;
-
     public int? DefaultCategory { get; set; }
 
     //Post or Page default cover
     public string? DefaultCover { get; set; }
-
-    //Posts per page
-    public int ItemsPerPage { get; set; }
-
-    //Searchengine visibility
-    public bool SearchEngineVisibility { get; set; }
 }
 
 public class MenuItem

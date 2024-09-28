@@ -176,7 +176,11 @@ public static class ModelBuilderExtensions
                   Tagline = "A robust blogging platform.",
                   Description = "It is a robust blogging platform that offers a wide range of features.",
                   Logo = "/content/images/logo.svg",
-                  Icon = "/content/images/logo.svg"
+                  Icon = "/content/images/logo.svg",
+                  HomePage = "posts",
+                  StaticHomePage = "home",
+                  ItemsPerPage = 10,
+                  SearchEngineVisibility = true,
               }),
               OptionType = OptionType.Options,
               AutoLoad = true
@@ -200,13 +204,9 @@ public static class ModelBuilderExtensions
           {
               Id = 3,
               Key = "PageOptions",
-              Value = JsonSerializer.Serialize(new PageOptions
+              Value = JsonSerializer.Serialize(new ContentOptions
               {
-                  HomePage = "posts",
-                  StaticHomePage = "home",
                   DefaultCover = "/content/images/page-image.webp",
-                  ItemsPerPage = 10,
-                  SearchEngineVisibility = true,
                   DefaultCategory = 1
               }),
               OptionType = OptionType.Options,
