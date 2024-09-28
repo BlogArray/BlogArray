@@ -52,7 +52,7 @@ public class ErrorDetails
     /// <param name="title">A short title describing the error.</param>
     /// <param name="description">A detailed description of the error.</param>
     /// <param name="errors">An optional array of specific error messages.</param>
-    private ErrorDetails(int status, string title, string description, string[]? errors = null)
+    private ErrorDetails(int status, string? title, string description, string[]? errors = null)
     {
         Status = status;
         Title = title;
@@ -88,7 +88,7 @@ public class ErrorDetails
     /// <param name="description">A detailed description of the status.</param>
     /// <param name="errors">An optional array of specific error messages.</param>
     /// <returns>An <see cref="IActionResult"/> representing the response.</returns>
-    public static IActionResult CreateResponse(int statusCode, string title, string description, string[]? errors = null)
+    public static IActionResult CreateResponse(int statusCode, string? title, string description, string[]? errors = null)
     {
         return new ObjectResult(new ErrorDetails(statusCode, title, description, errors))
         {
