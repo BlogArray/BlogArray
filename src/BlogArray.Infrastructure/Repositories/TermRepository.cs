@@ -74,8 +74,8 @@ public class TermRepository(AppDbContext db) : ITermRepository
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status400BadRequest,
-                Title = "Category.Exists",
-                Message = $"There is already a category with the name '{slug}', try another name."
+                Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.Exists",
+                Message = $"There is already a {(termType.Equals(TermType.Category) ? "category" : "tag")} with the name '{slug}', try another name."
             };
         }
 
@@ -94,34 +94,34 @@ public class TermRepository(AppDbContext db) : ITermRepository
         {
             Code = StatusCodes.Status200OK,
             Title = "Category.Created",
-            Message = $"Category '{newTerm.Name}' was successfully created.",
+            Message = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")} '{newTerm.Name}' was successfully created.",
             Result = newTerm.Id
         };
     }
 
-    public async Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term)
+    public async Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term, TermType termType)
     {
         string slug = term.Slug.ToSlug();
 
-        if (await db.Terms.Where(p => p.Slug == slug && p.Id != id).AnyAsync())
+        if (await db.Terms.Where(p => p.Slug == slug && p.TermType == termType && p.Id != id).AnyAsync())
         {
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status400BadRequest,
-                Title = "Category.Exists",
-                Message = $"There is already a category with the name '{term.Slug}', try another name."
+                Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.Exists",
+                Message = $"There is already a {(termType.Equals(TermType.Category) ? "category" : "tag")} with the name '{term.Slug}', try another name."
             };
         }
 
-        Term? exTerm = await db.Terms.FirstOrDefaultAsync(a => a.Id == id);
+        Term? exTerm = await db.Terms.FirstOrDefaultAsync(a => a.Id == id && a.TermType == termType);
 
         if (exTerm == null)
         {
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status404NotFound,
-                Title = "Category.NotFound",
-                Message = $"The category with the name '{term.Slug}' could not be found in the system."
+                Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.NotFound",
+                Message = $"The {(termType.Equals(TermType.Category) ? "category" : "tag")} with the name '{term.Slug}' could not be found in the system."
             };
         }
 
@@ -134,8 +134,8 @@ public class TermRepository(AppDbContext db) : ITermRepository
         return new ReturnResult<int>
         {
             Code = StatusCodes.Status200OK,
-            Title = "Category.Updated",
-            Message = $"Category '{exTerm.Name}' was successfully updated.",
+            Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.Updated",
+            Message = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")} '{exTerm.Name}' was successfully updated.",
             Result = exTerm.Id
         };
     }
@@ -149,8 +149,8 @@ public class TermRepository(AppDbContext db) : ITermRepository
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status404NotFound,
-                Title = "Category.NotFound",
-                Message = $"The category with the id '{id}' could not be found in the system."
+                Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.NotFound",
+                Message = $"The {(termType.Equals(TermType.Category) ? "category" : "tag")} with the id '{id}' could not be found in the system."
             };
         }
 
@@ -174,8 +174,8 @@ public class TermRepository(AppDbContext db) : ITermRepository
         return new ReturnResult<int>
         {
             Code = StatusCodes.Status200OK,
-            Title = "Category.Deleted",
-            Message = $"Category '{term.Name}' was successfully deleted.",
+            Title = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")}.Deleted",
+            Message = $"{(termType.Equals(TermType.Category) ? "Category" : "Tag")} '{term.Name}' was successfully deleted.",
             Result = term.Id
         };
     }

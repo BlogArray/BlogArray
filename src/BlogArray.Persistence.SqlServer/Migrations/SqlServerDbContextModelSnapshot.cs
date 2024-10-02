@@ -59,7 +59,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                             AutoLoad = true,
                             Key = "SiteInfo",
                             OptionType = 0,
-                            Value = "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\"}"
+                            Value = "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\",\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}"
                         },
                         new
                         {
@@ -75,7 +75,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                             AutoLoad = true,
                             Key = "PageOptions",
                             OptionType = 0,
-                            Value = "{\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}"
+                            Value = "{\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\"}"
                         },
                         new
                         {
@@ -566,6 +566,10 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -626,7 +630,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Slug")
+                    b.HasIndex("Slug", "TermType")
                         .IsUnique();
 
                     b.ToTable("Terms");

@@ -11,10 +11,10 @@ public class DeleteTermCommand(int id, TermType termType) : IRequest<ReturnResul
     public TermType TermType { get; set; } = termType;
 }
 
-internal class DeleteTermCommandHandler(ITermRepository categoryRepository) : IRequestHandler<DeleteTermCommand, ReturnResult<int>>
+internal class DeleteTermCommandHandler(ITermRepository termRepository) : IRequestHandler<DeleteTermCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(DeleteTermCommand request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.DeleteTermAsync(request.Id, request.TermType);
+        return await termRepository.DeleteTermAsync(request.Id, request.TermType);
     }
 }

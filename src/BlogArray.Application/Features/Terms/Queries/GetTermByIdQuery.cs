@@ -11,10 +11,10 @@ public class GetTermByIdQuery(int Id, TermType termType) : IRequest<TermInfo?>
     public TermType TermType { get; set; } = termType;
 }
 
-public class GetTermByIdQueryHandler(ITermRepository categoryRepository) : IRequestHandler<GetTermByIdQuery, TermInfo?>
+public class GetTermByIdQueryHandler(ITermRepository termRepository) : IRequestHandler<GetTermByIdQuery, TermInfo?>
 {
     public async Task<TermInfo?> Handle(GetTermByIdQuery request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.GetTermAsync(request.Id, request.TermType);
+        return await termRepository.GetTermAsync(request.Id, request.TermType);
     }
 }

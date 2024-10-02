@@ -11,10 +11,10 @@ public class GetTermBySlugQuery(string slug, TermType termType) : IRequest<TermI
     public TermType TermType { get; set; } = termType;
 }
 
-public class GetTermBySlugQueryHandler(ITermRepository categoryRepository) : IRequestHandler<GetTermBySlugQuery, TermInfo?>
+public class GetTermBySlugQueryHandler(ITermRepository termRepository) : IRequestHandler<GetTermBySlugQuery, TermInfo?>
 {
     public async Task<TermInfo?> Handle(GetTermBySlugQuery request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.GetTermAsync(request.Slug, request.TermType);
+        return await termRepository.GetTermAsync(request.Slug, request.TermType);
     }
 }

@@ -13,7 +13,7 @@ public interface ITermRepository
 
     Task<ReturnResult<int>> CreateTermAsync(TermInfoDescription term, TermType termType);
 
-    Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term);
+    Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term, TermType termType);
 
     Task<ReturnResult<int>> DeleteTermAsync(int id, TermType termType);
 

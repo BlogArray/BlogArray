@@ -23,10 +23,10 @@ public class UpdateTermCommand(TermInfoDescription model, int idToUpdate, TermTy
     public TermType TermType { get; set; } = termType;
 }
 
-internal class UpdateTermCommandHandler(ITermRepository categoryRepository) : IRequestHandler<UpdateTermCommand, ReturnResult<int>>
+internal class UpdateTermCommandHandler(ITermRepository termRepository) : IRequestHandler<UpdateTermCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(UpdateTermCommand request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.EditTermAsync(request.IdToUpdate, request.Model);
+        return await termRepository.EditTermAsync(request.IdToUpdate, request.Model, request.TermType);
     }
 }

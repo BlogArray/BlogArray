@@ -22,10 +22,10 @@ public class CreateTermCommand(TermInfoDescription model, TermType termType) : I
     public TermType TermType { get; set; } = termType;
 }
 
-internal class CreateTermCommandHandler(ITermRepository categoryRepository) : IRequestHandler<CreateTermCommand, ReturnResult<int>>
+internal class CreateTermCommandHandler(ITermRepository termRepository) : IRequestHandler<CreateTermCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(CreateTermCommand request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.CreateTermAsync(request.Model, request.TermType);
+        return await termRepository.CreateTermAsync(request.Model, request.TermType);
     }
 }

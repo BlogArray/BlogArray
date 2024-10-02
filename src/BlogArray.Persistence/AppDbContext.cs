@@ -89,7 +89,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         builder.Entity<Term>(entity =>
         {
-            entity.HasIndex(b => b.Slug).IsUnique();
+            entity.HasIndex(t => new { t.Slug, t.TermType }).IsUnique();
         });
 
         builder.Entity<PostTerm>(entity =>

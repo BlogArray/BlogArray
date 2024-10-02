@@ -162,6 +162,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     AssetType = table.Column<int>(type: "int", nullable: false),
                     Slug = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Path = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
                     Length = table.Column<long>(type: "bigint", nullable: false),
                     ContentType = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
@@ -309,9 +310,9 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 columns: new[] { "Id", "AutoLoad", "Key", "OptionType", "Value" },
                 values: new object[,]
                 {
-                    { 1, true, "SiteInfo", 0, "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\"}" },
+                    { 1, true, "SiteInfo", 0, "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\",\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}" },
                     { 2, true, "SMTP", 0, "{\"Username\":\"localhost\",\"Password\":\"password\",\"Host\":\"localhost\",\"Port\":587,\"UseSSL\":false}" },
-                    { 3, true, "PageOptions", 0, "{\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}" },
+                    { 3, true, "PageOptions", 0, "{\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\"}" },
                     { 4, true, "Menu:TopNav", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]}]" },
                     { 5, true, "Menu:FooterLinks", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]},{\"Page\":\"Privacy Policy\",\"Link\":\"/page/privacy-policy\",\"SubLinks\":[]}]" },
                     { 6, true, "Menu:QuickLinks", 1, "[{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]}]" },
@@ -456,9 +457,9 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Terms_Slug",
+                name: "IX_Terms_Slug_TermType",
                 table: "Terms",
-                column: "Slug",
+                columns: new[] { "Slug", "TermType" },
                 unique: true);
         }
 

@@ -49,8 +49,8 @@ public class TagsController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Get(int id)
     {
-        TermInfo? category = await mediatr.Send(new GetTermByIdQuery(id, termType));
-        return category == null ? CategoryErrors.NotFound(id) : Ok(category);
+        TermInfo? term = await mediatr.Send(new GetTermByIdQuery(id, termType));
+        return term == null ? TagErrors.NotFound(id) : Ok(term);
     }
 
     /// <summary>
@@ -64,8 +64,8 @@ public class TagsController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Get(string slug)
     {
-        TermInfo? category = await mediatr.Send(new GetTermBySlugQuery(slug, termType));
-        return category == null ? CategoryErrors.SlugNotFound(slug) : Ok(category);
+        TermInfo? term = await mediatr.Send(new GetTermBySlugQuery(slug, termType));
+        return term == null ? TagErrors.SlugNotFound(slug) : Ok(term);
     }
 
     /// <summary>

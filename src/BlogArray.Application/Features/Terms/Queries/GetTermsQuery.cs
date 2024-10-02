@@ -13,10 +13,10 @@ public class GetTermsQuery(int pageNumber, int pageSize, TermType termType, stri
     public string? SearchTerm { get; } = searchTerm;
 }
 
-public class GetTermsQueryHandler(ITermRepository categoryRepository) : IRequestHandler<GetTermsQuery, PagedResult<TermInfo>>
+public class GetTermsQueryHandler(ITermRepository termRepository) : IRequestHandler<GetTermsQuery, PagedResult<TermInfo>>
 {
     public async Task<PagedResult<TermInfo>> Handle(GetTermsQuery request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.GetPaginatedTermsAsync(request.PageNumber, request.PageSize, request.TermType, request.SearchTerm);
+        return await termRepository.GetPaginatedTermsAsync(request.PageNumber, request.PageSize, request.TermType, request.SearchTerm);
     }
 }
