@@ -69,7 +69,7 @@ public class TermRepository(AppDbContext db) : ITermRepository
     {
         string slug = term.Slug.ToSlug();
 
-        if (await db.Terms.Where(p => p.Slug == slug).AnyAsync())
+        if (await db.Terms.Where(p => p.Slug == slug && p.TermType == termType).AnyAsync())
         {
             return new ReturnResult<int>
             {
@@ -125,9 +125,9 @@ public class TermRepository(AppDbContext db) : ITermRepository
             };
         }
 
-        exTerm.Name = exTerm.Name;
+        exTerm.Name = term.Name;
         exTerm.Slug = slug;
-        exTerm.Description = exTerm.Description;
+        exTerm.Description = term.Description;
 
         await db.SaveChangesAsync();
 
