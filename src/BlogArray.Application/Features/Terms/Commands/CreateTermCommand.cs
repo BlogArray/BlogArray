@@ -4,11 +4,11 @@ using BlogArray.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
 
-namespace BlogArray.Application.Features.Categories.Commands;
+namespace BlogArray.Application.Features.Terms.Commands;
 
-public class CreateCategoryValidator : AbstractValidator<TermInfoDescription>
+public class CreateTermValidator : AbstractValidator<TermInfoDescription>
 {
-    public CreateCategoryValidator()
+    public CreateTermValidator()
     {
         RuleFor(x => x.Name).NotNull().NotEmpty().MaximumLength(180);
         RuleFor(x => x.Slug).NotNull().NotEmpty().MaximumLength(180);
@@ -16,15 +16,15 @@ public class CreateCategoryValidator : AbstractValidator<TermInfoDescription>
     }
 }
 
-public class CreateCategoryCommand(TermInfoDescription model, TermType termType) : IRequest<ReturnResult<int>>
+public class CreateTermCommand(TermInfoDescription model, TermType termType) : IRequest<ReturnResult<int>>
 {
     public TermInfoDescription Model { get; set; } = model;
     public TermType TermType { get; set; } = termType;
 }
 
-internal class CreateCategoryCommandHandler(ITermRepository categoryRepository) : IRequestHandler<CreateCategoryCommand, ReturnResult<int>>
+internal class CreateTermCommandHandler(ITermRepository categoryRepository) : IRequestHandler<CreateTermCommand, ReturnResult<int>>
 {
-    public async Task<ReturnResult<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<ReturnResult<int>> Handle(CreateTermCommand request, CancellationToken cancellationToken)
     {
         return await categoryRepository.CreateTermAsync(request.Model, request.TermType);
     }

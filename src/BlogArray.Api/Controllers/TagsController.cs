@@ -11,23 +11,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogArray.Api.Controllers;
 
 /// <summary>
-/// Categories Controller
+/// Tags Controller
 /// </summary>
 /// <param name="mediatr"></param>
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = RoleConstants.AdminEditorAuthor)]
-public class CategoriesController(IMediator mediatr) : BaseController
+public class TagsController(IMediator mediatr) : BaseController
 {
-    private const TermType termType = TermType.Category;
+    private const TermType termType = TermType.Tag;
 
     /// <summary>
-    /// Retrieves a paginated list of categories.
+    /// Retrieves a paginated list of tags.
     /// </summary>
     /// <param name="pageNumber">The page number to retrieve (default is 1).</param>
     /// <param name="pageSize">The size of the page to retrieve (default is 10).</param>
-    /// <param name="searchTerm">Optional search term for filtering categories.</param>
-    /// <returns>A paginated list of categories or an error response if not found.</returns>
+    /// <param name="searchTerm">Optional search term for filtering tags.</param>
+    /// <returns>A paginated list of tags or an error response if not found.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TermInfo>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
@@ -39,10 +39,10 @@ public class CategoriesController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Retrieves a category by its ID.
+    /// Retrieves a tag by its ID.
     /// </summary>
-    /// <param name="id">The ID of the category to retrieve.</param>
-    /// <returns>The category if found, or an error response if not found.</returns>
+    /// <param name="id">The ID of the tag to retrieve.</param>
+    /// <returns>The tag if found, or an error response if not found.</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TermInfo))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
@@ -54,10 +54,10 @@ public class CategoriesController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Retrieves a category by its slug.
+    /// Retrieves a tag by its slug.
     /// </summary>
-    /// <param name="slug">The slug of the category to retrieve.</param>
-    /// <returns>The category if found, or an error response if not found.</returns>
+    /// <param name="slug">The slug of the tag to retrieve.</param>
+    /// <returns>The tag if found, or an error response if not found.</returns>
     [HttpGet("slug/{slug}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TermInfo))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
@@ -69,10 +69,10 @@ public class CategoriesController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Creates a new category.
+    /// Creates a new tag.
     /// </summary>
-    /// <param name="model">The category information to create.</param>
-    /// <returns>The ID of the newly created category or an error response.</returns>
+    /// <param name="model">The tag information to create.</param>
+    /// <returns>The ID of the newly created tag or an error response.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
@@ -89,10 +89,10 @@ public class CategoriesController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Updates an existing category by its ID.
+    /// Updates an existing tag by its ID.
     /// </summary>
-    /// <param name="id">The ID of the category to update.</param>
-    /// <param name="model">The updated category information.</param>
+    /// <param name="id">The ID of the tag to update.</param>
+    /// <param name="model">The updated tag information.</param>
     /// <returns>A success message or an error response if the update fails.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
@@ -110,9 +110,9 @@ public class CategoriesController(IMediator mediatr) : BaseController
     }
 
     /// <summary>
-    /// Deletes an existing category by its ID.
+    /// Deletes an existing tag by its ID.
     /// </summary>
-    /// <param name="id">The ID of the category to delete.</param>
+    /// <param name="id">The ID of the tag to delete.</param>
     /// <returns>A success response or an error response if deletion fails.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
