@@ -1,6 +1,6 @@
 ﻿namespace BlogArray.Domain.DTOs;
 
-public class BasicCategoryInfo
+public class BasicTermInfo
 {
     public int Id { get; set; }
 
@@ -9,12 +9,12 @@ public class BasicCategoryInfo
     public string Slug { get; set; } = default!;
 }
 
-public class CategoryInfo : CategoryInfoDescription
+public class TermInfo : TermInfoDescription
 {
     public int PostsCount { get; set; } = default!;
 }
 
-public class CategoryInfoDescription : BasicCategoryInfo
+public class TermInfoDescription : BasicTermInfo
 {
     public string? Description { get; set; } = default!;
 }

@@ -1,11 +1,12 @@
 ﻿using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
 
 namespace BlogArray.Application.Features.Categories.Commands;
 
-public class UpdateCategoryValidator : AbstractValidator<CategoryInfoDescription>
+public class UpdateCategoryValidator : AbstractValidator<TermInfoDescription>
 {
     public UpdateCategoryValidator()
     {
@@ -15,16 +16,17 @@ public class UpdateCategoryValidator : AbstractValidator<CategoryInfoDescription
     }
 }
 
-public class UpdateCategoryCommand(CategoryInfoDescription model, int idToUpdate) : IRequest<ReturnResult<int>>
+public class UpdateCategoryCommand(TermInfoDescription model, int idToUpdate, TermType termType) : IRequest<ReturnResult<int>>
 {
-    public CategoryInfoDescription Model { get; set; } = model;
+    public TermInfoDescription Model { get; set; } = model;
     public int IdToUpdate { get; set; } = idToUpdate;
+    public TermType TermType { get; set; } = termType;
 }
 
-internal class UpdateCategoryCommandHandler(ICategoryRepository categoryRepository) : IRequestHandler<UpdateCategoryCommand, ReturnResult<int>>
+internal class UpdateCategoryCommandHandler(ITermRepository categoryRepository) : IRequestHandler<UpdateCategoryCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.EditCategoryAsync(request.IdToUpdate, request.Model);
+        return await categoryRepository.EditTermAsync(request.IdToUpdate, request.Model);
     }
 }

@@ -1,11 +1,12 @@
 ﻿using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
 
 namespace BlogArray.Application.Features.Categories.Commands;
 
-public class CreateCategoryValidator : AbstractValidator<CategoryInfoDescription>
+public class CreateCategoryValidator : AbstractValidator<TermInfoDescription>
 {
     public CreateCategoryValidator()
     {
@@ -15,15 +16,16 @@ public class CreateCategoryValidator : AbstractValidator<CategoryInfoDescription
     }
 }
 
-public class CreateCategoryCommand(CategoryInfoDescription model) : IRequest<ReturnResult<int>>
+public class CreateCategoryCommand(TermInfoDescription model, TermType termType) : IRequest<ReturnResult<int>>
 {
-    public CategoryInfoDescription Model { get; set; } = model;
+    public TermInfoDescription Model { get; set; } = model;
+    public TermType TermType { get; set; } = termType;
 }
 
-internal class CreateCategoryCommandHandler(ICategoryRepository categoryRepository) : IRequestHandler<CreateCategoryCommand, ReturnResult<int>>
+internal class CreateCategoryCommandHandler(ITermRepository categoryRepository) : IRequestHandler<CreateCategoryCommand, ReturnResult<int>>
 {
     public async Task<ReturnResult<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        return await categoryRepository.CreateCategoryAsync(request.Model);
+        return await categoryRepository.CreateTermAsync(request.Model, request.TermType);
     }
 }

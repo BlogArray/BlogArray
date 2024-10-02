@@ -1,5 +1,6 @@
 ﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
+using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
@@ -11,35 +12,11 @@ using NetCore.AutoRegisterDi;
 namespace BlogArray.Infrastructure.Repositories;
 
 [RegisterAsScoped]
-public class CategoryRepository(AppDbContext db) : ICategoryRepository
+public class TermRepository(AppDbContext db) : ITermRepository
 {
-    public Task<CategoryInfo?> GetCategoryAsync(int id)
+    public async Task<PagedResult<TermInfo>> GetPaginatedTermsAsync(int pageNumber, int pageSize, TermType termType, string? searchTerm)
     {
-        return db.Terms.Select(c => new CategoryInfo
-        {
-            Id = c.Id,
-            Name = c.Name,
-            Slug = c.Slug,
-            Description = c.Description,
-            PostsCount = c.PostTerms.Count
-        }).FirstOrDefaultAsync(c => c.Id == id);
-    }
-
-    public Task<CategoryInfo?> GetCategoryAsync(string slug)
-    {
-        return db.Terms.Select(c => new CategoryInfo
-        {
-            Id = c.Id,
-            Name = c.Name,
-            Slug = c.Slug,
-            Description = c.Description,
-            PostsCount = c.PostTerms.Count
-        }).FirstOrDefaultAsync(c => c.Slug == slug);
-    }
-
-    public async Task<PagedResult<CategoryInfo>> GetPaginatedCategoryAsync(int pageNumber, int pageSize, string? searchTerm)
-    {
-        IQueryable<Term> query = db.Terms;
+        IQueryable<Term> query = db.Terms.Where(t => t.TermType == termType);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))
         {
@@ -47,9 +24,9 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
                                      u.Name.Contains(searchTerm));
         }
 
-        PagedResult<CategoryInfo> pagedResult = await query
+        PagedResult<TermInfo> pagedResult = await query
             .OrderByDescending(u => u.Id) // Order by Id
-            .Select(u => new CategoryInfo
+            .Select(u => new TermInfo
             {
                 Id = u.Id,
                 Name = u.Name,
@@ -62,9 +39,35 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
         return pagedResult;
     }
 
-    public async Task<ReturnResult<int>> CreateCategoryAsync(CategoryInfoDescription category)
+    public Task<TermInfo?> GetTermAsync(int id, TermType termType)
     {
-        string slug = category.Slug.ToSlug();
+        return db.Terms.Where(t => t.TermType == termType)
+            .Select(c => new TermInfo
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Slug = c.Slug,
+                Description = c.Description,
+                PostsCount = c.PostTerms.Count
+            }).FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public Task<TermInfo?> GetTermAsync(string slug, TermType termType)
+    {
+        return db.Terms.Where(t => t.TermType == termType)
+            .Select(c => new TermInfo
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Slug = c.Slug,
+                Description = c.Description,
+                PostsCount = c.PostTerms.Count
+            }).FirstOrDefaultAsync(c => c.Slug == slug);
+    }
+
+    public async Task<ReturnResult<int>> CreateTermAsync(TermInfoDescription term, TermType termType)
+    {
+        string slug = term.Slug.ToSlug();
 
         if (await db.Terms.Where(p => p.Slug == slug).AnyAsync())
         {
@@ -76,29 +79,29 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
             };
         }
 
-        Term term = new()
+        Term newTerm = new()
         {
-            Name = category.Name,
+            Name = term.Name,
             Slug = slug,
-            TermType = Domain.Enums.TermType.Category,
-            Description = category.Description,
+            TermType = termType,
+            Description = term.Description,
         };
 
-        await db.Terms.AddAsync(term);
+        await db.Terms.AddAsync(newTerm);
         await db.SaveChangesAsync();
 
         return new ReturnResult<int>
         {
             Code = StatusCodes.Status200OK,
             Title = "Category.Created",
-            Message = $"Category '{category.Name}' was successfully created.",
-            Result = term.Id
+            Message = $"Category '{newTerm.Name}' was successfully created.",
+            Result = newTerm.Id
         };
     }
 
-    public async Task<ReturnResult<int>> EditCategoryAsync(int id, CategoryInfoDescription category)
+    public async Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term)
     {
-        string slug = category.Slug.ToSlug();
+        string slug = term.Slug.ToSlug();
 
         if (await db.Terms.Where(p => p.Slug == slug && p.Id != id).AnyAsync())
         {
@@ -106,25 +109,25 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
             {
                 Code = StatusCodes.Status400BadRequest,
                 Title = "Category.Exists",
-                Message = $"There is already a category with the name '{category.Slug}', try another name."
+                Message = $"There is already a category with the name '{term.Slug}', try another name."
             };
         }
 
-        Term? term = await db.Terms.FirstOrDefaultAsync(a => a.Id == id);
+        Term? exTerm = await db.Terms.FirstOrDefaultAsync(a => a.Id == id);
 
-        if (term == null)
+        if (exTerm == null)
         {
             return new ReturnResult<int>
             {
                 Code = StatusCodes.Status404NotFound,
                 Title = "Category.NotFound",
-                Message = $"The category with the name '{category.Slug}' could not be found in the system."
+                Message = $"The category with the name '{term.Slug}' could not be found in the system."
             };
         }
 
-        term.Name = category.Name;
-        term.Slug = slug;
-        term.Description = category.Description;
+        exTerm.Name = exTerm.Name;
+        exTerm.Slug = slug;
+        exTerm.Description = exTerm.Description;
 
         await db.SaveChangesAsync();
 
@@ -132,14 +135,14 @@ public class CategoryRepository(AppDbContext db) : ICategoryRepository
         {
             Code = StatusCodes.Status200OK,
             Title = "Category.Updated",
-            Message = $"Category '{category.Name}' was successfully updated.",
-            Result = term.Id
+            Message = $"Category '{exTerm.Name}' was successfully updated.",
+            Result = exTerm.Id
         };
     }
 
-    public async Task<ReturnResult<int>> DeleteCategoryAsync(int id)
+    public async Task<ReturnResult<int>> DeleteTermAsync(int id, TermType termType)
     {
-        Term? term = await db.Terms.FirstOrDefaultAsync(a => a.Id == id);
+        Term? term = await db.Terms.Where(t => t.TermType == termType).FirstOrDefaultAsync(a => a.Id == id);
 
         if (term == null)
         {

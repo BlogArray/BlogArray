@@ -2,6 +2,7 @@
 using BlogArray.Application.Features.Categories.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
+using BlogArray.Domain.Enums;
 using BlogArray.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,12 +27,12 @@ public class CategoriesController(IMediator mediatr) : BaseController
     /// <param name="searchTerm">Optional search term for filtering categories.</param>
     /// <returns>A paginated list of categories or an error response if not found.</returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<CategoryInfo>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResult<TermInfo>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? searchTerm = null)
     {
-        PagedResult<CategoryInfo> pagedResult = await mediatr.Send(new GetCategorysQuery(pageNumber, pageSize, searchTerm));
+        PagedResult<TermInfo> pagedResult = await mediatr.Send(new GetCategorysQuery(pageNumber, pageSize, TermType.Category, searchTerm));
         return Ok(pagedResult);
     }
 
@@ -41,12 +42,12 @@ public class CategoriesController(IMediator mediatr) : BaseController
     /// <param name="id">The ID of the category to retrieve.</param>
     /// <returns>The category if found, or an error response if not found.</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryInfo))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TermInfo))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Get(int id)
     {
-        CategoryInfo? category = await mediatr.Send(new GetCategoryByIdQuery(id));
+        TermInfo? category = await mediatr.Send(new GetCategoryByIdQuery(id, TermType.Category));
         return category == null ? CategoryErrors.NotFound(id) : Ok(category);
     }
 
@@ -56,12 +57,12 @@ public class CategoriesController(IMediator mediatr) : BaseController
     /// <param name="slug">The slug of the category to retrieve.</param>
     /// <returns>The category if found, or an error response if not found.</returns>
     [HttpGet("slug/{slug}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryInfo))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TermInfo))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Get(string slug)
     {
-        CategoryInfo? category = await mediatr.Send(new GetCategoryBySlugQuery(slug));
+        TermInfo? category = await mediatr.Send(new GetCategoryBySlugQuery(slug, TermType.Category));
         return category == null ? CategoryErrors.SlugNotFound(slug) : Ok(category);
     }
 
@@ -74,14 +75,14 @@ public class CategoriesController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Post([FromBody] CategoryInfoDescription model)
+    public async Task<IActionResult> Post([FromBody] TermInfoDescription model)
     {
         if (!ModelState.IsValid)
         {
             return ModelStateError(ModelState);
         }
 
-        ReturnResult<int> result = await mediatr.Send(new CreateCategoryCommand(model));
+        ReturnResult<int> result = await mediatr.Send(new CreateCategoryCommand(model, TermType.Category));
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Result);
     }
 
@@ -95,14 +96,14 @@ public class CategoriesController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Put(int id, [FromBody] CategoryInfoDescription model)
+    public async Task<IActionResult> Put(int id, [FromBody] TermInfoDescription model)
     {
         if (!ModelState.IsValid)
         {
             return ModelStateError(ModelState);
         }
 
-        ReturnResult<int> result = await mediatr.Send(new UpdateCategoryCommand(model, id));
+        ReturnResult<int> result = await mediatr.Send(new UpdateCategoryCommand(model, id, TermType.Category));
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 
@@ -117,7 +118,7 @@ public class CategoriesController(IMediator mediatr) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Delete(int id)
     {
-        ReturnResult<int> result = await mediatr.Send(new DeleteCategoryCommand(id));
+        ReturnResult<int> result = await mediatr.Send(new DeleteCategoryCommand(id, TermType.Category));
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 
