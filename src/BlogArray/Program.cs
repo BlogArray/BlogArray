@@ -17,9 +17,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-await app.UseBlogArray();
-
 app.AddBlogArrayMigration();
+
+await app.UseBlogArray();
 
 app.MapControllerRoute(
     name: "default",
