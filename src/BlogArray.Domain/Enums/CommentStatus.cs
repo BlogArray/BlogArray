@@ -7,4 +7,5 @@ public enum CommentStatus
     Published = 1,
     Deleted = 2,
     Spam = 3,
+    Profanity = 4
 }

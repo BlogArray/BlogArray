@@ -4,15 +4,15 @@ using MediatR;
 
 namespace BlogArray.Application.Features.Settings.Queries;
 
-public class GetMediaSettingsQuery() : IRequest<MediaOptions?>
+public class GetMediaSettingsQuery() : IRequest<MediaSettings?>
 {
 
 }
 
-public class GetMediaSettingsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetMediaSettingsQuery, MediaOptions?>
+public class GetMediaSettingsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetMediaSettingsQuery, MediaSettings?>
 {
-    public async Task<MediaOptions?> Handle(GetMediaSettingsQuery request, CancellationToken cancellationToken)
+    public async Task<MediaSettings?> Handle(GetMediaSettingsQuery request, CancellationToken cancellationToken)
     {
-        return await repository.TryGetOption<MediaOptions>("MediaOptions");
+        return await repository.TryGetOption<MediaSettings>("Media");
     }
 }

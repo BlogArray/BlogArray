@@ -9,4 +9,5 @@ public enum PostStatus
     Deleted = 3,
     Revision = 4,
     Spam = 5,
+    Profanity = 6,
 }

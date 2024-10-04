@@ -26,6 +26,8 @@ public class Comment : EntityBase
 
     public CommentStatus Status { get; set; } = CommentStatus.Published;
 
+    public DateTime EditExpirationDate { get; set; }
+
     public int? ParentId { get; set; }
 
     public int PostId { get; set; }

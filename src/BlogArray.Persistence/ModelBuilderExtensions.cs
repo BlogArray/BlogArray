@@ -172,15 +172,13 @@ public static class ModelBuilderExtensions
               Key = "SiteInfo",
               Value = JsonSerializer.Serialize(new SiteInfo
               {
-                  Title = "Bloggery",
-                  Tagline = "A robust blogging platform.",
-                  Description = "It is a robust blogging platform that offers a wide range of features.",
-                  Logo = "/content/images/logo.svg",
-                  Icon = "/content/images/logo.svg",
-                  HomePage = "posts",
-                  StaticHomePage = "home",
-                  ItemsPerPage = 10,
-                  SearchEngineVisibility = true,
+                  Title = "BlogArray",
+                  Tagline = "Welcome to BlogArray! 🌟",
+                  Description = "Your open-source Headless CMS platform built with ASP.NET Core and Angular, designed to make creating personal blogs and websites effortless and enjoyable.",
+                  LogoUrl = "/content/images/logo.svg",
+                  IconUrl = "/content/images/logo.svg",
+                  AllowUserRegistration = false,
+                  DefaultUserRole = 4
               }),
               OptionType = OptionType.Options,
               AutoLoad = true
@@ -189,7 +187,7 @@ public static class ModelBuilderExtensions
           {
               Id = 2,
               Key = "SMTP",
-              Value = JsonSerializer.Serialize(new SMTPOptions
+              Value = JsonSerializer.Serialize(new EmailSettings
               {
                   Username = "localhost",
                   Password = "password",
@@ -203,11 +201,18 @@ public static class ModelBuilderExtensions
           new AppOption
           {
               Id = 3,
-              Key = "PageOptions",
-              Value = JsonSerializer.Serialize(new ContentOptions
+              Key = "Content",
+              Value = JsonSerializer.Serialize(new ContentSettings
               {
-                  DefaultCover = "/content/images/page-image.webp",
-                  DefaultCategory = 1
+                  DefaultCoverImageUrl = "/content/images/page-image.webp",
+                  DefaultCategoryId = 1,
+                  HomePageContentType = "posts",
+                  StaticHomePageUrl = "home",
+                  ItemsPerPage = 10,
+                  SearchEngineVisibility = true,
+                  EnableCommentsByDefault = true,
+                  MaxFeaturedPosts = 5,
+                  UseInfiniteScroll = false
               }),
               OptionType = OptionType.Options,
               AutoLoad = true
@@ -215,6 +220,20 @@ public static class ModelBuilderExtensions
           new AppOption
           {
               Id = 4,
+              Key = "Media",
+              Value = JsonSerializer.Serialize(new MediaSettings())
+          },
+          new AppOption
+          {
+              Id = 5,
+              Key = "Comments",
+              Value = JsonSerializer.Serialize(new CommentSettings()),
+              OptionType = OptionType.Options,
+              AutoLoad = true
+          },
+          new AppOption
+          {
+              Id = 6,
               Key = "Menu:TopNav",
               Value = JsonSerializer.Serialize(TopMenuLinks),
               OptionType = OptionType.Menu,
@@ -222,7 +241,7 @@ public static class ModelBuilderExtensions
           },
           new AppOption
           {
-              Id = 5,
+              Id = 7,
               Key = "Menu:FooterLinks",
               Value = JsonSerializer.Serialize(FooterLinks),
               OptionType = OptionType.Menu,
@@ -230,7 +249,7 @@ public static class ModelBuilderExtensions
           },
           new AppOption
           {
-              Id = 6,
+              Id = 8,
               Key = "Menu:QuickLinks",
               Value = JsonSerializer.Serialize(QuickLinks),
               OptionType = OptionType.Menu,
@@ -238,7 +257,7 @@ public static class ModelBuilderExtensions
           },
           new AppOption
           {
-              Id = 7,
+              Id = 9,
               Key = "Menus",
               Value = JsonSerializer.Serialize(new AppMenus()),
               OptionType = OptionType.Options,

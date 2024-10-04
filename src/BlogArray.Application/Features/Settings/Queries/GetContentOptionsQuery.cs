@@ -4,15 +4,15 @@ using MediatR;
 
 namespace BlogArray.Application.Features.Settings.Queries;
 
-public class GetContentOptionsQuery() : IRequest<ContentOptions?>
+public class GetContentOptionsQuery() : IRequest<ContentSettings?>
 {
 
 }
 
-public class GetContentOptionsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetContentOptionsQuery, ContentOptions?>
+public class GetContentOptionsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetContentOptionsQuery, ContentSettings?>
 {
-    public async Task<ContentOptions?> Handle(GetContentOptionsQuery request, CancellationToken cancellationToken)
+    public async Task<ContentSettings?> Handle(GetContentOptionsQuery request, CancellationToken cancellationToken)
     {
-        return await repository.TryGetOption<ContentOptions>("Content");
+        return await repository.TryGetOption<ContentSettings>("Content");
     }
 }

@@ -11,9 +11,5 @@ public class SiteInfoValidator : AbstractValidator<SiteInfo>
         RuleFor(x => x.Tagline).NotNull().NotEmpty().MaximumLength(150);
         RuleFor(x => x.Description).MinimumLength(60).MaximumLength(220);
 
-        When(u => u.HomePage == "page", () =>
-        {
-            RuleFor(x => x.StaticHomePage).NotNull().NotEmpty();
-        });
     }
 }

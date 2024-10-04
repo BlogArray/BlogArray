@@ -18,140 +18,138 @@ public class AppOptionsBase
 
 public class SiteInfo
 {
+    // The title of the site (e.g., website name)
     public string Title { get; set; } = default!;
 
+    // A brief tagline or motto for the site
     public string Tagline { get; set; } = default!;
 
+    // A short description of the site, recommended length between 60 and 220 characters
     [Display(Name = "Description")]
     [StringLength(220, ErrorMessage = "We recommend keeping your description between {2} and {1} characters.", MinimumLength = 60)]
     public string? Description { get; set; } = default!;
 
-    public string? Icon { get; set; }
+    // Path or URL for the site icon (favicon)
+    public string? IconUrl { get; set; }
 
-    public string? Logo { get; set; }
+    // Path or URL for the site logo
+    public string? LogoUrl { get; set; }
 
+    // The base URL for the site (new field for easier site configuration)
+    [Url(ErrorMessage = "Please provide a valid URL.")]
+    public string? SiteAddress { get; set; }
 
-    //Accepts posts, page
-    public string HomePage { get; set; } = default!;
+    // Email address of the site administrator
+    [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
+    public string? AdminEmail { get; set; }
 
-    //If HomePage is page
-    public string StaticHomePage { get; set; } = default!;
+    // Specifies whether anyone can register for the site without an invitation
+    public bool AllowUserRegistration { get; set; } = false;
 
-    //If HomePage is page
-    //public string PostsPage { get; set; } = default!;
+    // Default role assigned to new users, represented by an integer (e.g., 1 = Subscriber, 2 = Editor)
+    public int DefaultUserRole { get; set; }
 
-    //Posts per page
-    public int ItemsPerPage { get; set; }
-
-    //Searchengine visibility
-    public bool SearchEngineVisibility { get; set; }
 }
 
-public class SMTPOptions
+public class EmailSettings
 {
-    public string Username { get; set; } = default!;
+    // The username for SMTP authentication
+    public string Username { get; set; } = string.Empty;
 
-    public string Password { get; set; } = default!;
+    // The password for SMTP authentication
+    public string Password { get; set; } = string.Empty;
 
-    public string Host { get; set; } = default!;
+    // The SMTP server host address
+    public string Host { get; set; } = string.Empty;
 
-    public int Port { get; set; }
+    // The port number for the SMTP server
+    public int Port { get; set; } = 587; // Common default port for SMTP
 
-    public bool UseSSL { get; set; }
+    // Indicates whether to use SSL for the connection
+    public bool UseSSL { get; set; } = true; // Default to true for security
 }
 
-public class ContentOptions
+public class ContentSettings
 {
-    public int? DefaultCategory { get; set; }
+    // Defines the type of content displayed on the homepage (e.g., "posts", "page")
+    public string HomePageContentType { get; set; } = "posts";
 
-    //Post or Page default cover
-    public string? DefaultCover { get; set; }
+    // The static page to be used as the homepage if HomePageContentType is set to "page"
+    public string? StaticHomePageUrl { get; set; }
+
+    // URL of the posts page (only applicable if a static home page is set)
+    //public string? PostsPageUrl { get; set; }
+
+    // The number of posts or items to display per page (for pagination)
+    public int ItemsPerPage { get; set; } = 10;
+
+    // Indicates whether the site should be indexed by search engines
+    public bool SearchEngineVisibility { get; set; } = true;
+
+    // The default category ID assigned to new posts or pages
+    public int? DefaultCategoryId { get; set; }
+
+    // URL or path to the default cover image used for posts or pages
+    public string? DefaultCoverImageUrl { get; set; }
+
+    // Enable comments by default on new posts or pages
+    public bool EnableCommentsByDefault { get; set; } = true;
+
+    // Maximum number of featured posts displayed on the homepage based on theme
+    public int MaxFeaturedPosts { get; set; } = 5;
+
+    // Set whether pagination uses numbered pages or 'load more' (infinite scroll) based on theme
+    public bool UseInfiniteScroll { get; set; } = false;
 }
 
-public class MenuItem
+public class MediaSettings
 {
-    [DisplayName("Menu name")]
-    public string Name { get; set; } = default!;
+    // Settings for generating thumbnails
+    //public bool GenerateThumbnails { get; set; } = true; // Default to true if required
 
-    public int Id { get; set; } = default!;
+    // Settings for resizing images
+    //public bool ResizeImages { get; set; } = true; // Default to true if required
 
-    public List<MenuLink> Links { get; set; } = [];
-}
+    // Sizes for media (Small, Medium, Large)
+    public MediaSize SmallSize { get; set; } = new MediaSize { MaxHeight = 150, MaxWidth = 150 };
+    public MediaSize MediumSize { get; set; } = new MediaSize { MaxHeight = 500, MaxWidth = 500 };
+    public MediaSize LargeSize { get; set; } = new MediaSize { MaxHeight = 1024, MaxWidth = 1024 };
 
-public class MenuLink
-{
-    public string Page { get; set; } = default!;
+    // Indicates whether to optimize images
+    public bool OptimizeImages { get; set; } = true;
 
-    public string Link { get; set; } = default!;
-
-    public List<MenuLink> SubLinks { get; set; } = []; // Nested links
-}
-
-public class AppMenus
-{
-    [DisplayName("Header menu 1")]
-    public string HeaderMenu { get; set; } = default!;
-
-    [DisplayName("Header menu 2")]
-    public string HeaderMenu2 { get; set; } = default!;
-
-    [DisplayName("Header menu 3")]
-    public string HeaderMenu3 { get; set; } = default!;
-
-    [DisplayName("Social menu 1")]
-    public string SocialMenu { get; set; } = default!;
-
-    [DisplayName("Social menu 2")]
-    public string SocialMenu2 { get; set; } = default!;
-
-    [DisplayName("Footer menu 1")]
-    public string FooterMenu { get; set; } = default!;
-
-    [DisplayName("Footer menu 2")]
-    public string FooterMenu2 { get; set; } = default!;
-
-    [DisplayName("Footer menu 3")]
-    public string FooterMenu3 { get; set; } = default!;
-
-    [DisplayName("Footer menu 4")]
-    public string FooterMenu4 { get; set; } = default!;
-}
-
-public class MediaOptions
-{
-    //public bool GenerateThumbnails { get; set; } = default!;
-
-    //public bool ResizeImage { get; set; } = default!;
-
-    public MediaSize SmallSize { get; set; } = default!;
-
-    public MediaSize MediumSize { get; set; } = default!;
-
-    public MediaSize LargeSize { get; set; } = default!;
-
-    public bool OptimizeImage { get; set; } = default!;
-
+    // Quality level for optimized images (between 10 and 100)
     [Range(10, 100, ErrorMessage = "The value should be between 10 and 100.")]
-    public int? OptimizedQuality { get; set; } = default!;
+    public int? OptimizedQuality { get; set; } = 75;
 
-    public bool OrganizeUploads { get; set; } = default!;
+    // Indicates whether to organize uploaded files into folders
+    public bool OrganizeUploads { get; set; } = true;
 
-    public MediaOptions()
-    {
-        SmallSize = new MediaSize { MaxHeight = 150, MaxWidth = 150 };
-        MediumSize = new MediaSize { MaxHeight = 500, MaxWidth = 500 };
-        LargeSize = new MediaSize { MaxHeight = 1024, MaxWidth = 1024 };
-
-        OptimizeImage = true;
-
-        OptimizedQuality = 75;
-
-        OrganizeUploads = true;
-    }
 }
 
 public class MediaSize
 {
     public int MaxWidth { get; set; } = default!;
     public int MaxHeight { get; set; } = default!;
+}
+
+public class CommentSettings
+{
+    // Indicates whether the user must be logged in to post a comment
+    public bool RequireLogin { get; set; } = false;
+
+    // Indicates whether anonymous commenting is allowed
+    public bool AllowAnonymous { get; set; } = true;
+
+    // Specifies whether comments need to be manually approved by moderators/admins
+    public bool RequireManualApproval { get; set; } = false;
+
+    // URL or path to the default avatar image for commenters
+    public string DefaultAvatarUrl { get; set; } = string.Empty;
+
+    // Number of initial comments to show per post before loading additional threads in separate pages
+    public int InitialCommentsPerPost { get; set; } = 10;
+
+    // Time limit for editing a comment after it is posted (in minutes)
+    public int CommentEditWindowMinutes { get; set; } = 15;
 }

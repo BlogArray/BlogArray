@@ -101,7 +101,7 @@ public class AccountRepository(AppDbContext db, IConfiguration Configuration) : 
             };
         }
 
-        // SECURITY: Need to set default role from app settings
+        // TODO: Need to set default role from app settings
         // Create a new AppUser object
         AppUser newUser = new()
         {

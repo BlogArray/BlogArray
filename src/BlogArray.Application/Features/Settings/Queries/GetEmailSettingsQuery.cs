@@ -4,15 +4,15 @@ using MediatR;
 
 namespace BlogArray.Application.Features.Settings.Queries;
 
-public class GetEmailSettingsQuery() : IRequest<SMTPOptions?>
+public class GetEmailSettingsQuery() : IRequest<EmailSettings?>
 {
 
 }
 
-public class GetEmailSettingsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetEmailSettingsQuery, SMTPOptions?>
+public class GetEmailSettingsQueryHandler(IAppOptionsRepository repository) : IRequestHandler<GetEmailSettingsQuery, EmailSettings?>
 {
-    public async Task<SMTPOptions?> Handle(GetEmailSettingsQuery request, CancellationToken cancellationToken)
+    public async Task<EmailSettings?> Handle(GetEmailSettingsQuery request, CancellationToken cancellationToken)
     {
-        return await repository.TryGetOption<SMTPOptions>("SMTP");
+        return await repository.TryGetOption<EmailSettings>("SMTP");
     }
 }

@@ -4,7 +4,7 @@ using FluentValidation;
 namespace BlogArray.Application.Features.Settings.Validations;
 
 
-public class SMTPOptionsValidator : AbstractValidator<SMTPOptions>
+public class SMTPOptionsValidator : AbstractValidator<EmailSettings>
 {
     public SMTPOptionsValidator()
     {

@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BlogArray.Application.Features.Settings.Validations;
 
-public class MediaOptionsValidator : AbstractValidator<MediaOptions>
+public class MediaOptionsValidator : AbstractValidator<MediaSettings>
 {
     public MediaOptionsValidator()
     {

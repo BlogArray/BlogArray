@@ -60,27 +60,27 @@ public class SettingsController(IMediator mediatr) : BaseController
     /// <summary>
     /// Retrieves the email configuration.
     /// </summary>
-    /// <returns>Returns the <see cref="SMTPOptions"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
+    /// <returns>Returns the <see cref="EmailSettings"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
     [HttpGet("email")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SMTPOptions))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmailSettings))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Email()
     {
-        SMTPOptions? option = await mediatr.Send(new GetEmailSettingsQuery());
+        EmailSettings? option = await mediatr.Send(new GetEmailSettingsQuery());
         return option == null ? NotFound() : Ok(option);
     }
 
     /// <summary>
     /// Updates or creates the email configuration.
     /// </summary>
-    /// <param name="sMTPOptions">The <see cref="SMTPOptions"/> object to be saved or updated.</param>
+    /// <param name="sMTPOptions">The <see cref="EmailSettings"/> object to be saved or updated.</param>
     /// <returns>Returns the status of the operation or an error response.</returns>
     [HttpPost("email")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Email([FromBody] SMTPOptions sMTPOptions)
+    public async Task<IActionResult> Email([FromBody] EmailSettings sMTPOptions)
     {
         if (!ModelState.IsValid)
         {
@@ -100,27 +100,27 @@ public class SettingsController(IMediator mediatr) : BaseController
     /// <summary>
     /// Retrieves the content options.
     /// </summary>
-    /// <returns>Returns the <see cref="ContentOptions"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
+    /// <returns>Returns the <see cref="ContentSettings"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
     [HttpGet("content")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContentOptions))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContentSettings))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Content()
     {
-        ContentOptions? option = await mediatr.Send(new GetContentOptionsQuery());
+        ContentSettings? option = await mediatr.Send(new GetContentOptionsQuery());
         return option == null ? NotFound() : Ok(option);
     }
 
     /// <summary>
     /// Updates or creates the content options.
     /// </summary>
-    /// <param name="contentOptions">The <see cref="ContentOptions"/> object to be saved or updated.</param>
+    /// <param name="contentOptions">The <see cref="ContentSettings"/> object to be saved or updated.</param>
     /// <returns>Returns the status of the operation or an error response.</returns>
     [HttpPost("content")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Content([FromBody] ContentOptions contentOptions)
+    public async Task<IActionResult> Content([FromBody] ContentSettings contentOptions)
     {
         if (!ModelState.IsValid)
         {
@@ -140,27 +140,27 @@ public class SettingsController(IMediator mediatr) : BaseController
     /// <summary>
     /// Retrieves the media settings.
     /// </summary>
-    /// <returns>Returns the <see cref="MediaOptions"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
+    /// <returns>Returns the <see cref="MediaSettings"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
     [HttpGet("media")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MediaOptions))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MediaSettings))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
     public async Task<IActionResult> Media()
     {
-        MediaOptions? option = await mediatr.Send(new GetMediaSettingsQuery());
+        MediaSettings? option = await mediatr.Send(new GetMediaSettingsQuery());
         return option == null ? NotFound() : Ok(option);
     }
 
     /// <summary>
     /// Updates or creates the media settings.
     /// </summary>
-    /// <param name="mediaOptions">The <see cref="MediaOptions"/> object to be saved or updated.</param>
+    /// <param name="mediaOptions">The <see cref="MediaSettings"/> object to be saved or updated.</param>
     /// <returns>Returns the status of the operation or an error response.</returns>
     [HttpPost("media")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
-    public async Task<IActionResult> Media([FromBody] MediaOptions mediaOptions)
+    public async Task<IActionResult> Media([FromBody] MediaSettings mediaOptions)
     {
         if (!ModelState.IsValid)
         {
@@ -170,7 +170,7 @@ public class SettingsController(IMediator mediatr) : BaseController
         ReturnResult<int> result = await mediatr.Send(new CreateOrUpdateOptionCommand(new AppOptionsBase
         {
             AutoLoad = true,
-            Key = "MediaOptions",
+            Key = "Media",
             Value = JsonSerializer.Serialize(mediaOptions)
         }));
 
