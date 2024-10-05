@@ -194,6 +194,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     RawContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ParsedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    EditExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true),
                     PostId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -310,13 +311,15 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 columns: new[] { "Id", "AutoLoad", "Key", "OptionType", "Value" },
                 values: new object[,]
                 {
-                    { 1, true, "SiteInfo", 0, "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\",\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}" },
+                    { 1, true, "SiteInfo", 0, "{\"Title\":\"BlogArray\",\"Tagline\":\"Welcome to BlogArray! \\uD83C\\uDF1F\",\"Description\":\"Your open-source Headless CMS platform built with ASP.NET Core and Angular, designed to make creating personal blogs and websites effortless and enjoyable.\",\"IconUrl\":\"/content/images/logo.svg\",\"LogoUrl\":\"/content/images/logo.svg\",\"SiteAddress\":null,\"AdminEmail\":null,\"AllowUserRegistration\":false,\"DefaultUserRole\":4}" },
                     { 2, true, "SMTP", 0, "{\"Username\":\"localhost\",\"Password\":\"password\",\"Host\":\"localhost\",\"Port\":587,\"UseSSL\":false}" },
-                    { 3, true, "PageOptions", 0, "{\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\"}" },
-                    { 4, true, "Menu:TopNav", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]}]" },
-                    { 5, true, "Menu:FooterLinks", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]},{\"Page\":\"Privacy Policy\",\"Link\":\"/page/privacy-policy\",\"SubLinks\":[]}]" },
-                    { 6, true, "Menu:QuickLinks", 1, "[{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]}]" },
-                    { 7, true, "Menus", 0, "{\"HeaderMenu\":null,\"HeaderMenu2\":null,\"HeaderMenu3\":null,\"SocialMenu\":null,\"SocialMenu2\":null,\"FooterMenu\":null,\"FooterMenu2\":null,\"FooterMenu3\":null,\"FooterMenu4\":null}" }
+                    { 3, true, "Content", 0, "{\"HomePageContentType\":\"posts\",\"StaticHomePageUrl\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true,\"DefaultCategoryId\":1,\"DefaultCoverImageUrl\":\"/content/images/page-image.webp\",\"EnableCommentsByDefault\":true,\"MaxFeaturedPosts\":5,\"UseInfiniteScroll\":false}" },
+                    { 4, true, "Media", 0, "{\"SmallSize\":{\"MaxWidth\":150,\"MaxHeight\":150},\"MediumSize\":{\"MaxWidth\":500,\"MaxHeight\":500},\"LargeSize\":{\"MaxWidth\":1024,\"MaxHeight\":1024},\"OptimizeImages\":true,\"OptimizedQuality\":75,\"OrganizeUploads\":true}" },
+                    { 5, true, "Comments", 0, "{\"RequireLogin\":false,\"AllowAnonymous\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}" },
+                    { 6, true, "Menu:TopNav", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]}]" },
+                    { 7, true, "Menu:FooterLinks", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]},{\"Page\":\"Privacy Policy\",\"Link\":\"/page/privacy-policy\",\"SubLinks\":[]}]" },
+                    { 8, true, "Menu:QuickLinks", 1, "[{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]}]" },
+                    { 9, true, "Menus", 0, "{\"HeaderMenu\":null,\"HeaderMenu2\":null,\"HeaderMenu3\":null,\"SocialMenu\":null,\"SocialMenu2\":null,\"FooterMenu\":null,\"FooterMenu2\":null,\"FooterMenu3\":null,\"FooterMenu4\":null}" }
                 });
 
             migrationBuilder.InsertData(

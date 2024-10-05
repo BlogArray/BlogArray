@@ -59,7 +59,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                             AutoLoad = true,
                             Key = "SiteInfo",
                             OptionType = 0,
-                            Value = "{\"Title\":\"Bloggery\",\"Tagline\":\"A robust blogging platform.\",\"Description\":\"It is a robust blogging platform that offers a wide range of features.\",\"Icon\":\"/content/images/logo.svg\",\"Logo\":\"/content/images/logo.svg\",\"HomePage\":\"posts\",\"StaticHomePage\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true}"
+                            Value = "{\"Title\":\"BlogArray\",\"Tagline\":\"Welcome to BlogArray! \\uD83C\\uDF1F\",\"Description\":\"Your open-source Headless CMS platform built with ASP.NET Core and Angular, designed to make creating personal blogs and websites effortless and enjoyable.\",\"IconUrl\":\"/content/images/logo.svg\",\"LogoUrl\":\"/content/images/logo.svg\",\"SiteAddress\":null,\"AdminEmail\":null,\"AllowUserRegistration\":false,\"DefaultUserRole\":4}"
                         },
                         new
                         {
@@ -73,13 +73,29 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         {
                             Id = 3,
                             AutoLoad = true,
-                            Key = "PageOptions",
+                            Key = "Content",
                             OptionType = 0,
-                            Value = "{\"DefaultCategory\":1,\"DefaultCover\":\"/content/images/page-image.webp\"}"
+                            Value = "{\"HomePageContentType\":\"posts\",\"StaticHomePageUrl\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true,\"DefaultCategoryId\":1,\"DefaultCoverImageUrl\":\"/content/images/page-image.webp\",\"EnableCommentsByDefault\":true,\"MaxFeaturedPosts\":5,\"UseInfiniteScroll\":false}"
                         },
                         new
                         {
                             Id = 4,
+                            AutoLoad = true,
+                            Key = "Media",
+                            OptionType = 0,
+                            Value = "{\"SmallSize\":{\"MaxWidth\":150,\"MaxHeight\":150},\"MediumSize\":{\"MaxWidth\":500,\"MaxHeight\":500},\"LargeSize\":{\"MaxWidth\":1024,\"MaxHeight\":1024},\"OptimizeImages\":true,\"OptimizedQuality\":75,\"OrganizeUploads\":true}"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AutoLoad = true,
+                            Key = "Comments",
+                            OptionType = 0,
+                            Value = "{\"RequireLogin\":false,\"AllowAnonymous\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}"
+                        },
+                        new
+                        {
+                            Id = 6,
                             AutoLoad = true,
                             Key = "Menu:TopNav",
                             OptionType = 1,
@@ -87,7 +103,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         },
                         new
                         {
-                            Id = 5,
+                            Id = 7,
                             AutoLoad = true,
                             Key = "Menu:FooterLinks",
                             OptionType = 1,
@@ -95,7 +111,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         },
                         new
                         {
-                            Id = 6,
+                            Id = 8,
                             AutoLoad = true,
                             Key = "Menu:QuickLinks",
                             OptionType = 1,
@@ -103,7 +119,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         },
                         new
                         {
-                            Id = 7,
+                            Id = 9,
                             AutoLoad = true,
                             Key = "Menus",
                             OptionType = 0,
@@ -309,6 +325,9 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.Property<int?>("CreatedUserId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("EditExpirationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");

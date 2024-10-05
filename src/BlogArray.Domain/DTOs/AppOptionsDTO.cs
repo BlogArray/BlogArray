@@ -152,4 +152,7 @@ public class CommentSettings
 
     // Time limit for editing a comment after it is posted (in minutes)
     public int CommentEditWindowMinutes { get; set; } = 15;
+
+    // Maximum depth for threaded/nested comments
+    public int MaxThreadDepth { get; set; } = 3;
 }
