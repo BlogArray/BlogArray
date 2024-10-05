@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20241005172717_Init")]
+    [Migration("20241005181228_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -94,7 +94,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                             AutoLoad = true,
                             Key = "Comments",
                             OptionType = 0,
-                            Value = "{\"RequireLogin\":false,\"AllowAnonymous\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}"
+                            Value = "{\"RequireLogin\":false,\"RequireEmailForCommenting\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}"
                         },
                         new
                         {

@@ -16,92 +16,152 @@ public class AppOptionsBase
     public bool AutoLoad { get; set; } = true;
 }
 
+/// <summary>
+/// Basic site information
+/// </summary>
 public class SiteInfo
 {
-    // The title of the site (e.g., website name)
+    /// <summary>
+    /// The title of the site (e.g., website name)
+    /// </summary>
     public string Title { get; set; } = default!;
 
-    // A brief tagline or motto for the site
+    /// <summary>
+    /// A brief tagline or motto for the site
+    /// </summary>
     public string Tagline { get; set; } = default!;
 
-    // A short description of the site, recommended length between 60 and 220 characters
+    /// <summary>
+    /// A short description of the site, recommended length between 60 and 220 characters
+    /// </summary>
     [Display(Name = "Description")]
     [StringLength(220, ErrorMessage = "We recommend keeping your description between {2} and {1} characters.", MinimumLength = 60)]
     public string? Description { get; set; } = default!;
 
-    // Path or URL for the site icon (favicon)
+    /// <summary>
+    /// Path or URL for the site icon (favicon)
+    /// </summary>
     public string? IconUrl { get; set; }
 
-    // Path or URL for the site logo
+    /// <summary>
+    /// Path or URL for the site logo
+    /// </summary>
     public string? LogoUrl { get; set; }
 
-    // The base URL for the site (new field for easier site configuration)
+    /// <summary>
+    /// The base URL for the site (new field for easier site configuration)
+    /// </summary>
     [Url(ErrorMessage = "Please provide a valid URL.")]
     public string? SiteAddress { get; set; }
 
-    // Email address of the site administrator
+    /// <summary>
+    /// Email address of the site administrator
+    /// </summary>
     [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
     public string? AdminEmail { get; set; }
 
-    // Specifies whether anyone can register for the site without an invitation
+    /// <summary>
+    /// Specifies whether anyone can register for the site without an invitation
+    /// </summary>
     public bool AllowUserRegistration { get; set; } = false;
 
-    // Default role assigned to new users, represented by an integer (e.g., 1 = Subscriber, 2 = Editor)
+    /// <summary>
+    /// Default role assigned to new users, represented by an integer (e.g., 1 = Subscriber, 2 = Editor)
+    /// </summary>
     public int DefaultUserRole { get; set; }
 
 }
 
+/// <summary>
+/// Email Settings
+/// </summary>
 public class EmailSettings
 {
-    // The username for SMTP authentication
+    /// <summary>
+    /// The username for SMTP authentication
+    /// </summary>
     public string Username { get; set; } = string.Empty;
 
-    // The password for SMTP authentication
+    /// <summary>
+    /// The password for SMTP authentication
+    /// </summary>
     public string Password { get; set; } = string.Empty;
 
-    // The SMTP server host address
+    /// <summary>
+    /// The SMTP server host address
+    /// </summary>
     public string Host { get; set; } = string.Empty;
 
-    // The port number for the SMTP server
+    /// <summary>
+    /// The port number for the SMTP server
+    /// </summary>
     public int Port { get; set; } = 587; // Common default port for SMTP
 
-    // Indicates whether to use SSL for the connection
+    /// <summary>
+    /// Indicates whether to use SSL for the connection
+    /// </summary>
     public bool UseSSL { get; set; } = true; // Default to true for security
 }
 
+/// <summary>
+/// Content Settings such as writing and reading settings
+/// </summary>
 public class ContentSettings
 {
-    // Defines the type of content displayed on the homepage (e.g., "posts", "page")
+    /// <summary>
+    /// Defines the type of content displayed on the homepage (e.g., "posts", "page")
+    /// </summary>
     public string HomePageContentType { get; set; } = "posts";
 
-    // The static page to be used as the homepage if HomePageContentType is set to "page"
+    /// <summary>
+    /// The static page to be used as the homepage if HomePageContentType is set to "page"
+    /// </summary>
     public string? StaticHomePageUrl { get; set; }
 
-    // URL of the posts page (only applicable if a static home page is set)
+    /// <summary>
+    /// URL of the posts page (only applicable if a static home page is set)
+    /// </summary>
     //public string? PostsPageUrl { get; set; }
 
-    // The number of posts or items to display per page (for pagination)
+    /// <summary>
+    /// The number of posts or items to display per page (for pagination)
+    /// </summary>
     public int ItemsPerPage { get; set; } = 10;
 
-    // Indicates whether the site should be indexed by search engines
+    /// <summary>
+    /// Indicates whether the site should be indexed by search engines
+    /// </summary>
     public bool SearchEngineVisibility { get; set; } = true;
 
-    // The default category ID assigned to new posts or pages
+    /// <summary>
+    /// The default category ID assigned to new posts or pages
+    /// </summary>
     public int? DefaultCategoryId { get; set; }
 
-    // URL or path to the default cover image used for posts or pages
+    /// <summary>
+    /// URL or path to the default cover image used for posts or pages
+    /// </summary>
     public string? DefaultCoverImageUrl { get; set; }
 
-    // Enable comments by default on new posts or pages
+    /// <summary>
+    /// Enable comments by default on new posts or pages
+    /// </summary>
     public bool EnableCommentsByDefault { get; set; } = true;
 
-    // Maximum number of featured posts displayed on the homepage based on theme
+    /// <summary>
+    /// Maximum number of featured posts displayed on the homepage based on theme
+    /// </summary>
     public int MaxFeaturedPosts { get; set; } = 5;
 
-    // Set whether pagination uses numbered pages or 'load more' (infinite scroll) based on theme
+    /// <summary>
+    /// Set whether pagination uses numbered pages or 'load more' (infinite scroll) based on theme
+    /// </summary>
     public bool UseInfiniteScroll { get; set; } = false;
 }
 
+/// <summary>
+/// Media upload settings
+/// </summary>
 public class MediaSettings
 {
     // Settings for generating thumbnails
@@ -110,19 +170,33 @@ public class MediaSettings
     // Settings for resizing images
     //public bool ResizeImages { get; set; } = true; // Default to true if required
 
-    // Sizes for media (Small, Medium, Large)
+    /// <summary>
+    /// Sizes for Small media
+    /// </summary>
     public MediaSize SmallSize { get; set; } = new MediaSize { MaxHeight = 150, MaxWidth = 150 };
+    /// <summary>
+    /// Sizes for Medium media
+    /// </summary>
     public MediaSize MediumSize { get; set; } = new MediaSize { MaxHeight = 500, MaxWidth = 500 };
+    /// <summary>
+    /// Sizes for Large media
+    /// </summary>
     public MediaSize LargeSize { get; set; } = new MediaSize { MaxHeight = 1024, MaxWidth = 1024 };
 
-    // Indicates whether to optimize images
+    /// <summary>
+    /// Indicates whether to optimize images
+    /// </summary>
     public bool OptimizeImages { get; set; } = true;
 
-    // Quality level for optimized images (between 10 and 100)
+    /// <summary>
+    /// Quality level for optimized images (between 10 and 100)
+    /// </summary>
     [Range(10, 100, ErrorMessage = "The value should be between 10 and 100.")]
     public int? OptimizedQuality { get; set; } = 75;
 
-    // Indicates whether to organize uploaded files into folders
+    /// <summary>
+    /// Indicates whether to organize uploaded files into folders
+    /// </summary>
     public bool OrganizeUploads { get; set; } = true;
 
 }
@@ -133,26 +207,44 @@ public class MediaSize
     public int MaxHeight { get; set; } = default!;
 }
 
+/// <summary>
+/// Comment settings
+/// </summary>
 public class CommentSettings
 {
-    // Indicates whether the user must be logged in to post a comment
+    /// <summary>
+    /// Indicates whether the user must be logged in to post a comment
+    /// </summary>
     public bool RequireLogin { get; set; } = false;
 
-    // Indicates whether anonymous commenting is allowed
-    public bool AllowAnonymous { get; set; } = true;
+    /// <summary>
+    /// Specifies whether an email is required for commenting.
+    /// If false, users will not be prompted to provide an email, and the comment will be marked as anonymous.
+    /// </summary>
+    public bool RequireEmailForCommenting { get; set; } = true;
 
-    // Specifies whether comments need to be manually approved by moderators/admins
+    /// <summary>
+    /// Specifies whether comments need to be manually approved by moderators/admins
+    /// </summary>
     public bool RequireManualApproval { get; set; } = false;
 
-    // URL or path to the default avatar image for commenters
+    /// <summary>
+    /// URL or path to the default avatar image for commenters
+    /// </summary>
     public string DefaultAvatarUrl { get; set; } = string.Empty;
 
-    // Number of initial comments to show per post before loading additional threads in separate pages
+    /// <summary>
+    /// Number of initial comments to show per post before loading additional threads in separate pages
+    /// </summary>
     public int InitialCommentsPerPost { get; set; } = 10;
 
-    // Time limit for editing a comment after it is posted (in minutes)
+    /// <summary>
+    /// Time limit for editing a comment after it is posted (in minutes)
+    /// </summary>
     public int CommentEditWindowMinutes { get; set; } = 15;
 
-    // Maximum depth for threaded/nested comments
+    /// <summary>
+    /// Maximum depth for threaded/nested comments
+    /// </summary>
     public int MaxThreadDepth { get; set; } = 3;
 }

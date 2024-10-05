@@ -91,7 +91,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                             AutoLoad = true,
                             Key = "Comments",
                             OptionType = 0,
-                            Value = "{\"RequireLogin\":false,\"AllowAnonymous\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}"
+                            Value = "{\"RequireLogin\":false,\"RequireEmailForCommenting\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}"
                         },
                         new
                         {

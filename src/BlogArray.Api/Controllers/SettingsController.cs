@@ -177,4 +177,44 @@ public class SettingsController(IMediator mediatr) : BaseController
         return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Result);
     }
 
+    /// <summary>
+    /// Retrieves the comment settings.
+    /// </summary>
+    /// <returns>Returns the <see cref="CommentSettings"/> if found; otherwise, returns a 404 Not Found or 400 Bad Request.</returns>
+    [HttpGet("comment")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CommentSettings))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Comment()
+    {
+        CommentSettings? option = await mediatr.Send(new GetCommentSettingsQuery());
+        return option == null ? NotFound() : Ok(option);
+    }
+
+    /// <summary>
+    /// Updates or creates the comment settings.
+    /// </summary>
+    /// <param name="commentSettings">The <see cref="CommentSettings"/> object to be saved or updated.</param>
+    /// <returns>Returns the status of the operation or an error response.</returns>
+    [HttpPost("comment")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+    public async Task<IActionResult> Comment([FromBody] CommentSettings commentSettings)
+    {
+        if (!ModelState.IsValid)
+        {
+            return ModelStateError(ModelState);
+        }
+
+        ReturnResult<int> result = await mediatr.Send(new CreateOrUpdateOptionCommand(new AppOptionsBase
+        {
+            AutoLoad = true,
+            Key = "Comments",
+            Value = JsonSerializer.Serialize(commentSettings)
+        }));
+
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Result);
+    }
+
 }

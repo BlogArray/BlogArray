@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BlogArray.Persistence.SqlServer.Migrations
+namespace BlogArray.Persistence.Sqlite.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -16,12 +16,12 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "AppOptions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Key = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OptionType = table.Column<int>(type: "int", nullable: false),
-                    AutoLoad = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Key = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: false),
+                    OptionType = table.Column<int>(type: "INTEGER", nullable: false),
+                    AutoLoad = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,10 +32,10 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "AppRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    NormalizedName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,12 +46,12 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "Terms",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    TermType = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 180, nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 180, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    TermType = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,26 +62,26 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "AppUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Bio = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    SecurityCodeHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityCodeIssuedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SecurityCodeIssueCount = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedUserId = table.Column<int>(type: "int", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedUserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Username = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    Bio = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    SecurityCodeHash = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityCodeIssuedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SecurityCodeIssueCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UpdatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,29 +110,29 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
-                    Cover = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: true),
-                    Views = table.Column<int>(type: "int", nullable: false),
-                    PostType = table.Column<int>(type: "int", nullable: false),
-                    PostStatus = table.Column<int>(type: "int", nullable: false),
-                    PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsFeatured = table.Column<bool>(type: "bit", nullable: false),
-                    IsWidePage = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    ShowContactPage = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    ShowHeading = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    ShowAuthor = table.Column<bool>(type: "bit", nullable: false),
-                    ShowSharingIcon = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    AllowComments = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    ShowCover = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CommentsCount = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedUserId = table.Column<int>(type: "int", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedUserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 160, nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 160, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
+                    Cover = table.Column<string>(type: "TEXT", maxLength: 160, nullable: true),
+                    Views = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostType = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    PublishedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    IsFeatured = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsWidePage = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    ShowContactPage = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    ShowHeading = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    ShowAuthor = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ShowSharingIcon = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    AllowComments = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    ShowCover = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    CommentsCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UpdatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,19 +155,19 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "Storages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AssetType = table.Column<int>(type: "int", nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Path = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    Length = table.Column<long>(type: "bigint", nullable: false),
-                    ContentType = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedUserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AssetType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Path = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: false),
+                    Length = table.Column<long>(type: "INTEGER", nullable: false),
+                    ContentType = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,23 +184,23 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Author = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
-                    AuthorEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    AuthorSite = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
-                    AuthorIP = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserAgent = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    RawContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParsedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    EditExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedUserId = table.Column<int>(type: "int", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedUserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Author = table.Column<string>(type: "TEXT", maxLength: 120, nullable: false),
+                    AuthorEmail = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    AuthorSite = table.Column<string>(type: "TEXT", maxLength: 120, nullable: true),
+                    AuthorIP = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    UserAgent = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    RawContent = table.Column<string>(type: "TEXT", nullable: false),
+                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    EditExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    UpdatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,15 +234,15 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "PostRevisions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RawContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParsedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsLatest = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    EditorType = table.Column<int>(type: "int", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedUserId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RawContent = table.Column<string>(type: "TEXT", nullable: false),
+                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
+                    IsLatest = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    EditorType = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -265,9 +265,9 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "PostTerms",
                 columns: table => new
                 {
-                    TermId = table.Column<int>(type: "int", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    Order = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    TermId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Order = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -290,11 +290,11 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 name: "Statistics",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserAgent = table.Column<string>(type: "TEXT", nullable: true),
+                    ViewedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -315,7 +315,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     { 2, true, "SMTP", 0, "{\"Username\":\"localhost\",\"Password\":\"password\",\"Host\":\"localhost\",\"Port\":587,\"UseSSL\":false}" },
                     { 3, true, "Content", 0, "{\"HomePageContentType\":\"posts\",\"StaticHomePageUrl\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true,\"DefaultCategoryId\":1,\"DefaultCoverImageUrl\":\"/content/images/page-image.webp\",\"EnableCommentsByDefault\":true,\"MaxFeaturedPosts\":5,\"UseInfiniteScroll\":false}" },
                     { 4, true, "Media", 0, "{\"SmallSize\":{\"MaxWidth\":150,\"MaxHeight\":150},\"MediumSize\":{\"MaxWidth\":500,\"MaxHeight\":500},\"LargeSize\":{\"MaxWidth\":1024,\"MaxHeight\":1024},\"OptimizeImages\":true,\"OptimizedQuality\":75,\"OrganizeUploads\":true}" },
-                    { 5, true, "Comments", 0, "{\"RequireLogin\":false,\"AllowAnonymous\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}" },
+                    { 5, true, "Comments", 0, "{\"RequireLogin\":false,\"RequireEmailForCommenting\":true,\"RequireManualApproval\":false,\"DefaultAvatarUrl\":\"\",\"InitialCommentsPerPost\":10,\"CommentEditWindowMinutes\":15,\"MaxThreadDepth\":3}" },
                     { 6, true, "Menu:TopNav", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]}]" },
                     { 7, true, "Menu:FooterLinks", 1, "[{\"Page\":\"Home\",\"Link\":\"/\",\"SubLinks\":[]},{\"Page\":\"Sri Ramalaya temple\",\"Link\":\"/page/ramalayam-temple\",\"SubLinks\":[]},{\"Page\":\"Contribute\",\"Link\":\"/page/contribute\",\"SubLinks\":[]},{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"About\",\"Link\":\"/page/about\",\"SubLinks\":[]},{\"Page\":\"Contact\",\"Link\":\"/contact\",\"SubLinks\":[]},{\"Page\":\"Privacy Policy\",\"Link\":\"/page/privacy-policy\",\"SubLinks\":[]}]" },
                     { 8, true, "Menu:QuickLinks", 1, "[{\"Page\":\"Donate\",\"Link\":\"/page/donate\",\"SubLinks\":[]},{\"Page\":\"Blog\",\"Link\":\"/blog/list\",\"SubLinks\":[]}]" },
