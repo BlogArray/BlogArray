@@ -9,8 +9,16 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()
     {
-        RuleFor(x => x.Username).NotNull().NotEmpty().EmailAddress();
-        RuleFor(x => x.Password).NotNull().NotEmpty();
+        // Validate that Username is not null, not empty, and is a valid email address
+        RuleFor(x => x.Username)
+            .NotNull().WithMessage("Username is required.")
+            .NotEmpty().WithMessage("Username cannot be empty.")
+            .EmailAddress().WithMessage("Please enter a valid email address.");
+
+        // Validate that Password is not null and not empty
+        RuleFor(x => x.Password)
+            .NotNull().WithMessage("Password is required.")
+            .NotEmpty().WithMessage("Password cannot be empty.");
     }
 }
 

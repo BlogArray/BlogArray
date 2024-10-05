@@ -12,11 +12,19 @@ public class ContentSettingsValidator : AbstractValidator<ContentSettings>
 
     public ContentSettingsValidator()
     {
-        RuleFor(x => x.HomePageContentType).NotNull().NotEmpty().Must(type => pageTypes.Contains(type)).WithMessage("Selest a valid home page type.");
+        // Validate HomePageContentType - must not be null/empty and must be one of the valid page types
+        RuleFor(x => x.HomePageContentType)
+            .NotNull().WithMessage("Home page content type is required.")
+            .NotEmpty().WithMessage("Home page content type cannot be empty.")
+            .Must(type => pageTypes.Contains(type))
+            .WithMessage("Select a valid home page content type. Valid options are 'posts' or 'page'.");
 
-        When(u => u.HomePageContentType == "page", () =>
+        // Conditional validation for StaticHomePageUrl when HomePageContentType is 'page'
+        When(x => x.HomePageContentType == "page", () =>
         {
-            RuleFor(x => x.StaticHomePageUrl).NotNull().NotEmpty();
+            RuleFor(x => x.StaticHomePageUrl)
+                .NotNull().WithMessage("Static home page URL is required when 'page' is selected.")
+                .NotEmpty().WithMessage("Static home page URL cannot be empty when 'page' is selected.");
         });
     }
 }

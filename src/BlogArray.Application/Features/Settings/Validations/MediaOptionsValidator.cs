@@ -7,6 +7,11 @@ public class MediaOptionsValidator : AbstractValidator<MediaSettings>
 {
     public MediaOptionsValidator()
     {
-        RuleFor(x => x.OptimizedQuality).GreaterThanOrEqualTo(10).LessThanOrEqualTo(100);
+        // Validate that OptimizedQuality is between 10 and 100 (inclusive)
+        RuleFor(x => x.OptimizedQuality)
+            .GreaterThanOrEqualTo(10)
+            .WithMessage("Optimized quality must be at least 10.")
+            .LessThanOrEqualTo(100)
+            .WithMessage("Optimized quality must not exceed 100.");
     }
 }

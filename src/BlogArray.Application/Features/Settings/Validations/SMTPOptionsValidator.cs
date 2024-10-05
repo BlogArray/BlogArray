@@ -8,8 +8,19 @@ public class SMTPOptionsValidator : AbstractValidator<EmailSettings>
 {
     public SMTPOptionsValidator()
     {
-        RuleFor(x => x.Username).NotNull().NotEmpty();
-        RuleFor(x => x.Password).NotNull().NotEmpty();
-        RuleFor(x => x.Host).NotNull().NotEmpty();
+        // Validate that Username is not null or empty
+        RuleFor(x => x.Username)
+            .NotNull().WithMessage("SMTP username is required.")
+            .NotEmpty().WithMessage("SMTP username cannot be empty.");
+
+        // Validate that Password is not null or empty
+        RuleFor(x => x.Password)
+            .NotNull().WithMessage("SMTP password is required.")
+            .NotEmpty().WithMessage("SMTP password cannot be empty.");
+
+        // Validate that Host is not null or empty
+        RuleFor(x => x.Host)
+            .NotNull().WithMessage("SMTP host is required.")
+            .NotEmpty().WithMessage("SMTP host cannot be empty.");
     }
 }

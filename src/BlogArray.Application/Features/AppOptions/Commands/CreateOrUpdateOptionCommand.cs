@@ -9,7 +9,11 @@ public class CreateOptionValidator : AbstractValidator<AppOptionsBase>
 {
     public CreateOptionValidator()
     {
-        RuleFor(x => x.Key).NotNull().NotEmpty().MaximumLength(256);
+        // Validate that Key is not null, not empty, and has a maximum length of 256 characters
+        RuleFor(x => x.Key)
+            .NotNull().WithMessage("Key is required.")
+            .NotEmpty().WithMessage("Key cannot be empty.")
+            .MaximumLength(256).WithMessage("Key must not exceed 256 characters.");
     }
 }
 
