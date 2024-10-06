@@ -30,6 +30,14 @@ public class BaseController : ControllerBase
     protected string LoggedInUserEmail => Converter.ToString(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value);
 
     /// <summary>
+    /// Gets the current role of the logged-in user from the claims.
+    /// </summary>
+    /// <remarks>
+    /// This retrieves the user role from the `Role` claim. If the claim is not present, it returns an empty string by default.
+    /// </remarks>
+    protected string LoggedInUserRole => Converter.ToString(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value);
+
+    /// <summary>
     /// Creates a response indicating that the model state is invalid.
     /// </summary>
     /// <param name="ModelState">The model state containing validation errors.</param>
