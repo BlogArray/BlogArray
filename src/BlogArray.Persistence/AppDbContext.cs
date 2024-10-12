@@ -59,12 +59,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Post>(entity =>
         {
             entity.HasIndex(b => b.Slug).IsUnique();
-            entity.Property(e => e.AllowComments).HasDefaultValue(true);
-            entity.Property(e => e.ShowCover).HasDefaultValue(true);
-            entity.Property(e => e.ShowSharingIcon).HasDefaultValue(true);
-            entity.Property(e => e.ShowHeading).HasDefaultValue(true);
-            entity.Property(e => e.ShowContactPage).HasDefaultValue(false);
-            entity.Property(e => e.IsWidePage).HasDefaultValue(false);
+            entity.Property(e => e.EnableComments).HasDefaultValue(true);
+            entity.Property(e => e.DisplayCoverImage).HasDefaultValue(true);
+            entity.Property(e => e.EnableSocialSharing).HasDefaultValue(true);
+            entity.Property(e => e.DisplayPostTitle).HasDefaultValue(true);
+            entity.Property(e => e.EnableContactForm).HasDefaultValue(false);
+            entity.Property(e => e.IsFullWidth).HasDefaultValue(false);
 
             entity.HasOne(u => u.CreatedUser)
                 .WithMany()

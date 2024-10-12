@@ -212,6 +212,7 @@ public static class ModelBuilderExtensions
                   SearchEngineVisibility = true,
                   EnableCommentsByDefault = true,
                   MaxFeaturedPosts = 5,
+                  MaxPostRevisions = 10,
                   UseInfiniteScroll = false
               }),
               OptionType = OptionType.Options,
@@ -221,7 +222,9 @@ public static class ModelBuilderExtensions
           {
               Id = 4,
               Key = "Media",
-              Value = JsonSerializer.Serialize(new MediaSettings())
+              Value = JsonSerializer.Serialize(new MediaSettings()),
+              OptionType = OptionType.Options,
+              AutoLoad = true
           },
           new AppOption
           {

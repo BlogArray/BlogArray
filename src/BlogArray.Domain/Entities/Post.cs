@@ -35,19 +35,26 @@ public class Post : EntityBase
 
     public bool IsFeatured { get; set; }
 
-    public bool IsWidePage { get; set; }
+    /// <summary>
+    /// Indicates whether the post layout should be full-width
+    /// </summary>
+    public bool IsFullWidth { get; set; }
 
-    public bool ShowContactPage { get; set; }
+    public bool EnableContactForm { get; set; }
 
-    public bool ShowHeading { get; set; }
+    public bool DisplayPostTitle { get; set; }
 
-    public bool ShowAuthor { get; set; }
+    public bool DisplayAuthorInfo { get; set; }
 
-    public bool ShowSharingIcon { get; set; }
+    public bool EnableSocialSharing { get; set; }
 
-    public bool AllowComments { get; set; }
+    public bool EnableComments { get; set; }
 
-    public bool ShowCover { get; set; }
+    public bool DisplayCoverImage { get; set; }
+
+    public bool EnableTableOfContents { get; set; }
+
+    public int ReadingTimeEstimate { get; set; }
 
     public int CommentsCount { get; set; }
 

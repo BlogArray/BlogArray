@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20241012161833_Init")]
+    [Migration("20241012170858_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -71,7 +71,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                             AutoLoad = true,
                             Key = "Content",
                             OptionType = 0,
-                            Value = "{\"HomePageContentType\":\"posts\",\"StaticHomePageUrl\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true,\"DefaultCategoryId\":1,\"DefaultCoverImageUrl\":\"/content/images/page-image.webp\",\"EnableCommentsByDefault\":true,\"MaxFeaturedPosts\":5,\"UseInfiniteScroll\":false}"
+                            Value = "{\"HomePageContentType\":\"posts\",\"StaticHomePageUrl\":\"home\",\"ItemsPerPage\":10,\"SearchEngineVisibility\":true,\"DefaultCategoryId\":1,\"DefaultCoverImageUrl\":\"/content/images/page-image.webp\",\"EnableCommentsByDefault\":true,\"MaxFeaturedPosts\":5,\"MaxPostRevisions\":10,\"UseInfiniteScroll\":false}"
                         },
                         new
                         {
@@ -365,11 +365,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("AllowComments")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(true);
-
                     b.Property<int>("CommentsCount")
                         .HasColumnType("INTEGER");
 
@@ -388,10 +383,41 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("DisplayAuthorInfo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("DisplayCoverImage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("DisplayPostTitle")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("EnableComments")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("EnableContactForm")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("EnableSocialSharing")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("EnableTableOfContents")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsFeatured")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsWidePage")
+                    b.Property<bool>("IsFullWidth")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
@@ -409,28 +435,8 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     b.Property<DateTime?>("PublishedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("ShowAuthor")
+                    b.Property<int>("ReadingTimeEstimate")
                         .HasColumnType("INTEGER");
-
-                    b.Property<bool>("ShowContactPage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("ShowCover")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("ShowHeading")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("ShowSharingIcon")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(true);
 
                     b.Property<string>("Slug")
                         .IsRequired()

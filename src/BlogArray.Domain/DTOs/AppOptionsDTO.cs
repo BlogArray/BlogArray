@@ -153,6 +153,12 @@ public class ContentSettings
     public int MaxFeaturedPosts { get; set; } = 5;
 
     /// <summary>
+    /// Maximum number of revisions allowed per post. 
+    /// Set to 0 for unlimited revisions.
+    /// </summary>
+    public int MaxPostRevisions { get; set; } = 0;
+
+    /// <summary>
     /// Set whether pagination uses numbered pages or 'load more' (infinite scroll) based on theme
     /// </summary>
     public bool UseInfiniteScroll { get; set; } = false;
