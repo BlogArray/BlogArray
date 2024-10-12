@@ -6,8 +6,6 @@ public class PostRevision : AuthorEntityBase
 {
     public string RawContent { get; set; } = default!;
 
-    public string ParsedContent { get; set; } = default!;
-
     public bool IsLatest { get; set; } = true;
 
     public EditorType EditorType { get; set; } = default!;

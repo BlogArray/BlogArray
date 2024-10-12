@@ -20,6 +20,11 @@ public class Post : EntityBase
     [StringLength(160)]
     public string? Cover { get; set; }
 
+    /// <summary>
+    /// Latest revision parsed HTML content
+    /// </summary>
+    public string ParsedContent { get; set; } = default!;
+
     public int Views { get; set; }
 
     public PostType PostType { get; set; }

@@ -393,6 +393,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("ParsedContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("PostStatus")
                         .HasColumnType("INTEGER");
 
@@ -475,10 +479,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(true);
-
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");

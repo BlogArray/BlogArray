@@ -116,6 +116,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     Slug = table.Column<string>(type: "TEXT", maxLength: 160, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
                     Cover = table.Column<string>(type: "TEXT", maxLength: 160, nullable: true),
+                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
                     Views = table.Column<int>(type: "INTEGER", nullable: false),
                     PostType = table.Column<int>(type: "INTEGER", nullable: false),
                     PostStatus = table.Column<int>(type: "INTEGER", nullable: false),
@@ -237,7 +238,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     RawContent = table.Column<string>(type: "TEXT", nullable: false),
-                    ParsedContent = table.Column<string>(type: "TEXT", nullable: false),
                     IsLatest = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
                     EditorType = table.Column<int>(type: "INTEGER", nullable: false),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),

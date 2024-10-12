@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20241005181143_Init")]
+    [Migration("20241012161833_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -396,6 +396,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("ParsedContent")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("PostStatus")
                         .HasColumnType("INTEGER");
 
@@ -478,10 +482,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(true);
-
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
