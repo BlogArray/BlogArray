@@ -1,9 +1,9 @@
-﻿using Azure.Core;
-using BlogArray.Domain.DTOs;
+﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Persistence;
+using BlogArray.Shared.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NetCore.AutoRegisterDi;
@@ -29,7 +29,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
             Slug = post.Slug,
             Cover = post.Cover,
             Description = post.Description,
-            ParsedContent = post.RawContent,
+            ParsedContent = EditorJsHelper.BuildHtml(post.RawContent),
             PostType = post.PostType,
             PostStatus = post.PostStatus,
             IsFeatured = post.IsFeatured,
@@ -96,6 +96,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
         existingPost.Slug = post.Slug;
         existingPost.Cover = post.Cover;
         existingPost.Description = post.Description;
+        existingPost.ParsedContent = EditorJsHelper.BuildHtml(post.RawContent);
         existingPost.IsFeatured = post.IsFeatured;
         existingPost.IsFullWidth = post.IsFullWidth;
         existingPost.EnableContactForm = post.EnableContactForm;
@@ -109,11 +110,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
         existingPost.UpdatedOn = DateTime.UtcNow;
         existingPost.UpdatedUserId = loggedInUserId;
 
-        // Check if content has changed
-        if (existingPost.ParsedContent != post.RawContent)
-        {
-            await AddPostRevisionAsync(existingPost.Id, post.RawContent, loggedInUserId);
-        }
+        await AddPostRevisionAsync(existingPost.Id, post.RawContent, loggedInUserId);
 
         await db.SaveChangesAsync();
 
