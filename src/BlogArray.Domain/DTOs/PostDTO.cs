@@ -10,10 +10,6 @@ public class CreatePostDTO
     public string Title { get; set; } = default!;
 
     [Required]
-    [StringLength(160)]
-    public string Slug { get; set; } = default!;
-
-    [Required]
     [StringLength(450)]
     public string Description { get; set; } = default!;
 
@@ -44,8 +40,6 @@ public class CreatePostDTO
 
     public bool EnableTableOfContents { get; set; }
 
-    public int ReadingTimeEstimate { get; set; }
-
     public List<int>? TermIds { get; set; }
 }
 
@@ -65,6 +59,7 @@ public class EditPostDTO
     [Required]
     [StringLength(450)]
     public string Description { get; set; } = default!;
+
     public string? Cover { get; set; }
 
     [Required]

@@ -1,5 +1,5 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text;
 
 namespace BlogArray.Shared.Helpers;
 
@@ -10,8 +10,8 @@ public static class EditorJsHelper
     {
         try
         {
-            dynamic? blocks = JsonSerializer.Deserialize<dynamic?>(editorJsJson);
-
+            dynamic? blocks = JsonConvert.DeserializeObject(editorJsJson);
+            
             if (blocks?.blocks == null)
             {
                 return editorJsJson;

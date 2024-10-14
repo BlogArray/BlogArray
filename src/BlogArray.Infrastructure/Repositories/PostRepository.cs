@@ -3,6 +3,7 @@ using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Persistence;
+using BlogArray.Shared.Extensions;
 using BlogArray.Shared.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,12 @@ public class PostRepository(AppDbContext db) : IPostRepository
             .FirstOrDefaultAsync(p => p.Id == postId);
     }
 
-    public async Task<int> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId)
     {
         var newPost = new Post
         {
             Title = post.Title,
-            Slug = post.Slug,
+            Slug = post.Title.ToUniqueSlug(),
             Cover = post.Cover,
             Description = post.Description,
             ParsedContent = EditorJsHelper.BuildHtml(post.RawContent),
@@ -41,7 +42,8 @@ public class PostRepository(AppDbContext db) : IPostRepository
             EnableComments = post.EnableComments,
             DisplayCoverImage = post.DisplayCoverImage,
             EnableTableOfContents = post.EnableTableOfContents,
-            ReadingTimeEstimate = post.ReadingTimeEstimate,
+            //TODO: Read time calc
+            ReadingTimeEstimate = 0,
             PublishedOn = post.PostStatus == PostStatus.Published ? DateTime.UtcNow : null,
             CreatedUserId = loggedInUserId,
             CreatedOn = DateTime.UtcNow,
@@ -65,7 +67,13 @@ public class PostRepository(AppDbContext db) : IPostRepository
 
         await db.SaveChangesAsync();
 
-        return newPost.Id;
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = "Post.Created",
+            Message = $"Post '{post.Title}' was successfully created.",
+            Result = newPost.Id
+        };
     }
 
     public async Task<ReturnResult<int>> EditPostWithRevisionAsync(EditPostDTO post, int loggedInUserId)

@@ -5,7 +5,9 @@ namespace BlogArray.Domain.Interfaces;
 
 public interface IPostRepository
 {
-    Task<int> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId);
+    Task<ReturnResult<int>> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId);
+
+    Task<ReturnResult<int>> EditPostWithRevisionAsync(EditPostDTO post, int loggedInUserId);
 
     Task AddPostRevisionAsync(int postId, string rawContent, int loggedInUserId);
 
