@@ -23,7 +23,7 @@ public class Post : EntityBase
     /// <summary>
     /// Latest revision parsed HTML content
     /// </summary>
-    public string ParsedContent { get; set; } = default!;
+    public string Content { get; set; } = default!;
 
     public int Views { get; set; }
 

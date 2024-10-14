@@ -11,7 +11,7 @@ public class CreatePostValidator : AbstractValidator<CreatePostDTO>
     {
         RuleFor(p => p.Title).NotEmpty().Length(1, 160);
         RuleFor(p => p.Description).NotEmpty().Length(1, 450);
-        RuleFor(p => p.RawContent).NotEmpty();
+        RuleFor(p => p.Content).NotEmpty();
     }
 }
 

@@ -7,9 +7,9 @@ public interface IPostRepository
 {
     Task<ReturnResult<int>> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId);
 
-    Task<ReturnResult<int>> EditPostWithRevisionAsync(EditPostDTO post, int loggedInUserId);
+    Task<ReturnResult<int>> EditPostWithRevisionAsync(int postId, EditPostDTO post, int loggedInUserId);
 
-    Task AddPostRevisionAsync(int postId, string rawContent, int loggedInUserId);
+    Task AddPostRevisionAsync(int postId, string content, int loggedInUserId);
 
     Task ChangeStatus(int postId, PostStatus postStatus);
 }

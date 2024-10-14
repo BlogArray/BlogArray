@@ -12,12 +12,14 @@ public class EditPostValidator : AbstractValidator<EditPostDTO>
         RuleFor(p => p.Title).NotEmpty().Length(1, 160);
         RuleFor(p => p.Slug).NotEmpty().Length(1, 160);
         RuleFor(p => p.Description).NotEmpty().Length(1, 450);
-        RuleFor(p => p.RawContent).NotEmpty();
+        RuleFor(p => p.Content).NotEmpty();
     }
 }
 
-public class EditPostCommand(EditPostDTO model, int loggedInUser) : IRequest<ReturnResult<int>>
+public class EditPostCommand(int postId, EditPostDTO model, int loggedInUser) : IRequest<ReturnResult<int>>
 {
+    public int PostId { get; set; } = postId;
+
     public EditPostDTO Model { get; set; } = model;
 
     public int LoggedInUserId { get; set; } = loggedInUser;
@@ -27,6 +29,6 @@ internal class EditPostCommandHandler(IPostRepository postRepository) : IRequest
 {
     public async Task<ReturnResult<int>> Handle(EditPostCommand request, CancellationToken cancellationToken)
     {
-        return await postRepository.EditPostWithRevisionAsync(request.Model, request.LoggedInUserId);
+        return await postRepository.EditPostWithRevisionAsync(request.PostId, request.Model, request.LoggedInUserId);
     }
 }

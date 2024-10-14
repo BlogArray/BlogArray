@@ -27,10 +27,10 @@ public class PostRepository(AppDbContext db) : IPostRepository
         var newPost = new Post
         {
             Title = post.Title,
-            Slug = post.Title.ToUniqueSlug(),
+            Slug = await GetPostSlugFromTitle(post.Title),
             Cover = post.Cover,
             Description = post.Description,
-            ParsedContent = EditorJsHelper.BuildHtml(post.RawContent),
+            Content = post.Content,
             PostType = post.PostType,
             PostStatus = post.PostStatus,
             IsFeatured = post.IsFeatured,
@@ -42,8 +42,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
             EnableComments = post.EnableComments,
             DisplayCoverImage = post.DisplayCoverImage,
             EnableTableOfContents = post.EnableTableOfContents,
-            //TODO: Read time calc
-            ReadingTimeEstimate = 0,
+            ReadingTimeEstimate = ReadTimeCalculator.CalculateReadingTime(post.Content),
             PublishedOn = post.PostStatus == PostStatus.Published ? DateTime.UtcNow : null,
             CreatedUserId = loggedInUserId,
             CreatedOn = DateTime.UtcNow,
@@ -55,11 +54,11 @@ public class PostRepository(AppDbContext db) : IPostRepository
 
         var revision = new PostRevision
         {
-            RawContent = post.RawContent,
+            Content = post.Content,
             IsLatest = true,
             CreatedOn = DateTime.UtcNow,
             CreatedUserId = loggedInUserId,
-            EditorType = EditorType.Json,
+            EditorType = EditorType.Html,
             PostId = newPost.Id
         };
 
@@ -76,9 +75,9 @@ public class PostRepository(AppDbContext db) : IPostRepository
         };
     }
 
-    public async Task<ReturnResult<int>> EditPostWithRevisionAsync(EditPostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> EditPostWithRevisionAsync(int postId, EditPostDTO post, int loggedInUserId)
     {
-        if (await db.Posts.AnyAsync(a => a.Slug == post.Slug && a.Id != post.Id))
+        if (await db.Posts.AnyAsync(a => a.Slug == post.Slug && a.Id != postId))
         {
             return new ReturnResult<int>
             {
@@ -88,7 +87,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
             };
         }
 
-        Post? existingPost = await db.Posts.FirstOrDefaultAsync(a => a.Id == post.Id);
+        Post? existingPost = await db.Posts.FirstOrDefaultAsync(a => a.Id == postId);
 
         if (existingPost == null)
         {
@@ -104,7 +103,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
         existingPost.Slug = post.Slug;
         existingPost.Cover = post.Cover;
         existingPost.Description = post.Description;
-        existingPost.ParsedContent = EditorJsHelper.BuildHtml(post.RawContent);
+        existingPost.Content = post.Content;
         existingPost.IsFeatured = post.IsFeatured;
         existingPost.IsFullWidth = post.IsFullWidth;
         existingPost.EnableContactForm = post.EnableContactForm;
@@ -114,11 +113,11 @@ public class PostRepository(AppDbContext db) : IPostRepository
         existingPost.EnableComments = post.EnableComments;
         existingPost.DisplayCoverImage = post.DisplayCoverImage;
         existingPost.EnableTableOfContents = post.EnableTableOfContents;
-        existingPost.ReadingTimeEstimate = post.ReadingTimeEstimate;
+        existingPost.ReadingTimeEstimate = ReadTimeCalculator.CalculateReadingTime(post.Content);
         existingPost.UpdatedOn = DateTime.UtcNow;
         existingPost.UpdatedUserId = loggedInUserId;
 
-        await AddPostRevisionAsync(existingPost.Id, post.RawContent, loggedInUserId);
+        await AddPostRevisionAsync(existingPost.Id, post.Content, loggedInUserId);
 
         await db.SaveChangesAsync();
 
@@ -131,16 +130,16 @@ public class PostRepository(AppDbContext db) : IPostRepository
         };
     }
 
-    public async Task AddPostRevisionAsync(int postId, string rawContent, int loggedInUserId)
+    public async Task AddPostRevisionAsync(int postId, string content, int loggedInUserId)
     {
         var revision = new PostRevision
         {
-            RawContent = rawContent,
+            Content = content,
             IsLatest = true,
             PostId = postId,
             CreatedOn = DateTime.UtcNow,
             CreatedUserId = loggedInUserId,
-            EditorType = EditorType.Json
+            EditorType = EditorType.Html
         };
 
         // Set the previous revision's IsLatest to false
@@ -164,5 +163,22 @@ public class PostRepository(AppDbContext db) : IPostRepository
     public async Task ChangeStatus(int postId, PostStatus postStatus)
     {
         await db.Posts.Where(p => p.Id == postId).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.PostStatus, postStatus));
+    }
+
+    private async Task<string> GetPostSlugFromTitle(string title)
+    {
+        string baseSlug = title.ToSlug();
+        string slug = baseSlug;
+
+        for (int i = 1; i < 100; i++)
+        {
+            if (!await db.Posts.AnyAsync(p => p.Slug == slug))
+            {
+                return slug;
+            }
+            slug = $"{baseSlug}-{i}";
+        }
+
+        throw new InvalidOperationException("Failed to generate a unique slug after 99 attempts.");
     }
 }

@@ -4,7 +4,7 @@ namespace BlogArray.Domain.Entities;
 
 public class PostRevision : AuthorEntityBase
 {
-    public string RawContent { get; set; } = default!;
+    public string Content { get; set; } = default!;
 
     public bool IsLatest { get; set; } = true;
 
