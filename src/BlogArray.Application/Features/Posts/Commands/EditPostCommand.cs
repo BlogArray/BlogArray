@@ -29,6 +29,6 @@ internal class EditPostCommandHandler(IPostRepository postRepository) : IRequest
 {
     public async Task<ReturnResult<int>> Handle(EditPostCommand request, CancellationToken cancellationToken)
     {
-        return await postRepository.EditPostWithRevisionAsync(request.PostId, request.Model, request.LoggedInUserId);
+        return await postRepository.EditPostAsync(request.PostId, request.Model, request.LoggedInUserId);
     }
 }

@@ -26,6 +26,6 @@ internal class CreatePostCommandHandler(IPostRepository postRepository) : IReque
 {
     public async Task<ReturnResult<int>> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
-        return await postRepository.AddPostWithRevisionAsync(request.Model, request.LoggedInUserId);
+        return await postRepository.AddPostAsync(request.Model, request.LoggedInUserId);
     }
 }

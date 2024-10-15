@@ -43,14 +43,14 @@ public static class BlogArrayServiceCollectionExtensions
 
         services.AddRouting(options => options.LowercaseUrls = true);
 
-        services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
-
         services.ConfigureRepositories();
         services.AddVersioning();
         services.ConfigureSwagger();
         services.AddConnectionProvider(environment, configuration);
         services.AddAppAuthentication(configuration);
         services.AddCache(configuration);
+
+        services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
 
         return services;
     }
@@ -139,11 +139,16 @@ public static class BlogArrayServiceCollectionExtensions
     {
         Assembly[] assembliesToScan =
         [
+            Assembly.GetAssembly(typeof(AccountRepository)),
             Assembly.GetExecutingAssembly(),
-            Assembly.GetAssembly(typeof(AccountRepository))
         ];
 
         services.RegisterAssemblyPublicNonGenericClasses(assembliesToScan).AsPublicImplementedInterfaces();
+
+        services.RegisterAssemblyPublicNonGenericClasses()
+                .Where(c => c.Name.EndsWith("Repository"))
+                .AsPublicImplementedInterfaces();
+
         return services;
     }
 

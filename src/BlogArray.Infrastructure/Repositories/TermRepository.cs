@@ -180,4 +180,8 @@ public class TermRepository(AppDbContext db) : ITermRepository
         };
     }
 
+    public async Task<List<Term>> GetTermsByIdsAsync(List<int> termIds)
+    {
+        return await db.Terms.Where(t => termIds.Contains(t.Id)).ToListAsync();
+    }
 }

@@ -380,6 +380,10 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     b.Property<int>("CommentsCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Cover")
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
@@ -434,10 +438,6 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("PostStatus")
                         .HasColumnType("int");
 
@@ -489,6 +489,10 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -505,10 +509,6 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
-
-                    b.Property<string>("RawContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -365,6 +365,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     b.Property<int>("CommentsCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Cover")
                         .HasMaxLength(160)
                         .HasColumnType("TEXT");
@@ -419,10 +423,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("ParsedContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("PostStatus")
                         .HasColumnType("INTEGER");
 
@@ -472,6 +472,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
 
@@ -488,10 +492,6 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("RawContent")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

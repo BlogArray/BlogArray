@@ -116,7 +116,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                     Slug = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Cover = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: true),
-                    ParsedContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Views = table.Column<int>(type: "int", nullable: false),
                     PostType = table.Column<int>(type: "int", nullable: false),
                     PostStatus = table.Column<int>(type: "int", nullable: false),
@@ -239,7 +239,7 @@ namespace BlogArray.Persistence.SqlServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RawContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLatest = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     EditorType = table.Column<int>(type: "int", nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false),

@@ -1,4 +1,5 @@
-﻿using BlogArray.Domain.DTOs;
+﻿using Azure.Core;
+using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
@@ -12,7 +13,7 @@ using NetCore.AutoRegisterDi;
 namespace BlogArray.Infrastructure.Repositories;
 
 [RegisterAsScoped]
-public class PostRepository(AppDbContext db) : IPostRepository
+public class PostRepository(AppDbContext db, TermRepository termRepository) : IPostRepository
 {
     private readonly int _maxPostRevisions = 5;
 
@@ -22,7 +23,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
             .FirstOrDefaultAsync(p => p.Id == postId);
     }
 
-    public async Task<ReturnResult<int>> AddPostWithRevisionAsync(CreatePostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId)
     {
         var newPost = new Post
         {
@@ -47,6 +48,13 @@ public class PostRepository(AppDbContext db) : IPostRepository
             CreatedUserId = loggedInUserId,
             CreatedOn = DateTime.UtcNow,
         };
+
+        if (post.TermIds?.Count > 0)
+        {
+            var terms = await termRepository.GetTermsByIdsAsync(post.TermIds);
+
+            newPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
+        }
 
         db.Posts.Add(newPost);
 
@@ -75,7 +83,7 @@ public class PostRepository(AppDbContext db) : IPostRepository
         };
     }
 
-    public async Task<ReturnResult<int>> EditPostWithRevisionAsync(int postId, EditPostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> EditPostAsync(int postId, EditPostDTO post, int loggedInUserId)
     {
         if (await db.Posts.AnyAsync(a => a.Slug == post.Slug && a.Id != postId))
         {
@@ -116,6 +124,13 @@ public class PostRepository(AppDbContext db) : IPostRepository
         existingPost.ReadingTimeEstimate = ReadTimeCalculator.CalculateReadingTime(post.Content);
         existingPost.UpdatedOn = DateTime.UtcNow;
         existingPost.UpdatedUserId = loggedInUserId;
+
+        if (post.TermIds?.Count > 0)
+        {
+            var terms = await termRepository.GetTermsByIdsAsync(post.TermIds);
+
+            existingPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
+        }
 
         await AddPostRevisionAsync(existingPost.Id, post.Content, loggedInUserId);
 
