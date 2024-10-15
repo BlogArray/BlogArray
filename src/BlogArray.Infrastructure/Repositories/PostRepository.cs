@@ -13,7 +13,7 @@ using NetCore.AutoRegisterDi;
 namespace BlogArray.Infrastructure.Repositories;
 
 [RegisterAsScoped]
-public class PostRepository(AppDbContext db, TermRepository termRepository) : IPostRepository
+public class PostRepository(AppDbContext db, ITermRepository termRepository) : IPostRepository
 {
     private readonly int _maxPostRevisions = 5;
 
@@ -127,6 +127,8 @@ public class PostRepository(AppDbContext db, TermRepository termRepository) : IP
 
         if (post.TermIds?.Count > 0)
         {
+            await db.PostTerms.Where(t => t.PostId == existingPost.Id).ExecuteDeleteAsync();
+
             var terms = await termRepository.GetTermsByIdsAsync(post.TermIds);
 
             existingPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
