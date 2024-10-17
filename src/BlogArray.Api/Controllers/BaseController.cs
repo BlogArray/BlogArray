@@ -1,4 +1,5 @@
-﻿using BlogArray.Domain.DTOs;
+﻿using BlogArray.Domain.Constants;
+using BlogArray.Domain.DTOs;
 using BlogArray.Shared.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -36,6 +37,11 @@ public class BaseController : ControllerBase
     /// This retrieves the user role from the `Role` claim. If the claim is not present, it returns an empty string by default.
     /// </remarks>
     protected string LoggedInUserRole => Converter.ToString(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value);
+
+    /// <summary>
+    /// Checks if the user can publish post
+    /// </summary>
+    public bool UserCanPublish => new List<string>() { RoleConstants.Admin, RoleConstants.Editor }.Contains(LoggedInUserRole);
 
     /// <summary>
     /// Creates a response indicating that the model state is invalid.

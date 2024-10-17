@@ -23,7 +23,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             .FirstOrDefaultAsync(p => p.Id == postId);
     }
 
-    public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish)
     {
         var newPost = new Post
         {
@@ -48,6 +48,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             CreatedUserId = loggedInUserId,
             CreatedOn = DateTime.UtcNow,
         };
+
+        if (!canPublish)
+        {
+            newPost.PostStatus = PostStatus.Draft;
+        }
 
         if (post.TermIds?.Count > 0)
         {
@@ -83,7 +88,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         };
     }
 
-    public async Task<ReturnResult<int>> EditPostAsync(int postId, EditPostDTO post, int loggedInUserId)
+    public async Task<ReturnResult<int>> EditPostAsync(int postId, EditPostDTO post, int loggedInUserId, bool canPublish)
     {
         if (await db.Posts.AnyAsync(a => a.Slug == post.Slug && a.Id != postId))
         {
@@ -124,6 +129,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         existingPost.ReadingTimeEstimate = ReadTimeCalculator.CalculateReadingTime(post.Content);
         existingPost.UpdatedOn = DateTime.UtcNow;
         existingPost.UpdatedUserId = loggedInUserId;
+
+        if (!canPublish)
+        {
+            existingPost.PostStatus = PostStatus.Draft;
+        }
 
         if (post.TermIds?.Count > 0)
         {
@@ -180,6 +190,35 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
     public async Task ChangeStatus(int postId, PostStatus postStatus)
     {
         await db.Posts.Where(p => p.Id == postId).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.PostStatus, postStatus));
+    }
+
+    public async Task<ReturnResult<int>> DeletePostAsync(int postId)
+    {
+        Post? post = await db.Posts.FirstOrDefaultAsync(a => a.Id == postId);
+
+        if (post == null)
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Title = "Post.NotFound",
+                Message = $"The post with the id '{postId}' could not be found in the system."
+            };
+        }
+
+        db.Posts.Remove(post);
+
+        await db.Statistics.Where(p => p.PostId == postId).ExecuteUpdateAsync(setter => setter.SetProperty(b => b.PostId, (int?)null));
+
+        await db.SaveChangesAsync();
+
+        return new ReturnResult<int>
+        {
+            Code = StatusCodes.Status200OK,
+            Title = $"Post.Deleted",
+            Message = $"Post '{post.Title}' was successfully deleted.",
+            Result = postId
+        };
     }
 
     private async Task<string> GetPostSlugFromTitle(string title)

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using BlogArray.Application.Authorization;
 using BlogArray.Application.Features.Account.Commands;
 using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
@@ -10,6 +11,7 @@ using BlogArray.Persistence.SqlServer;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
@@ -142,6 +144,8 @@ public static class BlogArrayServiceCollectionExtensions
             Assembly.GetAssembly(typeof(AccountRepository)),
             Assembly.GetExecutingAssembly(),
         ];
+
+        services.AddSingleton<IAuthorizationHandler, EditPostAuthorizationHandler>();
 
         services.RegisterAssemblyPublicNonGenericClasses(assembliesToScan).AsPublicImplementedInterfaces();
 
