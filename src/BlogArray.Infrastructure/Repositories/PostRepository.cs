@@ -27,6 +27,31 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         return (await db.Posts.FirstOrDefaultAsync(p => p.Id == postId))?.CreatedUserId;
     }
 
+    public async Task<PostDTO?> GetPostBySlugAsync(string postSlug)
+    {
+        return await db.Posts.Select(p => new PostDTO
+        {
+            Id = p.Id,
+            Slug = p.Slug,
+            Title = p.Title,
+            Description = p.Description,
+            Cover = p.Cover,
+            Content = p.Content,
+            PostType = p.PostType,
+            DisplayAuthorInfo = p.DisplayAuthorInfo,
+            DisplayCoverImage = p.DisplayCoverImage,
+            DisplayPostTitle = p.DisplayPostTitle,
+            EnableComments = p.EnableComments,
+            EnableContactForm = p.EnableContactForm,
+            EnableSocialSharing = p.EnableSocialSharing,
+            EnableTableOfContents = p.EnableTableOfContents,
+            IsFeatured = p.IsFeatured,
+            IsFullWidth = p.IsFullWidth,
+            Categories = p.Terms.Where(t => t.Term.TermType == TermType.Category).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList(),
+            Tags = p.Terms.Where(t => t.Term.TermType == TermType.Tag).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList()
+        }).AsSplitQuery().FirstOrDefaultAsync(p => p.Slug == postSlug);
+    }
+
     public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish)
     {
         var newPost = new Post

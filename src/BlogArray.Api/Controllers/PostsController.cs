@@ -26,21 +26,8 @@ public class PostsController(IMediator mediatr) : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> GetPostAsync(string slug)
     {
-        //var post = await _postRepository.GetPostByIdAsync(id);
-
-        //if (post == null)
-        //    return NotFound();
-
-        //// Only allow public viewing of published posts, or unpublished posts for Admin, Editor, or Author
-        //if (post.PostStatus == PostStatus.Published ||
-        //    User.IsInRole("Admin") ||
-        //    User.IsInRole("Editor") ||
-        //    (User.IsInRole("Author") && post.CreatedUserId == User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
-        //{
-        //    return Ok(post);
-        //}
-
-        return Forbid();
+        PostDTO? post = await mediatr.Send(new GetPostForPublicQuery(slug, User.Identity.IsAuthenticated));
+        return post == null ? PostErrors.SlugNotFound(slug) : Ok(post);
     }
 
     /// <summary>

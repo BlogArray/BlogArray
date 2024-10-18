@@ -21,4 +21,6 @@ public interface IPostRepository
     Task<ReturnResult<int>> DeletePostAsync(int postId);
 
     Task<EditPostDTO?> GetPostForEditingByIdAsync(int postId);
+    
+    Task<PostDTO?> GetPostBySlugAsync(string postSlug);
 }
