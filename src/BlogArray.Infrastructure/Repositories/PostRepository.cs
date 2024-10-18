@@ -82,7 +82,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             newPost.PostStatus = PostStatus.Draft;
         }
 
-        var allTerms = post.Categories.Concat(post.Tags).ToList();
+        if (post.Categories?.Count == 0) post.Categories = [];
+
+        if (post.Tags?.Count == 0) post.Tags = [];
+
+        var allTerms = post.Categories?.Concat(post.Tags).ToList();
 
         if (allTerms?.Count > 0)
         {
@@ -165,7 +169,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             existingPost.PostStatus = PostStatus.Draft;
         }
 
-        var allTerms = post.Categories.Concat(post.Tags).ToList();
+        if (post.Categories?.Count == 0) post.Categories = [];
+
+        if (post.Tags?.Count == 0) post.Tags = [];
+
+        var allTerms = post.Categories?.Concat(post.Tags).ToList();
 
         if (allTerms?.Count > 0)
         {
