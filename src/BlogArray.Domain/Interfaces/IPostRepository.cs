@@ -7,7 +7,7 @@ namespace BlogArray.Domain.Interfaces;
 public interface IPostRepository
 {
     Task<Post?> GetPostByIdAsync(int postId);
-    
+
     Task<int?> GetPostAuthorByIdAsync(int postId);
 
     Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish);
@@ -19,4 +19,6 @@ public interface IPostRepository
     Task ChangeStatus(int postId, PostStatus postStatus);
 
     Task<ReturnResult<int>> DeletePostAsync(int postId);
+
+    Task<EditPostDTO?> GetPostForEditingByIdAsync(int postId);
 }

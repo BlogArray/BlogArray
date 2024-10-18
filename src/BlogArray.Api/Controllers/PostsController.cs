@@ -1,12 +1,11 @@
 ﻿using BlogArray.Application.Features.Posts.Commands;
-using BlogArray.Application.Features.Terms.Commands;
+using BlogArray.Application.Features.Posts.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
-using BlogArray.Domain.Enums;
+using BlogArray.Domain.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace BlogArray.Api.Controllers;
 
@@ -77,28 +76,8 @@ public class PostsController(IMediator mediatr) : BaseController
     [Authorize(Roles = RoleConstants.AdminEditorAuthor)]
     public async Task<IActionResult> GetPostForEditing(int id)
     {
-        //var post = await _postRepository.GetPostByIdAsync(id);
-
-        //if (post == null)
-        //    return NotFound();
-
-        //var authorizationResult = await _authorizationService
-        //    .AuthorizeAsync(User, post, new EditPostRequirement());
-
-        //if (!authorizationResult.Succeeded)
-        //    return Forbid();
-
-        //var model = new EditPostDTO
-        //{
-        //    PostId = post.Id,
-        //    Title = post.Title,
-        //    Slug = post.Slug,
-        //    Description = post.Description,
-        //    RawContent = post.ParsedContent,
-        //    PostStatus = post.PostStatus
-        //};
-
-        return Ok();
+        EditPostDTO? post = await mediatr.Send(new GetPostForEditingQuery(id, User, LoggedInUserID));
+        return post == null ? PostErrors.NotFound(id) : Ok(post);
     }
 
     /// <summary>

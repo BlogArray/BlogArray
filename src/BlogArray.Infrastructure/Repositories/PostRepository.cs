@@ -225,6 +225,31 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         };
     }
 
+    public async Task<EditPostDTO?> GetPostForEditingByIdAsync(int postId)
+    {
+        return await db.Posts.Select(p => new EditPostDTO
+        {
+            Id = p.Id,
+            Slug = p.Slug,
+            Title = p.Title,
+            Description = p.Description,
+            Cover = p.Cover,
+            Content = p.Content,
+            PostStatus = p.PostStatus,
+            PostType = p.PostType,
+            DisplayAuthorInfo = p.DisplayAuthorInfo,
+            DisplayCoverImage = p.DisplayCoverImage,
+            DisplayPostTitle = p.DisplayPostTitle,
+            EnableComments = p.EnableComments,
+            EnableContactForm = p.EnableContactForm,
+            EnableSocialSharing = p.EnableSocialSharing,
+            EnableTableOfContents = p.EnableTableOfContents,
+            IsFeatured = p.IsFeatured,
+            IsFullWidth = p.IsFullWidth,
+            TermIds = p.Terms.Select(s => s.TermId).ToList()
+        }).FirstOrDefaultAsync(p => p.Id == postId);
+    }
+
     private async Task<string> GetPostSlugFromTitle(string title)
     {
         string baseSlug = title.ToSlug();
