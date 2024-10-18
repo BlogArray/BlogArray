@@ -44,7 +44,9 @@ public class CreatePostDTO : BasicPostDTO
 {
     public PostStatus PostStatus { get; set; } = PostStatus.Published;
 
-    public List<int>? TermIds { get; set; }
+    public List<int>? Categories { get; set; }
+
+    public List<int>? Tags { get; set; }
 }
 
 public class EditPostDTO : CreatePostDTO
@@ -55,7 +57,6 @@ public class EditPostDTO : CreatePostDTO
     [Required]
     [StringLength(160)]
     public string Slug { get; set; } = default!;
-
 }
 
 public class PostDTO : BasicPostDTO

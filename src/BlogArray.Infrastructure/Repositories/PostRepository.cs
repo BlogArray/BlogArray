@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using BlogArray.Domain.DTOs;
+﻿using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
@@ -83,9 +82,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             newPost.PostStatus = PostStatus.Draft;
         }
 
-        if (post.TermIds?.Count > 0)
+        var allTerms = post.Categories.Concat(post.Tags).ToList();
+
+        if (allTerms?.Count > 0)
         {
-            var terms = await termRepository.GetTermsByIdsAsync(post.TermIds);
+            var terms = await termRepository.GetTermsByIdsAsync(allTerms);
 
             newPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
         }
@@ -164,11 +165,13 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             existingPost.PostStatus = PostStatus.Draft;
         }
 
-        if (post.TermIds?.Count > 0)
+        var allTerms = post.Categories.Concat(post.Tags).ToList();
+
+        if (allTerms?.Count > 0)
         {
             await db.PostTerms.Where(t => t.PostId == existingPost.Id).ExecuteDeleteAsync();
 
-            var terms = await termRepository.GetTermsByIdsAsync(post.TermIds);
+            var terms = await termRepository.GetTermsByIdsAsync(allTerms);
 
             existingPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
         }
@@ -271,8 +274,9 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             EnableTableOfContents = p.EnableTableOfContents,
             IsFeatured = p.IsFeatured,
             IsFullWidth = p.IsFullWidth,
-            TermIds = p.Terms.Select(s => s.TermId).ToList()
-        }).FirstOrDefaultAsync(p => p.Id == postId);
+            Categories = p.Terms.Where(t => t.Term.TermType == TermType.Category).Select(s => s.TermId).ToList(),
+            Tags = p.Terms.Where(t => t.Term.TermType == TermType.Tag).Select(s => s.TermId).ToList(),
+        }).AsSplitQuery().FirstOrDefaultAsync(p => p.Id == postId);
     }
 
     private async Task<string> GetPostSlugFromTitle(string title)
