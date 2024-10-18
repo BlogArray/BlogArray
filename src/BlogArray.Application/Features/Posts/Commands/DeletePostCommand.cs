@@ -21,9 +21,18 @@ internal class DeletePostCommandHandler(IPostRepository postRepository, IAuthori
 {
     public async Task<ReturnResult<int>> Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
-        var post = await postRepository.GetPostByIdAsync(request.PostId);
+        int? createdUserId = await postRepository.GetPostAuthorByIdAsync(request.PostId);
 
-        var authorizationResult = await authorizationService.AuthorizeAsync(request.User, post, new EditPostRequirement());
+        if (createdUserId == null)
+        {
+            return new ReturnResult<int>
+            {
+                Code = StatusCodes.Status404NotFound,
+                Message = ""
+            };
+        }
+
+        var authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
 
         if (!authorizationResult.Succeeded)
         {

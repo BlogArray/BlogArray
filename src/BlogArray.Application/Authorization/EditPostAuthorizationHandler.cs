@@ -1,5 +1,4 @@
 ﻿using BlogArray.Domain.Constants;
-using BlogArray.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
@@ -8,7 +7,7 @@ namespace BlogArray.Application.Authorization;
 /// <summary>
 /// 
 /// </summary>
-public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequirement, Post>
+public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequirement, int>
 {
     /// <summary>
     /// 
@@ -17,7 +16,7 @@ public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequire
     /// <param name="requirement"></param>
     /// <param name="post"></param>
     /// <returns></returns>
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EditPostRequirement requirement, Post post)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EditPostRequirement requirement, int postAuthorId)
     {
         var user = context.User;
 
@@ -28,7 +27,7 @@ public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequire
         else if (user.IsInRole(RoleConstants.Author) || user.IsInRole(RoleConstants.Contributor))
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (post.CreatedUserId.ToString() == userId)
+            if (postAuthorId.ToString() == userId)
             {
                 context.Succeed(requirement); // Authors and Contributors can edit their own posts
             }

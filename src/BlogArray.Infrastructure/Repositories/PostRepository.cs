@@ -19,8 +19,12 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
     public async Task<Post?> GetPostByIdAsync(int postId)
     {
-        return await db.Posts.Include(p => p.PostRevisions)
-            .FirstOrDefaultAsync(p => p.Id == postId);
+        return await db.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+    }
+
+    public async Task<int?> GetPostAuthorByIdAsync(int postId)
+    {
+        return (await db.Posts.FirstOrDefaultAsync(p => p.Id == postId))?.CreatedUserId;
     }
 
     public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish)
