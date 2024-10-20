@@ -17,10 +17,10 @@ namespace BlogArray.Api.Controllers;
 public class PostsController(IMediator mediatr) : BaseController
 {
     /// <summary>
-    /// Gets a post by its ID for public viewing. Published posts are accessible to everyone.
+    /// Gets a post by its slug for public viewing. Published posts are accessible to everyone.
     /// Unpublished posts are only accessible by Admin, Editor, or the post's Author.
     /// </summary>
-    /// <param name="slug">The ID of the post.</param>
+    /// <param name="slug">The slug of the post.</param>
     /// <returns>The requested post if found and accessible, otherwise 404 or 403.</returns>
     [HttpGet("{slug}")]
     [AllowAnonymous]

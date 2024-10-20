@@ -21,6 +21,18 @@ public interface IPostRepository
     Task<ReturnResult<int>> DeletePostAsync(int postId);
 
     Task<EditPostDTO?> GetPostForEditingByIdAsync(int postId);
-    
-    Task<PostDTO?> GetPostBySlugAsync(string postSlug);
+
+    /// <summary>
+    /// Retrieves a post based on the given slug and post status.
+    /// </summary>
+    /// <param name="postSlug">The unique slug of the post to be retrieved.</param>
+    /// <param name="postStatus">The status of the post (e.g., Published, Draft). Defaults to Published.</param>
+    /// <returns>
+    /// A <see cref="PostDTO"/> object representing the post if found; otherwise, <c>null</c>.
+    /// </returns>
+    /// <remarks>
+    /// This method fetches the post based on the provided slug and post status. If the post with the specified
+    /// slug does not exist or does not match the required status, <c>null</c> will be returned.
+    /// </remarks>
+    Task<PostDTO?> GetPostBySlugAsync(string postSlug, PostStatus postStatus = PostStatus.Published);
 }

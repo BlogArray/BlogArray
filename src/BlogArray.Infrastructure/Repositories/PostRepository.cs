@@ -26,9 +26,21 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         return (await db.Posts.FirstOrDefaultAsync(p => p.Id == postId))?.CreatedUserId;
     }
 
-    public async Task<PostDTO?> GetPostBySlugAsync(string postSlug)
+    /// <summary>
+    /// Retrieves a post based on the given slug and post status.
+    /// </summary>
+    /// <param name="postSlug">The unique slug of the post to be retrieved.</param>
+    /// <param name="postStatus">The status of the post (e.g., Published, Draft). Defaults to Published.</param>
+    /// <returns>
+    /// A <see cref="PostDTO"/> object representing the post if found; otherwise, <c>null</c>.
+    /// </returns>
+    /// <remarks>
+    /// This method fetches the post based on the provided slug and post status. If the post with the specified
+    /// slug does not exist or does not match the required status, <c>null</c> will be returned.
+    /// </remarks>
+    public async Task<PostDTO?> GetPostBySlugAsync(string postSlug, PostStatus postStatus = PostStatus.Published)
     {
-        return await db.Posts.Select(p => new PostDTO
+        return await db.Posts.Where(p => p.Slug == postSlug && p.PostStatus == postStatus).Select(p => new PostDTO
         {
             Id = p.Id,
             Slug = p.Slug,
@@ -48,7 +60,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             IsFullWidth = p.IsFullWidth,
             Categories = p.Terms.Where(t => t.Term.TermType == TermType.Category).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList(),
             Tags = p.Terms.Where(t => t.Term.TermType == TermType.Tag).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList()
-        }).AsSplitQuery().FirstOrDefaultAsync(p => p.Slug == postSlug);
+        }).AsSplitQuery().FirstOrDefaultAsync();
     }
 
     public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish)
@@ -102,7 +114,6 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         var revision = new PostRevision
         {
             Content = post.Content,
-            IsLatest = true,
             CreatedOn = DateTime.UtcNow,
             CreatedUserId = loggedInUserId,
             EditorType = EditorType.Html,
@@ -202,7 +213,6 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         var revision = new PostRevision
         {
             Content = content,
-            IsLatest = true,
             PostId = postId,
             CreatedOn = DateTime.UtcNow,
             CreatedUserId = loggedInUserId,
@@ -210,7 +220,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
         };
 
         // Set the previous revision's IsLatest to false
-        await db.PostRevisions.Where(r => r.PostId == postId && r.IsLatest).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsLatest, false)); ;
+        //await db.PostRevisions.Where(r => r.PostId == postId && r.IsLatest).ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsLatest, false)); ;
 
         db.PostRevisions.Add(revision);
 
