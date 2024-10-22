@@ -210,6 +210,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ProfilePicture")
+                        .HasMaxLength(160)
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("INTEGER");
 

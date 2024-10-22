@@ -70,6 +70,7 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
                     Bio = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    ProfilePicture = table.Column<string>(type: "TEXT", maxLength: 160, nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -342,11 +343,11 @@ namespace BlogArray.Persistence.Sqlite.Migrations
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Bio", "CreatedOn", "CreatedUserId", "DisplayName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "PasswordHash", "RoleId", "SecurityCodeHash", "SecurityCodeIssueCount", "SecurityCodeIssuedAt", "TwoFactorEnabled", "UpdatedOn", "UpdatedUserId", "Username" },
+                columns: new[] { "Id", "AccessFailedCount", "Bio", "CreatedOn", "CreatedUserId", "DisplayName", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "PasswordHash", "ProfilePicture", "RoleId", "SecurityCodeHash", "SecurityCodeIssueCount", "SecurityCodeIssuedAt", "TwoFactorEnabled", "UpdatedOn", "UpdatedUserId", "Username" },
                 values: new object[,]
                 {
-                    { 1, 0, null, new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893), null, "Admin", "admin@vtp.com", true, false, null, "$2a$11$xO.YQRxXr4KYzralfcHauuSmpiPpJy.YRQpJTt4QTZJsMauYIi3Ca", 1, null, 0, null, false, null, null, "admin" },
-                    { 2, 0, null, new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893), null, null, "anonymous@vtp.com", false, true, null, null, 4, null, 0, null, false, null, null, "anonymous" }
+                    { 1, 0, null, new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893), null, "Admin", "admin@vtp.com", true, false, null, "$2a$11$xO.YQRxXr4KYzralfcHauuSmpiPpJy.YRQpJTt4QTZJsMauYIi3Ca", null, 1, null, 0, null, false, null, null, "admin" },
+                    { 2, 0, null, new DateTime(2022, 7, 8, 16, 37, 32, 163, DateTimeKind.Utc).AddTicks(7893), null, null, "anonymous@vtp.com", false, true, null, null, null, 4, null, 0, null, false, null, null, "anonymous" }
                 });
 
             migrationBuilder.CreateIndex(

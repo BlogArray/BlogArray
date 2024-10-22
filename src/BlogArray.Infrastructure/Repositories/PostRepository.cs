@@ -2,6 +2,7 @@
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
+using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
 using BlogArray.Shared.Extensions;
 using BlogArray.Shared.Helpers;
@@ -15,6 +16,60 @@ namespace BlogArray.Infrastructure.Repositories;
 public class PostRepository(AppDbContext db, ITermRepository termRepository) : IPostRepository
 {
     private readonly int _maxPostRevisions = 5;
+
+    public async Task<PagedResult<PostListDTO>> GetPaginatedPostsAsync(int pageNumber, int pageSize, int? authorId, string? searchTerm, PostStatus postStatus)
+    {
+        IQueryable<Post> query = db.Posts.Where(t => t.PostStatus == postStatus);
+
+        if (authorId.HasValue && authorId > 0)
+        {
+            query = query.Where(u => u.CreatedUserId == authorId);
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            query = query
+                .Where(u => u.Slug.Contains(searchTerm) ||
+                u.Description.Contains(searchTerm) ||
+                u.Title.Contains(searchTerm));
+        }
+
+        PagedResult<PostListDTO> pagedResult = await query
+            .OrderByDescending(p => p.CreatedOn) // Order by Id
+            .Select(p => new PostListDTO
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Slug = p.Slug,
+                Description = p.Description,
+                Cover = p.Cover,
+                AuthorInfo = new BasicAuthorInfoDTO
+                {
+                    Id = p.CreatedUser.Id,
+                    Username = p.CreatedUser.Username,
+                    DisplayName = p.CreatedUser.DisplayName,
+                    ProfilePicture = p.CreatedUser.ProfilePicture
+                },
+                Categories = p.Terms
+                .Where(t => t.Term.TermType == TermType.Category)
+                .Select(s => new BasicTermInfo
+                {
+                    Id = s.Term.Id,
+                    Slug = s.Term.Slug,
+                    Name = s.Term.Name
+                }).ToList(),
+                Tags = p.Terms
+                .Where(t => t.Term.TermType == TermType.Tag)
+                .Select(s => new BasicTermInfo
+                {
+                    Id = s.Term.Id,
+                    Slug = s.Term.Slug,
+                    Name = s.Term.Name
+                }).ToList()
+            }).ToPagedListAsync(pageNumber, pageSize);
+
+        return pagedResult;
+    }
 
     public async Task<Post?> GetPostByIdAsync(int postId)
     {
@@ -58,8 +113,29 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
             EnableTableOfContents = p.EnableTableOfContents,
             IsFeatured = p.IsFeatured,
             IsFullWidth = p.IsFullWidth,
-            Categories = p.Terms.Where(t => t.Term.TermType == TermType.Category).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList(),
-            Tags = p.Terms.Where(t => t.Term.TermType == TermType.Tag).Select(s => new BasicTermInfo { Id = s.Term.Id, Slug = s.Term.Slug, Name = s.Term.Name }).ToList()
+            AuthorInfo = new BasicAuthorInfoDTO
+            {
+                Id = p.CreatedUser.Id,
+                Username = p.CreatedUser.Username,
+                DisplayName = p.CreatedUser.DisplayName,
+                ProfilePicture = p.CreatedUser.ProfilePicture
+            },
+            Categories = p.Terms
+            .Where(t => t.Term.TermType == TermType.Category)
+            .Select(s => new BasicTermInfo
+            {
+                Id = s.Term.Id,
+                Slug = s.Term.Slug,
+                Name = s.Term.Name
+            }).ToList(),
+            Tags = p.Terms
+            .Where(t => t.Term.TermType == TermType.Tag)
+            .Select(s => new BasicTermInfo
+            {
+                Id = s.Term.Id,
+                Slug = s.Term.Slug,
+                Name = s.Term.Name
+            }).ToList()
         }).AsSplitQuery().FirstOrDefaultAsync();
     }
 

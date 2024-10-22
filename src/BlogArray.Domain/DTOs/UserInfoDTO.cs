@@ -68,3 +68,23 @@ public class UserProfile : BasicUserInfoBio
     public string? Password { get; set; }
 
 }
+
+public class BasicAuthorInfoDTO
+{
+    public int Id { get; set; }
+
+    public string? DisplayName { get; set; }
+
+    public required string Username { get; set; }
+
+    public string? ProfilePicture { get; set; }
+}
+
+public class AuthorInfoDTO : BasicAuthorInfoDTO
+{
+    public string? Bio { get; set; }
+
+    public DateTime JoinedOn { get; set; }
+
+    public int PublishedCount { get; set; }
+}

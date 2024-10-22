@@ -44,6 +44,12 @@ public class AppUser : EntityBase
     public string? Bio { get; set; }
 
     /// <summary>
+    /// Gets or sets the profile picture for this user.
+    /// </summary>
+    [StringLength(160)]
+    public string? ProfilePicture { get; set; }
+
+    /// <summary>
     /// Gets or sets a flag indicating if two factor authentication is enabled for this user.
     /// </summary>
     /// <value>True if 2fa is enabled, otherwise false.</value>

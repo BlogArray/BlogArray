@@ -68,6 +68,27 @@ public class PostDTO : BasicPostDTO
     [StringLength(160)]
     public string Slug { get; set; } = default!;
 
+    public BasicAuthorInfoDTO AuthorInfo { get; set; } = default!;
+
+    public List<BasicTermInfo>? Categories { get; set; }
+
+    public List<BasicTermInfo>? Tags { get; set; }
+}
+
+public class PostListDTO
+{
+    public int Id { get; set; }
+
+    public string Slug { get; set; } = default!;
+
+    public string Title { get; set; } = default!;
+
+    public string Description { get; set; } = default!;
+
+    public string? Cover { get; set; }
+
+    public BasicAuthorInfoDTO AuthorInfo { get; set; } = default!;
+
     public List<BasicTermInfo>? Categories { get; set; }
 
     public List<BasicTermInfo>? Tags { get; set; }

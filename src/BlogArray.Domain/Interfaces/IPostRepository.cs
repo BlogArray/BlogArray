@@ -6,6 +6,8 @@ namespace BlogArray.Domain.Interfaces;
 
 public interface IPostRepository
 {
+    Task<PagedResult<PostListDTO>> GetPaginatedPostsAsync(int pageNumber, int pageSize, int? authorId, string? searchTerm, PostStatus postStatus);
+
     Task<Post?> GetPostByIdAsync(int postId);
 
     Task<int?> GetPostAuthorByIdAsync(int postId);

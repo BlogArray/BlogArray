@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20241015103733_Init")]
+    [Migration("20241021165033_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -223,6 +223,10 @@ namespace BlogArray.Persistence.SqlServer.Migrations
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");

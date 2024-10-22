@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogArray.Persistence.Sqlite.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20241015103625_Init")]
+    [Migration("20241021164926_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -211,6 +211,10 @@ namespace BlogArray.Persistence.Sqlite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasMaxLength(160)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("RoleId")
