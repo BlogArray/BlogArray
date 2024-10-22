@@ -360,3 +360,4 @@ appsettings.Development.json
 dist
 
 package-lock.json
+/.sonarqube
