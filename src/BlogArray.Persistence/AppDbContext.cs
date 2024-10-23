@@ -124,7 +124,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         builder.Entity<Storage>(entity =>
         {
-            entity.HasIndex(b => b.Slug).IsUnique();
+            //entity.HasIndex(b => b.Slug).IsUnique();
             entity.Property(e => e.IsDeleted).HasDefaultValue(false);
 
             entity.HasOne(u => u.CreatedUser)

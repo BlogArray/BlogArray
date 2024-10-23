@@ -40,12 +40,32 @@ public class MediaController(IMediator mediatr) : BaseController
         return Ok(media);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="files"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("upload")]
     public async Task<IActionResult> PostFile([FromForm] List<IFormFile> files)
     {
-        ReturnResult<string[]> result = await mediatr.Send(new UploadMediaCommand(files));
+        ReturnResult<string[]> result = await mediatr.Send(new UploadMediaCommand(files, LoggedInUserID));
 
-        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message, result.Result) : Ok(result.Result);
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message, result.Result) : Ok(result.Message);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="files"></param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("delete")]
+    public async Task<IActionResult> Delete(List<int> files)
+    {
+        ReturnResult<int> result = await mediatr.Send(new DeleteMediaCommand(files, LoggedInUserID, false));
+
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message) : Ok(result.Message);
     }
 }

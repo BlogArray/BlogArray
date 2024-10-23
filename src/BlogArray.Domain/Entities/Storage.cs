@@ -11,8 +11,8 @@ public class Storage : AuthorEntityBase
 
     public AssetType AssetType { get; set; }
 
-    [StringLength(2048)]
-    public string Slug { get; set; } = default!;
+    //[StringLength(2048)]
+    //public string Slug { get; set; } = default!;
 
     [StringLength(256)]
     public string Name { get; set; } = default!;

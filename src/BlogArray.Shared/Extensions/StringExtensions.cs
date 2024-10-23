@@ -137,7 +137,6 @@ public static class StringExtensions
         return str.Contains("..") || str.Contains("//") ? throw new ApplicationException("Invalid directory path") : str;
     }
 
-
     public static string SanitizeFileName(this string str)
     {
         str = str.SanitizePath();

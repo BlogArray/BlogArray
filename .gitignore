@@ -361,3 +361,4 @@ dist
 
 package-lock.json
 /.sonarqube
+/src/BlogArray/wwwroot/content/media

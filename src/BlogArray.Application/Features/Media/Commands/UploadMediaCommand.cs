@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace BlogArray.Application.Features.Media.Commands;
 
-public class UploadMediaCommand(List<IFormFile> files) : IRequest<ReturnResult<string[]>>
+public class UploadMediaCommand(List<IFormFile> files, int loggedInUser) : IRequest<ReturnResult<string[]>>
 {
     public List<IFormFile> Files { get; set; } = files;
+    public int LoggedInUserId { get; set; } = loggedInUser;
 }
 
 internal class UploadMediaCommandHandler(IMediaRepository mediaRepository) : IRequestHandler<UploadMediaCommand, ReturnResult<string[]>>
@@ -24,12 +25,6 @@ internal class UploadMediaCommandHandler(IMediaRepository mediaRepository) : IRe
                 Title = "Media.Invalid",
                 Result = fileValidation
             }
-            : new ReturnResult<string[]>
-            {
-                Message = "One or more invalid files.",
-                Code = StatusCodes.Status200OK,
-                Title = "Media.Valid",
-                Result = fileValidation
-            };
+            : await mediaRepository.Upload(request.Files, request.LoggedInUserId);
     }
 }

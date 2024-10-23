@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using BlogArray.Application.Authorization;
 using BlogArray.Application.Features.Account.Commands;
+using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Caching;
@@ -53,6 +54,13 @@ public static class BlogArrayServiceCollectionExtensions
         services.AddCache(configuration);
 
         services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(AuthenticateCommand))));
+
+        AppConstants.ContentRootPath = environment.ContentRootPath;
+        AppConstants.WebRootPath = environment.WebRootPath;
+
+        AppConstants.Version = Assembly.GetEntryAssembly()?
+        .GetCustomAttribute<AssemblyFileVersionAttribute>()?
+        .Version ?? "";
 
         return services;
     }
