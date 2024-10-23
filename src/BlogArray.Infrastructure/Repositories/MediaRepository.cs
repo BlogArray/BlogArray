@@ -6,7 +6,6 @@ using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
 using NetCore.AutoRegisterDi;
 
 namespace BlogArray.Infrastructure.Repositories;
@@ -54,9 +53,9 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
 
     public string[] ValidateFiles(List<IFormFile> files)
     {
-        var invalidFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"Invalid file type: {file.FileName}.").ToList();
+        List<string>? invalidFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"Invalid file type: {file.FileName}.").ToList();
 
-        var invalidSizedFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"File {file.FileName} was too large. Accepted file size was 5mb.").ToList();
+        List<string>? invalidSizedFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"File {file.FileName} was too large. Accepted file size was 5mb.").ToList();
 
         if (invalidFiles?.Count == 0) invalidFiles = [];
 

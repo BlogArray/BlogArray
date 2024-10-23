@@ -27,13 +27,8 @@ public class GetPostForEditingQueryHandler(IPostRepository postRepository, IAuth
             return default;
         }
 
-        var authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
+        AuthorizationResult authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
 
-        if (!authorizationResult.Succeeded)
-        {
-            return default;
-        }
-
-        return await postRepository.GetPostForEditingByIdAsync(request.PostId);
+        return !authorizationResult.Succeeded ? default : await postRepository.GetPostForEditingByIdAsync(request.PostId);
     }
 }

@@ -1,6 +1,4 @@
-﻿using BlogArray.Domain.DTOs;
-
-namespace BlogArray.Domain.Constants;
+﻿namespace BlogArray.Domain.Constants;
 
 public static class AppConstants
 {
@@ -25,5 +23,5 @@ public static class AppConstants
     public static List<string> OtherExtensions = ["zip", "7z", "pdf", "doc", "docx", "xls", "xlsx"];
 
     public static List<string> FileExtensions = [.. ImageExtensions, .. AudioExtensions, .. VideoExtensions, .. OtherExtensions];
-    
+
 }

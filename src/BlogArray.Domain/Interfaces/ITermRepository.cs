@@ -17,6 +17,6 @@ public interface ITermRepository
     Task<ReturnResult<int>> EditTermAsync(int id, TermInfoDescription term, TermType termType);
 
     Task<ReturnResult<int>> DeleteTermAsync(int id, TermType termType);
-    
+
     Task<List<Term>> GetTermsByIdsAsync(List<int> termIds);
 }

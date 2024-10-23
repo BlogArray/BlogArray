@@ -48,17 +48,14 @@ internal class EditPostCommandHandler(IPostRepository postRepository, IAuthoriza
             };
         }
 
-        var authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
+        AuthorizationResult authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
 
-        if (!authorizationResult.Succeeded)
-        {
-            return new ReturnResult<int>
+        return !authorizationResult.Succeeded
+            ? new ReturnResult<int>
             {
                 Code = StatusCodes.Status403Forbidden,
                 Message = ""
-            };
-        }
-
-        return await postRepository.EditPostAsync(request.PostId, request.Model, request.LoggedInUserId, request.CanPublish);
+            }
+            : await postRepository.EditPostAsync(request.PostId, request.Model, request.LoggedInUserId, request.CanPublish);
     }
 }

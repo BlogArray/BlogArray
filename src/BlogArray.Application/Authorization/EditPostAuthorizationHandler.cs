@@ -1,4 +1,4 @@
-﻿using BlogArray.Domain.Constants; 
+﻿using BlogArray.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
@@ -18,7 +18,7 @@ public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequire
     /// <returns>A task representing the asynchronous operation.</returns>
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, EditPostRequirement requirement, int postAuthorId)
     {
-        var user = context.User;
+        ClaimsPrincipal user = context.User;
 
         // Check if the user has Admin or Editor role, allowing them to edit any post.
         if (user.IsInRole(RoleConstants.Admin) || user.IsInRole(RoleConstants.Editor))
@@ -28,7 +28,7 @@ public class EditPostAuthorizationHandler : AuthorizationHandler<EditPostRequire
         // Check if the user is an Author or Contributor and if they own the post.
         else if (user.IsInRole(RoleConstants.Author) || user.IsInRole(RoleConstants.Contributor))
         {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (postAuthorId.ToString() == userId)
             {
                 context.Succeed(requirement); // Authors and Contributors can edit their own posts

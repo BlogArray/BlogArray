@@ -142,7 +142,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
     public async Task<ReturnResult<int>> AddPostAsync(CreatePostDTO post, int loggedInUserId, bool canPublish)
     {
-        var newPost = new Post
+        Post newPost = new()
         {
             Title = post.Title,
             Slug = await GetPostSlugFromTitle(post.Title),
@@ -175,11 +175,11 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
         if (post.Tags?.Count == 0) post.Tags = [];
 
-        var allTerms = post.Categories?.Concat(post.Tags).ToList();
+        List<int>? allTerms = post.Categories?.Concat(post.Tags).ToList();
 
         if (allTerms?.Count > 0)
         {
-            var terms = await termRepository.GetTermsByIdsAsync(allTerms);
+            List<Term> terms = await termRepository.GetTermsByIdsAsync(allTerms);
 
             newPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
         }
@@ -188,7 +188,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
         await db.SaveChangesAsync();
 
-        var revision = new PostRevision
+        PostRevision revision = new()
         {
             Content = post.Content,
             CreatedOn = DateTime.UtcNow,
@@ -261,13 +261,13 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
         if (post.Tags?.Count == 0) post.Tags = [];
 
-        var allTerms = post.Categories?.Concat(post.Tags).ToList();
+        List<int>? allTerms = post.Categories?.Concat(post.Tags).ToList();
 
         if (allTerms?.Count > 0)
         {
             await db.PostTerms.Where(t => t.PostId == existingPost.Id).ExecuteDeleteAsync();
 
-            var terms = await termRepository.GetTermsByIdsAsync(allTerms);
+            List<Term> terms = await termRepository.GetTermsByIdsAsync(allTerms);
 
             existingPost.Terms = terms.Select(t => new PostTerm { TermId = t.Id }).ToList();
         }
@@ -287,7 +287,7 @@ public class PostRepository(AppDbContext db, ITermRepository termRepository) : I
 
     public async Task AddPostRevisionAsync(int postId, string content, int loggedInUserId)
     {
-        var revision = new PostRevision
+        PostRevision revision = new()
         {
             Content = content,
             PostId = postId,

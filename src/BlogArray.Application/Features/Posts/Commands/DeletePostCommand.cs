@@ -32,17 +32,14 @@ internal class DeletePostCommandHandler(IPostRepository postRepository, IAuthori
             };
         }
 
-        var authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
+        AuthorizationResult authorizationResult = await authorizationService.AuthorizeAsync(request.User, createdUserId.Value, new EditPostRequirement());
 
-        if (!authorizationResult.Succeeded)
-        {
-            return new ReturnResult<int>
+        return !authorizationResult.Succeeded
+            ? new ReturnResult<int>
             {
                 Code = StatusCodes.Status403Forbidden,
                 Message = ""
-            };
-        }
-
-        return await postRepository.DeletePostAsync(request.PostId);
+            }
+            : await postRepository.DeletePostAsync(request.PostId);
     }
 }

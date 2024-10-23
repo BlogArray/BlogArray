@@ -47,7 +47,7 @@ public static class ReadTimeCalculator
     private static int CountWords(string text)
     {
         // Split the text by whitespace and count non-empty entries
-        var words = Regex.Split(text, @"\W+");
+        string[] words = Regex.Split(text, @"\W+");
         return words.Length;
     }
 
@@ -100,7 +100,7 @@ public static class ReadTimeCalculator
         }
 
         // First image gets 12 seconds, subsequent images get 3 seconds each
-        int totalImageTimeInSeconds = firstImageTime + (imageCount - 1) * additionalImageTime;
+        int totalImageTimeInSeconds = firstImageTime + ((imageCount - 1) * additionalImageTime);
 
         return totalImageTimeInSeconds;
     }

@@ -1,5 +1,4 @@
-﻿using BlogArray.Api.Middleware;
-using BlogArray.Application.Features.Media.Commands;
+﻿using BlogArray.Application.Features.Media.Commands;
 using BlogArray.Application.Features.Media.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
@@ -7,7 +6,6 @@ using BlogArray.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing.Printing;
 
 namespace BlogArray.Api.Controllers;
 
