@@ -15,6 +15,7 @@ namespace BlogArray.Infrastructure.Repositories;
 [RegisterAsScoped]
 public class PostRepository(AppDbContext db, ITermRepository termRepository) : IPostRepository
 {
+    //TODO: max post revision from settings
     private readonly int _maxPostRevisions = 5;
 
     public async Task<PagedResult<PostListDTO>> GetPaginatedPostsAsync(int pageNumber, int pageSize, int? authorId, string? searchTerm, PostStatus postStatus)

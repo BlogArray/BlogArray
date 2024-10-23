@@ -1,10 +1,13 @@
-﻿using BlogArray.Application.Features.Media.Queries;
+﻿using BlogArray.Api.Middleware;
+using BlogArray.Application.Features.Media.Commands;
+using BlogArray.Application.Features.Media.Queries;
 using BlogArray.Domain.Constants;
 using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
 
 namespace BlogArray.Api.Controllers;
 
@@ -39,5 +42,12 @@ public class MediaController(IMediator mediatr) : BaseController
         return Ok(media);
     }
 
+    [HttpPost]
+    [Route("upload")]
+    public async Task<IActionResult> PostFile([FromForm] List<IFormFile> files)
+    {
+        ReturnResult<string[]> result = await mediatr.Send(new UploadMediaCommand(files));
 
+        return !result.Status ? ErrorDetails.CreateResponse(result.Code, result.Title, result.Message, result.Result) : Ok(result.Result);
+    }
 }

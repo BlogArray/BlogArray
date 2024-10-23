@@ -1,9 +1,12 @@
-﻿using BlogArray.Domain.DTOs;
+﻿using BlogArray.Domain.Constants;
+using BlogArray.Domain.DTOs;
 using BlogArray.Domain.Entities;
 using BlogArray.Domain.Enums;
 using BlogArray.Domain.Interfaces;
 using BlogArray.Infrastructure.Extensions;
 using BlogArray.Persistence;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using NetCore.AutoRegisterDi;
 
 namespace BlogArray.Infrastructure.Repositories;
@@ -11,6 +14,9 @@ namespace BlogArray.Infrastructure.Repositories;
 [RegisterAsScoped]
 public class MediaRepository(AppDbContext db) : IMediaRepository
 {
+    private const int FiveMegaBytes = 5 * 1024 * 1024;
+    private const string AcceptedFileSizeMessage = "Accepted file size was 5mb.";
+
     public async Task<PagedResult<MediaInfo>> GetPaginatedAsync(int pageNumber, int pageSize, string? searchTerm, AssetType? assetType)
     {
         IQueryable<Storage> query = db.Storages;
@@ -46,4 +52,21 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
         return pagedResult;
     }
 
+    public string[] ValidateFiles(List<IFormFile> files)
+    {
+        var invalidFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"Invalid file type: {file.FileName}.").ToList();
+
+        var invalidSizedFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"File {file.FileName} was too large. Accepted file size was 5mb.").ToList();
+
+        if (invalidFiles?.Count == 0) invalidFiles = [];
+
+        if (invalidSizedFiles?.Count == 0) invalidSizedFiles = [];
+
+        return [.. invalidFiles, .. invalidSizedFiles];
+    }
+
+    private static bool InvalidFileType(string fileName)
+    {
+        return !AppConstants.FileExtensions.Any(ext => fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
+    }
 }
