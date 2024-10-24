@@ -95,14 +95,14 @@ public static class EditorJsHelper
 
     private static string ParseTable(dynamic block)
     {
-        var tableHtml = new StringBuilder();
-        var hadHeaders = Converter.ToBoolean(block.data.withHeadings);
+        StringBuilder tableHtml = new();
+        dynamic hadHeaders = Converter.ToBoolean(block.data.withHeadings);
 
         if (hadHeaders)
         {
-            var headerRow = block.data.content[0];
+            dynamic headerRow = block.data.content[0];
             tableHtml.Append("<thead><tr>");
-            foreach (var head in headerRow)
+            foreach (dynamic? head in headerRow)
             {
                 tableHtml.Append($"<th>{Converter.ToString(head)}</th>");
             }
@@ -110,12 +110,12 @@ public static class EditorJsHelper
         }
 
         tableHtml.Append("<tbody>");
-        var startRow = hadHeaders ? 1 : 0;
+        int startRow = hadHeaders ? 1 : 0;
         for (int i = startRow; i < block.data.content.Count; i++)
         {
-            var row = block.data.content[i];
+            dynamic row = block.data.content[i];
             tableHtml.Append("<tr>");
-            foreach (var cell in row)
+            foreach (dynamic? cell in row)
             {
                 tableHtml.Append($"<td>{Converter.ToString(cell)}</td>");
             }
@@ -128,14 +128,14 @@ public static class EditorJsHelper
 
     private static string ParseHeader(dynamic block)
     {
-        var level = Converter.ToString(block.data.level);
-        var alignment = block.data.alignment.ToString() switch
+        dynamic level = Converter.ToString(block.data.level);
+        string alignment = block.data.alignment.ToString() switch
         {
             "center" => "center",
             "right" => "end",
             _ => "start"
         };
-        var text = Converter.ToString(block.data.text);
+        dynamic text = Converter.ToString(block.data.text);
 
         return $"<h{level} class='text-{alignment}'>{text}</h{level}>";
     }
@@ -152,8 +152,8 @@ public static class EditorJsHelper
 
     private static string ParseEmbed(dynamic block)
     {
-        var embedUrl = Converter.ToString(block.data.embed);
-        var caption = Converter.ToString(block.data.caption);
+        dynamic embedUrl = Converter.ToString(block.data.embed);
+        dynamic caption = Converter.ToString(block.data.caption);
 
         return $"<figure class='figure'>" +
             $"<iframe width='560' height='420' class='figure-img img-fluid' src='{embedUrl}' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>" +
@@ -163,8 +163,8 @@ public static class EditorJsHelper
 
     private static string ParseImage(dynamic block)
     {
-        var imageUrl = Converter.ToString(block.data.url);
-        var caption = Converter.ToString(block.data.caption);
+        dynamic imageUrl = Converter.ToString(block.data.url);
+        dynamic caption = Converter.ToString(block.data.caption);
 
         return $"<figure class='figure'>" +
             $"<img src='{imageUrl}' class='figure-img img-fluid' alt='{caption}'>" +
@@ -174,18 +174,18 @@ public static class EditorJsHelper
 
     private static string ParseList(dynamic block)
     {
-        var listType = Converter.ToString(block.data?.style) == "unordered" ? "ul" : "ol";
+        string listType = Converter.ToString(block.data?.style) == "unordered" ? "ul" : "ol";
         return BuildListItems(block.data.items, listType);
     }
 
     private static string BuildListItems(dynamic items, string listType)
     {
-        var listHtml = new StringBuilder();
+        StringBuilder listHtml = new();
         listHtml.Append($"<{listType}>");
 
-        foreach (var item in items)
+        foreach (dynamic? item in items)
         {
-            var content = Converter.ToString(item.content);
+            dynamic content = Converter.ToString(item.content);
             listHtml.Append($"<li>{content}</li>");
 
             if (item.items?.Count > 0)
@@ -200,8 +200,8 @@ public static class EditorJsHelper
 
     private static string ParseCode(dynamic block)
     {
-        var code = Converter.ToString(block.data.code).Replace("<", "&lt;");
-        var language = Converter.ToString(block.data.language);
+        dynamic code = Converter.ToString(block.data.code).Replace("<", "&lt;");
+        dynamic language = Converter.ToString(block.data.language);
 
         return $"<pre class='language-{language}' lang='{language}'>" +
                $"<code class='scrollbar language-{language}'>{code}</code></pre>";
@@ -209,16 +209,16 @@ public static class EditorJsHelper
 
     private static string ParseQuote(dynamic block)
     {
-        var text = Converter.ToString(block.data?.text);
-        var caption = Converter.ToString(block.data?.caption);
+        dynamic text = Converter.ToString(block.data?.text);
+        dynamic caption = Converter.ToString(block.data?.caption);
 
         return $"<blockquote><p>{text}</p><cite>{caption}</cite></blockquote>";
     }
 
     private static string ParseLink(dynamic block)
     {
-        var link = Converter.ToString(block.data?.link);
-        var title = Converter.ToString(block.data?.meta?.title) ?? link;
+        dynamic link = Converter.ToString(block.data?.link);
+        dynamic title = Converter.ToString(block.data?.meta?.title) ?? link;
 
         return $"<a href='{link}' target='_blank'>{title}</a>";
     }

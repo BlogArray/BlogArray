@@ -73,7 +73,7 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
         List<Storage> storages = [];
 
         //TODO: get from db
-        MediaSettings mediaOptions = new MediaSettings();
+        MediaSettings mediaOptions = new();
 
         foreach (IFormFile file in files)
         {
