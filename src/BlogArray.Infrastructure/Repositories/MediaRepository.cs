@@ -18,11 +18,11 @@ namespace BlogArray.Infrastructure.Repositories;
 public class MediaRepository(AppDbContext db) : IMediaRepository
 {
     private const int FiveMegaBytes = 5 * 1024 * 1024;
-    private const string AcceptedFileSizeMessage = "Accepted file size was 5mb.";
+    private const string AcceptedFileSizeMessage = "Maximum file size allowed is 5 MB.";
 
     public async Task<PagedResult<MediaInfo>> GetPaginatedAsync(int pageNumber, int pageSize, string? searchTerm, AssetType? assetType)
     {
-        IQueryable<Storage> query = db.Storages;
+        IQueryable<Storage> query = db.Storages.AsNoTracking();
 
         if (assetType.HasValue)
         {
@@ -56,9 +56,13 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
 
     public string[] ValidateFiles(List<IFormFile> files)
     {
-        List<string>? invalidFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"Invalid file type: {file.FileName}.").ToList();
+        List<string>? invalidFiles = files
+            .Where(file => InvalidFileType(file.FileName))
+            .Select(file => $"Invalid file type: {file.FileName}.").ToList();
 
-        List<string>? invalidSizedFiles = files.Where(file => InvalidFileType(file.FileName)).Select(file => $"File {file.FileName} was too large. Accepted file size was 5mb.").ToList();
+        List<string>? invalidSizedFiles = files
+            .Where(file => file.Length > FiveMegaBytes)
+            .Select(file => $"File {file.FileName} exceeds the size limit. {AcceptedFileSizeMessage}.").ToList();
 
         if (invalidFiles?.Count == 0) invalidFiles = [];
 
@@ -75,42 +79,23 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
         //TODO: get from db
         MediaSettings mediaOptions = new();
 
-        foreach (IFormFile file in files)
+        await Task.WhenAll(files.Select(async file =>
         {
-            string path = string.Empty;
-
-            if (mediaOptions.OrganizeUploads)
+            var storage = await ProcessFileAsync(file, LoggedInUserId, mediaOptions);
+            lock (storages)
             {
-                path = Path.Combine($"{DateTime.Now.Year}", $"{DateTime.Now.Month}");
+                storages.AddRange(storage);
             }
-
-            string extension = Path.GetExtension(file.FileName);
-            string orgFileName = GetFileName(file.FileName).Replace(extension, string.Empty);
-            string fullPath = Path.Combine("wwwroot", "content", "media", path);
-            string fullDirectoryPath = Path.Combine(AppConstants.ContentRootPath, fullPath);
-
-            Directory.CreateDirectory(fullDirectoryPath);
-
-            string uniqueFileName = GetFileSlug(fullDirectoryPath, orgFileName, extension);
-
-            if (IsImage(file.FileName))
-            {
-                List<Storage> filesData = await ImageOperations(file, extension, fullPath, uniqueFileName, orgFileName, mediaOptions, LoggedInUserId);
-                storages.AddRange(filesData);
-            }
-            else
-            {
-                string fullFilePath = Path.Combine(fullDirectoryPath, $"{uniqueFileName}{extension}");
-                await using FileStream fileStream = new(fullFilePath, FileMode.Create);
-                await file.CopyToAsync(fileStream);
-                storages.Add(CreateStorageEntry(file, orgFileName, fullFilePath, LoggedInUserId));
-            }
-        }
+        }));
 
         await db.Storages.AddRangeAsync(storages);
         await db.SaveChangesAsync();
 
-        return new ReturnResult<string[]> { Message = $"{files.Count} uploaded successfully.", Code = StatusCodes.Status200OK };
+        return new ReturnResult<string[]>
+        {
+            Message = $"{files.Count} file(s) uploaded successfully.",
+            Code = StatusCodes.Status200OK
+        };
     }
 
     public async Task<ReturnResult<int>> Delete(List<int> files, bool isPermanent)
@@ -132,14 +117,48 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
 
         return new ReturnResult<int>
         {
-            Message = $"Deleted {count} files successfully.",
+            Message = $"Successfully deleted {count} file(s).",
             Code = StatusCodes.Status200OK,
             Result = count,
             Title = "Media.Deleted"
         };
     }
 
-    private async Task<List<Storage>> ImageOperations(IFormFile file, string extension, string fullPath, string uniqueFileName, string orgFileName, MediaSettings mediaOptions, int LoggedInUserID)
+    private static async Task<List<Storage>> ProcessFileAsync(IFormFile file, int LoggedInUserId, MediaSettings mediaOptions)
+    {
+        string path = string.Empty;
+        List<Storage> storages = [];
+
+        if (mediaOptions.OrganizeUploads)
+        {
+            path = Path.Combine($"{DateTime.Now.Year}", $"{DateTime.Now.Month}");
+        }
+
+        string extension = Path.GetExtension(file.FileName);
+        string orgFileName = GetFileName(file.FileName).Replace(extension, string.Empty);
+        string fullPath = Path.Combine("wwwroot", "content", "media", path);
+        string fullDirectoryPath = Path.Combine(AppConstants.ContentRootPath, fullPath);
+
+        Directory.CreateDirectory(fullDirectoryPath);
+
+        string uniqueFileName = GetFileSlug(fullDirectoryPath, orgFileName, extension);
+
+        if (IsImage(file.FileName))
+        {
+            List<Storage> filesData = await ImageOperations(file, extension, fullPath, uniqueFileName, orgFileName, mediaOptions, LoggedInUserId);
+            storages.AddRange(filesData);
+        }
+        else
+        {
+            string fullFilePath = Path.Combine(fullDirectoryPath, $"{uniqueFileName}{extension}");
+            await using FileStream fileStream = new(fullFilePath, FileMode.Create);
+            await file.CopyToAsync(fileStream);
+            storages.Add(CreateStorageEntry(file, orgFileName, fullFilePath, LoggedInUserId));
+        }
+        return storages;
+    }
+
+    private static async Task<List<Storage>> ImageOperations(IFormFile file, string extension, string fullPath, string uniqueFileName, string orgFileName, MediaSettings mediaOptions, int LoggedInUserID)
     {
         await using MemoryStream memoryStream = new();
         await file.CopyToAsync(memoryStream);
@@ -165,7 +184,7 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
         int Quality = mediaOptions.OptimizeImages ? mediaOptions.OptimizedQuality.HasValue && mediaOptions.OptimizedQuality > 0 ? mediaOptions.OptimizedQuality.Value : 100 : 100;
 
         await SaveImage(originalImage, originalPath, format, Quality, false);
-
+        
         storages.Add(CreateStorageEntry(file, orgFileName, originalPath, LoggedInUserID));
 
         if (mediaOptions.SmallSize.MaxWidth > 0 && mediaOptions.SmallSize.MaxHeight > 0)
@@ -220,8 +239,11 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
     {
         if (optimiseBeforeSaving)
         {
-            image.Strip();
-            OptimizeImage(image, format, Quality);
+            await Task.Run(() =>
+            {
+                image.Strip();
+                OptimizeImage(image, format, Quality);
+            });
         }
 
         await image.WriteAsync(path);
@@ -275,7 +297,7 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
         image.Settings.SetDefine(MagickFormat.WebP, "method", "6");
     }
 
-    private Storage CreateStorageEntry(IFormFile file, string originalFileName, string filePath, int LoggedInUserID)
+    private static Storage CreateStorageEntry(IFormFile file, string originalFileName, string filePath, int LoggedInUserID)
     {
         return new()
         {
@@ -331,7 +353,7 @@ public class MediaRepository(AppDbContext db) : IMediaRepository
                 return slug;
             slug = $"{slugOriginal}-{i}";
         }
-        throw new InvalidOperationException("Could not generate a unique file slug.");
+        throw new InvalidOperationException($"Could not generate a unique file slug for {fileName} after 100 attempts.");
     }
 
     public static AssetType GetAssetType(string fileExtension)
