@@ -20,9 +20,7 @@ public class Comment : EntityBase
     [StringLength(256)]
     public string? UserAgent { get; set; } = default!;
 
-    public string RawContent { get; set; } = default!;
-
-    public string ParsedContent { get; set; } = default!;
+    public string Content { get; set; } = default!;
 
     public CommentStatus Status { get; set; } = CommentStatus.Published;
 
