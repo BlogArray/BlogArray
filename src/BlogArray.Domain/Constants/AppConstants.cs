@@ -2,11 +2,11 @@
 
 public static class AppConstants
 {
-    public static string Version { get; set; }
+    public static string Version { get; set; } = default!;
 
-    public static string WebRootPath { get; set; }
+    public static string WebRootPath { get; set; } = default!;
 
-    public static string ContentRootPath { get; set; }
+    public static string ContentRootPath { get; set; } = default!;
 
     public static string AudioThumbnail = "/content/system/media/music.png";
 
